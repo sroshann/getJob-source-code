@@ -1,0 +1,49 @@
+#categories {margin-top: 70px;}
+
+.top , .bottom {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 1.5%;
+    margin: 1%;
+
+}
+
+.remote {
+
+    width: 8rem;
+    height: 3rem;
+    background: white;
+    border-radius: 4.5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0.8px 0.8px 0.5px 0.5px lightgrey;
+
+}
+
+.remote:hover {
+
+    background: #0149AB;
+    color: white ;
+    transition: 0.3s;
+    cursor: pointer;
+
+}
+
+.remote:not(:hover) { transition: 0.2s; }
+
+.remote p {
+
+    margin-bottom: 0;
+    font-size: small;
+    margin-left: -15px;
+    margin-top: 2px;
+
+}
+
+.top div:nth-child(4) p {margin-left: -5px;}
+.bottom div:nth-child(1) p {margin-left: -25px;}
+.bottom div:nth-child(3) p {margin-left: -2px;}
+.bottom div:nth-child(4) p {margin-left: -1px;}

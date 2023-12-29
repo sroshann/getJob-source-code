@@ -1,0 +1,85 @@
+#bg_image {
+
+    background-image: url(../../Images/Seeker_home.jpg);
+    background-size: 950px;
+    background-repeat: no-repeat;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    width: 99%;
+    opacity: 0.8;
+    margin-top: 15px;
+
+}
+
+#build {
+
+    margin-left: 5%;
+    margin-bottom: 0;
+    color: #0149AB;
+    font-size: 73px;
+    font-weight: bolder;
+    font-family: 'Montserrat', sans-serif;
+    padding-top: 35px;
+
+}
+
+#with_gj{
+
+    margin-left: 35.5%;
+    margin-bottom: 0;
+    margin-top: -8px;
+    color: #0149AB;
+    font-size: 73px;
+    font-weight: bolder;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+#job { color: #2DB4D4; }
+
+#search_box {
+
+    background: white;
+    border-radius: 25px;
+    width: 46%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    box-shadow: 0px 0px 10px -7px;
+    margin-top: 3.8%;
+    padding: 4px;
+
+}
+
+#search_box i {
+
+    color: #0149AB;
+    cursor: pointer;
+
+}
+
+#search {
+
+    outline: none;
+    border: none;
+    font-size: smaller;
+    width: 443px;
+    height: 39px;
+
+}
+
+#search_box button {
+
+    width: 85px;
+    height: 31px;
+    border-radius: 20px;
+    border: 0;
+    margin-left: 25px;
+    background: #0149AB;
+    color: white;
+
+}   
+
+#search_box button:hover {cursor: pointer;}

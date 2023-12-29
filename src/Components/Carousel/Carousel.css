@@ -1,0 +1,56 @@
+#carousel { 
+
+    margin-top: 70px;
+    margin-bottom: 50px;
+
+}
+
+h3 { text-align: center; }
+
+.swiper {
+
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    z-index: 1;
+    display: block;
+    
+}
+.swiper-wrapper {
+
+    padding: 5px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    transition-timing-function: var(--swiper-wrapper-transition-timing-function, initial);
+    box-sizing: content-box;
+
+}
+
+#swiper-body {
+
+    width: 80%;
+    height: 250px;
+    position: relative;
+    left: 10%;
+    display: flex;
+    place-items: center;
+
+}
+
+.carousel-body {
+
+    width: 225px;
+    height: 200px;
+    margin-left: 10px;
+    box-shadow: 0px 0px 10px -7px rgba(0, 0, 0, 0.75); /* Adjust the shadow color and other parameters as needed */
+    transition: box-shadow 0.3s ease; /* Add a smooth transition for the box-shadow */
+    border-radius: 6px;
+
+}
+
