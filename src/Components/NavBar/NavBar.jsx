@@ -1,39 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './NavBar.css'
 
 function NavBar() {
 
+    const [ options , setOptions ] = useState( false )
+
   return (
-    <div id='header'>
 
-        <div id="logo">
+    <div id='header'>   
 
-            <p><span id='get'>get</span><span id='job'>JOB</span></p>
+        <button id='menu-button' onClick={ () => { setOptions( true ) } } >Menu</button>
+        { options && <div id="menu">
 
-        </div>
-        <div id="menu">
+            <button id='close-button' onClick={ () => { setOptions( false ) } } >Close</button>
 
-            <ul>
+            <div id="menu-options">
 
-                <li>Home</li>
-                <li>About Us</li>
-                <li>Companies</li>
-                <li>FAQ</li>
+                <div className="menu-divs">
 
-            </ul>
+                    <button>Home</button>
+                    <button>About Us</button>
+                    <button>Companies</button>
 
-        </div>
-        <div id="buttons">
+                </div>
+                <div className="menu-divs">
 
-            <div id='options'>
+                    <button>FAQ</button>
+                    <button>Login</button>
+                    <button>Sign Up</button>
 
-                <button id='login'>Login</button>
-                <button id='sign'>Sign Up</button>
-                <button id='post' >Post a job</button>
+                </div>
+                <div className="menu-divs">
+
+                    <button id='post'>Post a job</button>
+
+                </div>
 
             </div>
 
-        </div>
+        </div>}
 
     </div>
   )

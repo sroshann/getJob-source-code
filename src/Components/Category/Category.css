@@ -59,14 +59,17 @@
 
     }
 
-    .top { margin-left: 20%; }
+    .top { margin-left: 22%; }
 
     .remote { 
         
         margin: 5px; 
         margin-top: 8px;
-        width: 135px;
+        width: 120px;
+        font-size: 14px;
     
     }
+
+    .remote p { font-size: 11.8px; }
 
 }
