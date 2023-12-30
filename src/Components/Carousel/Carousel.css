@@ -37,7 +37,7 @@ h3 { text-align: center; }
     width: 80%;
     height: 250px;
     position: relative;
-    left: 10%;
+    left: 11%;
     display: flex;
     place-items: center;
 
@@ -47,10 +47,53 @@ h3 { text-align: center; }
 
     width: 225px;
     height: 200px;
-    margin-left: 10px;
     box-shadow: 0px 0px 10px -7px rgba(0, 0, 0, 0.75); /* Adjust the shadow color and other parameters as needed */
     transition: box-shadow 0.3s ease; /* Add a smooth transition for the box-shadow */
     border-radius: 6px;
 
 }
 
+@media ( max-width : 767px ) {
+
+    #carousel { 
+        
+        margin-top: 25px; 
+        margin-bottom: 35px;
+    
+    }
+
+    #swiper-body {
+
+        width: 70%;
+        left: 15%;
+        height: 225px;
+
+    }
+
+    .carousel-body {
+
+        width: 155px;
+        height: 185px;
+
+    }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    #carousel {
+
+        margin-top: 45px;
+        margin-bottom: 55px;
+
+    }
+
+    .carousel-body { width: 208px; }
+
+}
+
+@media (min-width : 992px) and (max-width : 1199px) {
+
+    .carousel-body { width: 185px; }
+
+}

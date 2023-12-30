@@ -1,4 +1,4 @@
-#categories {margin-top: 70px;}
+#categories { margin-top: 70px; }
 
 .top , .bottom {
 
@@ -12,7 +12,7 @@
 
 .remote {
 
-    width: 8rem;
+    width: 150px;
     height: 3rem;
     background: white;
     border-radius: 4.5px;
@@ -47,3 +47,26 @@
 .bottom div:nth-child(1) p {margin-left: -25px;}
 .bottom div:nth-child(3) p {margin-left: -2px;}
 .bottom div:nth-child(4) p {margin-left: -1px;}
+
+@media (max-width : 767px) {
+
+    #categories { margin-top: 20px; }
+
+    .top , .bottom {
+
+        display: inline-block;
+        margin: 8px;
+
+    }
+
+    .top { margin-left: 20%; }
+
+    .remote { 
+        
+        margin: 5px; 
+        margin-top: 8px;
+        width: 135px;
+    
+    }
+
+}

@@ -24,7 +24,7 @@
 
 }
 
-#with_gj{
+#with_gj {
 
     margin-left: 35.5%;
     margin-bottom: 0;
@@ -49,7 +49,7 @@
     justify-content: space-evenly;
     box-shadow: 0px 0px 10px -7px;
     margin-top: 3.8%;
-    padding: 4px;
+    padding: 3px;
 
 }
 
@@ -80,6 +80,146 @@
     background: #0149AB;
     color: white;
 
-}   
+}
 
-#search_box button:hover {cursor: pointer;}
+#search_box button:hover {
+    cursor: pointer;
+}
+
+@media (max-width : 767px) {
+
+    /* EXTRA SMALL DEVICES */
+
+    #bg_image { background-size: 500px; }
+
+    #build {
+
+        font-size: 30px;
+        margin-left: 0px;
+        position: relative;
+        width: fit-content;
+        left: 15%;
+
+    }
+
+    #with_gj {
+
+        font-size: 30px;
+        margin-left: 0px;
+        position: relative;
+        width: fit-content;
+        left: 40%;
+        margin-top: 3px;
+
+    }
+
+    #search_box {
+
+        width: 300px;
+        padding: 0;
+        margin-top: 6%;
+
+    }
+
+    #search { width: 195px; }
+
+    #search_box button {
+
+        margin-left: 0px;
+        font-size: 10.8px;
+        width: 70px;
+
+    }
+
+    #search_box i { margin-left: 3px; }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    /* SMALL DEVICES */
+
+    #bg_image { background-size: 765px; }
+
+    #build {
+
+        font-size: 50px;
+        position: relative;
+        width: fit-content;
+        left: 10%;
+
+    }
+
+    #with_gj {
+
+        font-size: 50px;
+        margin-left: 0px;
+        position: relative;
+        width: fit-content;
+        left: 40%;
+        margin-top: 3px;
+
+    }
+
+    #search_box { 
+
+        padding: 0; 
+        width: 355px;
+
+    }
+
+    #search { width: 230px; }
+
+    #search_box button {
+
+        margin-left: 0px;
+        font-size: 12px;
+        width: 80px;
+
+    }
+
+    #search_box i { margin-left: 3px; }
+
+}
+
+@media (min-width : 992px) and (max-width : 1199px) {
+
+    /* MIDDLE DEVICES */
+
+    #build {
+
+        position: relative;
+        width: fit-content;
+        left: 7%;
+
+    }
+
+    #with_gj {
+
+        position: relative;
+        width: fit-content;
+        left: 2%;
+        margin-top: 3px;
+
+    }
+
+    #search_box { 
+        
+        padding: 0; 
+        width: 483px;
+
+    }
+
+    #search { width: 358px; }
+
+    #search_box button {
+
+        margin-left: 0px;
+        font-size: 12px;
+        width: 85px;
+
+    }
+
+    #search_box i { margin-left: 3px; }
+
+}
