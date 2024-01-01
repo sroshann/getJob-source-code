@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import './NavBar.css'
+import { useNavigate } from 'react-router-dom' 
 
 function NavBar() {
 
     const [ options , setOptions ] = useState( false )
+
+    const navigate = useNavigate()
 
   return (
 
@@ -18,7 +21,7 @@ function NavBar() {
 
                 <div className="menu-divs">
 
-                    <button>Home</button>
+                    <button onClick={ () => { navigate('/') } } >Home</button>
                     <button>About Us</button>
                     <button>Companies</button>
 
@@ -26,8 +29,8 @@ function NavBar() {
                 <div className="menu-divs">
 
                     <button>FAQ</button>
-                    <button>Login</button>
-                    <button>Sign Up</button>
+                    <button onClick={ () => { navigate('/login') } } >Login</button>
+                    <button onClick={ () => { navigate('/signup') } } >Sign Up</button>
 
                 </div>
                 <div className="menu-divs">

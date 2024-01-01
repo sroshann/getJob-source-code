@@ -1,0 +1,105 @@
+#content {
+
+    height: 100vh;
+    display: grid;
+    place-items: center;
+
+}
+
+.container {
+
+    width: 320px;
+    /* height: 350px; */
+    height: fit-content;
+    box-shadow: 0px 0px 10px -7px;
+    border-radius: 15px;
+    /* position: absolute;
+    left: 42%;
+    top: 21%; */
+   
+       
+}
+h2{
+    color: #0149AB;
+    margin-left: 10px;
+    padding-top: 20px;
+    margin-left: 20%;
+    padding-bottom: 3px;
+    font-size: 20px;
+    cursor: default;
+
+}
+
+.item{
+    margin-left: 20%;
+    padding-top: 10px;
+    color: black;
+    font-size: 12px;
+    cursor: default;
+}
+.container input{
+    border-radius:20px;
+    height: 25px;
+    padding-left: 10%;
+    margin-left: 15%;
+    border: solid 1.5px;
+    border-color: #0149AB;
+    padding-top: 2.5px;
+    padding-bottom: 2.5px;
+    width: 200px;
+    outline: none;
+}
+#forget{
+    margin-left: 46%;
+    font-size: 11.5px;
+    padding-top: 5px;
+    padding-bottom: 12px;
+    color: #0149AB;
+    cursor: pointer;
+    
+}
+hr{
+    width: 80%;
+    margin-left: 10%;
+    opacity: 0.4;
+}
+#log{
+    background-color: #2DB4D4;
+    color: white;
+    padding: 5px 57px;
+    margin-left: 29%;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 15px;
+    font-size: 12px;
+    cursor: pointer;
+}
+#alre{
+    font-size:12.5px;
+    color: #0149AB;
+    margin-left: 27%;
+    margin-top: 20px;
+    margin-bottom: 2px;
+    cursor: default;
+}
+#reg{
+    background-color: #0149AB;
+    color: white;
+    padding: 6px 70px;
+    margin-left: 22.5%;
+    border: 0;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-bottom: 25px;
+
+}
+
+#reg:hover{
+    background: white;
+    color: #0149AB;
+    box-shadow: 0px 0px 10px -7px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+#reg:not(:hover) { transition: 0.2s; }
