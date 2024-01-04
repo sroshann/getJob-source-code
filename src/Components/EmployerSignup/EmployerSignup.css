@@ -1,0 +1,106 @@
+#seeker-content {
+
+    display: grid;
+    place-items: center;
+
+}
+
+#seeker-div {
+
+    width: 48%;
+    height: 72vh;
+    margin-top: 40px;
+    background-color: white;
+    box-shadow: 0px 0px 10px -7px;
+    border-radius: 15px;
+
+}
+
+#as-employer {
+
+    color: #0149AB;
+    padding-top: 25px;
+    text-align: center;
+    font-size: 18px;
+    cursor: default;
+
+}
+
+#seeker-frm { 
+    
+    margin-top: 15px;
+    margin-left: 10.5%; 
+
+}
+
+.seeker-labels , #seeker-labels-password { 
+
+    font-size: 16px; 
+    margin-left: 2%;
+    margin-top: 12px;
+    cursor: default;
+
+}
+
+#seeker-labels-password { margin-left: 5.3%; }
+
+.inputs {
+
+    width: 84.5%;
+    border: solid 1.5px;
+    border-color: #0149AB;
+    outline: none;
+    border-radius: 17px;
+    padding-left: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+}
+
+.seeker-inputs-half { 
+    
+    width: 77%; 
+    border: solid 1.5px;
+    border-color: #0149AB;
+    outline: none;
+    border-radius: 25px;
+    padding-left: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+}
+
+#seeker-frm-subdiv {
+
+    width: 80%; 
+    display: flex;
+
+}
+
+#seeker-frm-subdiv div:nth-child(1) { width: 50%; }
+
+#seeker-frm-subdiv div:nth-child(2) {
+
+    display: flex;
+    justify-content: space-evenly;
+    width: 25%;
+
+}
+
+#seeker-frm-subdiv div:nth-child(2) input { margin-top: 38.2px; }
+
+#seeker-frm-subdiv div:nth-child(2) p { 
+    
+    font-size: 13px;
+    margin-top: 44px; 
+
+}
+
+#seeker-accepting {
+
+    font-size: 9px; 
+    margin-top: 30px;
+    margin-left: 7.5%;
+    cursor: default;
+
+}

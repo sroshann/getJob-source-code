@@ -1,31 +1,48 @@
 import React, { useState } from 'react'
 import SeekerSignup from '../Components/SeekerSignup/SeekerSignup'
 import EmployerSignup from '../Components/EmployerSignup/EmployerSignup'
+import './SignupPage.css'
 
 function SignupPage() {
 
-  const [ seeker , setSeeker ] = useState( true )
-  const [ employer , setEmployer ] = useState( false )
+  const [seeker, setSeeker] = useState(true)
+  const [employer, setEmployer] = useState(false)
 
   return (
-    <div>
+    <div id='bdy'>
 
-      <button onClick={ () => {
+      <div id="button-div">
 
-        setSeeker( true )
-        setEmployer( false )
+        <div id="seeker">
 
-      } } >Register as job seeker</button>
+          <button onClick={() => {
 
-      <button onClick={ () => {
+            setSeeker(true)
+            setEmployer(false)
 
-        setEmployer( true )
-        setSeeker( false )
+          }} >Register as job seeker</button>
 
-      } } >Register as employer</button>
+        </div>
 
-      { seeker && <SeekerSignup/> }
-      { employer && <EmployerSignup/> }
+        <div id="employer">
+
+          <button onClick={() => {
+
+            setEmployer(true)
+            setSeeker(false)
+
+          }} >Register as employer</button>
+
+        </div>
+
+      </div>
+
+      <div>
+
+        {seeker && <SeekerSignup />}
+        {employer && <EmployerSignup />}
+
+      </div>
 
     </div>
   )

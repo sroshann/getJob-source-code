@@ -1,0 +1,39 @@
+#button-div {
+
+    width: 50%;
+    height: 50px;
+    margin-left: 25%;
+    margin-top: 30px;
+
+}
+
+#seeker , #employer {
+
+    width: 50%;
+    height: 100%;
+    float: left;
+    display: grid;
+    place-items: center;
+
+}
+
+#seeker button , #employer button {
+
+    width: 175px;
+    height: 2.5rem;
+    background: transparent;
+    border: 0;
+    color: #0149AB;
+    border-radius: 4.5px;
+    cursor: pointer;
+
+}
+
+#seeker button:hover , #employer button:hover { 
+
+    transition: 0.3s;
+    box-shadow: 0px 0px 12px -7px;
+
+}
+
+#seeker button:not(:hover) , #employer button:not(:hover) { transition: 0.2s; }

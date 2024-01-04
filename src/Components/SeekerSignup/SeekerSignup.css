@@ -1,0 +1,203 @@
+#seeker-signup { margin-left: 13%; }
+
+#left {
+
+    width: 25%;
+    float: left;
+
+}
+
+#left-content {
+
+    width: 60%;
+    height: 240px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px -7px;
+    margin-left: 30%;
+    background-color: white;
+    margin-top: 48.5px;
+
+}
+
+#image {
+
+    display: grid;
+    place-items: center;
+
+}
+
+#image img { width: 95px; }
+
+#right { 
+
+    width: 75%;
+    float: left;    
+
+}
+
+#right-content {
+
+    width: 67%;
+    height: 545px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px -7px;
+    margin-top: 40px;
+    margin-left: 2.5%;
+
+}
+
+#image { height: 115px; }
+
+#bold-p {
+
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 10%;
+    cursor: default;
+
+}
+
+#verified-img { 
+    
+    width: 18px; 
+    float: left;
+
+}
+
+.acheivements {
+
+    width: 90%;
+    margin-top: 5px;
+    margin-left: 4.5%;
+
+}
+
+.acheivements p {
+
+    font-size: 8px;
+    float: left;
+    margin: 5px;
+    color: lightslategrey;
+    cursor: default;
+
+}  
+
+#texts div:nth-child(4) img { margin-top: -3.5px; }
+
+#grow {
+
+    color: #0149AB;
+    padding-top: 35px;
+    padding-left: 9.5%;
+    font-size: 18px;
+    cursor: default;
+
+}
+
+#frm { 
+    
+    margin-top: 20px;
+    margin-left: 7.5%; 
+
+}
+
+#frm-subdiv { 
+    
+    width: 80%; 
+    display: flex;
+
+}
+
+.labels , #accepting{ 
+
+    font-size: 16px; 
+    margin-left: 2%;
+    margin-top: 12px;
+    cursor: default;
+
+}
+
+.inputs {
+
+    width: 80%;
+    border: solid 1.5px;
+    border-color: #0149AB;
+    outline: none;
+    border-radius: 17px;
+    padding-left: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+}
+
+.inputs-half { 
+    
+    width: 75%; 
+    border: solid 1.5px;
+    border-color: #0149AB;
+    outline: none;
+    border-radius: 25px;
+    padding-left: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+
+}
+
+#frm-subdiv div:nth-child(2) {
+
+    display: flex;
+    justify-content: space-evenly;
+    width: 25%;
+
+}
+
+#frm-subdiv div:nth-child(2) input { margin-top: 39.2px; }
+
+#frm-subdiv div:nth-child(2) p { 
+    
+    font-size: 13px;
+    margin-top: 47.5px; 
+
+}
+
+#accepting { 
+    
+    font-size: 9px; 
+    margin-top: 30px;
+
+}
+.color { 
+    
+    color: #0149AB; 
+    cursor: pointer;
+
+}
+
+.sign-btn {
+
+    background-color: #0149AB;
+    color: white;
+    padding: 10px 35px;
+    margin-left: 30%;
+    border: 0;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 13px;
+    cursor: pointer;
+
+}
+
+.sign-btn:hover {
+
+    color: #0149AB;
+    background-color: white;
+    transition: 0.3s;
+    box-shadow: 0px 0px 12px -7px;
+
+}
+
+.sign-btn:not(:hover) { transition: 0.2s; }
+
+#radio { cursor: default; }
