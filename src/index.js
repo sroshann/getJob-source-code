@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
+import AuthenticationContext from './Context/User';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -9,7 +10,11 @@ root.render(
 
     <Router>
 
-      <App />
+      <AuthenticationContext>
+
+        <App />
+
+      </AuthenticationContext>
 
     </Router>
 

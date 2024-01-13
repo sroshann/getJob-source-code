@@ -8,7 +8,7 @@
 #seeker-div {
 
     width: 48%;
-    height: 72vh;
+    height: fit-content;
     margin-top: 40px;
     background-color: white;
     box-shadow: 0px 0px 10px -7px;
@@ -104,3 +104,29 @@
     cursor: default;
 
 }
+
+.seeker-sign-btn {
+
+    background-color: #0149AB;
+    color: white;
+    padding: 10px 35px;
+    margin-left: 30%;
+    border: 0;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-top: 13px;
+    margin-bottom: 25px;
+    cursor: pointer;
+
+}
+
+.seeker-sign-btn:hover {
+
+    color: #0149AB;
+    background-color: white;
+    transition: 0.3s;
+    box-shadow: 0px 0px 12px -7px;
+
+}
+
+.seeker-sign-btn:not(:hover) { transition: 0.2s; }
