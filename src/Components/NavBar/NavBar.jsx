@@ -18,6 +18,7 @@ function NavBar() {
         else if ( destination === 'login' ) navigate('/login')
         else if ( destination === 'signup' ) navigate('/signup')
         else if ( destination === 'notification' ) navigate('/notification')
+        else if ( destination === 'profile' ) navigate('/profile')
 
     }
 
@@ -56,6 +57,7 @@ function NavBar() {
                 <div className="menu-divs">
 
                     <button id='post'>Post a job</button>
+                    { user && <button onClick={ () => { navigateTo('profile') } } >Profile</button> }
 
                 </div>
 

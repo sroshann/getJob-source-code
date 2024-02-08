@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './Login.css'
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { FirebaseAuth, FirebaseFirestore } from '../../FIrebase/Configueration'
 import { collection, getDocs, query, where } from 'firebase/firestore'
+import { UDContext } from '../../Context/User_details'
 
 function Login() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const { setUserDetails } = useContext( UDContext )
     const navigate = useNavigate()
 
     const loginUser = async () => {
@@ -28,6 +30,7 @@ function Login() {
                 user_data.forEach(doc => {
 
                     console.log( doc.data() )
+                    setUserDetails( doc.data() )
 
                     if ( doc.data().user_type === 'Seeker' ) navigate('/seekerhome')
                     else if ( doc.data().user_type === 'Employer' ) navigate('/employerhome')

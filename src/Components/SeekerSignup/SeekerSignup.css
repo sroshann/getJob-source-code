@@ -1,4 +1,6 @@
-#seeker-signup { margin-left: 13%; }
+#seeker-signup {
+    margin-left: 13%;
+}
 
 #left {
 
@@ -26,12 +28,14 @@
 
 }
 
-#image img { width: 95px; }
+#image img {
+    width: 95px;
+}
 
-#right { 
+#right {
 
     width: 75%;
-    float: left;    
+    float: left;
 
 }
 
@@ -47,7 +51,9 @@
 
 }
 
-#image { height: 115px; }
+#image {
+    height: 115px;
+}
 
 #bold-p {
 
@@ -58,9 +64,9 @@
 
 }
 
-#verified-img { 
-    
-    width: 18px; 
+#verified-img {
+
+    width: 18px;
     float: left;
 
 }
@@ -81,9 +87,11 @@
     color: lightslategrey;
     cursor: default;
 
-}  
+}
 
-#texts div:nth-child(4) img { margin-top: -3.5px; }
+#texts div:nth-child(4) img {
+    margin-top: -3.5px;
+}
 
 #grow {
 
@@ -95,23 +103,24 @@
 
 }
 
-#frm { 
-    
+#frm {
+
     margin-top: 20px;
-    margin-left: 7.5%; 
+    margin-left: 7.5%;
 
 }
 
-#frm-subdiv { 
-    
-    width: 80%; 
+#frm-subdiv {
+
+    width: 80%;
     display: flex;
 
 }
 
-.labels , #accepting{ 
+.labels,
+#accepting {
 
-    font-size: 16px; 
+    font-size: 16px;
     margin-left: 2%;
     margin-top: 12px;
     cursor: default;
@@ -131,9 +140,9 @@
 
 }
 
-.inputs-half { 
-    
-    width: 75%; 
+.inputs-half {
+
+    width: 75%;
     border: solid 1.5px;
     border-color: #0149AB;
     outline: none;
@@ -153,24 +162,27 @@
 
 }
 
-#frm-subdiv div:nth-child(2) input { margin-top: 39.2px; }
+#frm-subdiv div:nth-child(2) input {
+    margin-top: 39.2px;
+}
 
-#frm-subdiv div:nth-child(2) p { 
-    
+#frm-subdiv div:nth-child(2) p {
+
     font-size: 13px;
-    margin-top: 47.5px; 
+    margin-top: 47.5px;
 
 }
 
-#accepting { 
-    
-    font-size: 9px; 
+#accepting {
+
+    font-size: 9px;
     margin-top: 30px;
 
 }
-.color { 
-    
-    color: #0149AB; 
+
+.color {
+
+    color: #0149AB;
     cursor: pointer;
 
 }
@@ -198,6 +210,149 @@
 
 }
 
-.sign-btn:not(:hover) { transition: 0.2s; }
+.sign-btn:not(:hover) {
+    transition: 0.2s;
+}
 
-#radio { cursor: default; }
+#radio {
+    cursor: default;
+}
+
+@media (max-width : 767px) {
+
+    /* EXTRA SMALL DEVICES */
+    #right {
+        width: 100%;
+        display: grid;
+        place-items: center;
+    }
+
+    #left-content {
+        display: none;
+    }
+
+    #right-content {
+
+        width: 90%;
+        margin-left: 0;
+        border-radius: 10px;
+        height: 468px;
+
+    }
+
+    #seeker-signup {
+        margin-left: 0;
+    }
+
+    #grow {
+
+        font-size: 13px;
+        padding-top: 28px;
+
+    }
+
+    .labels {
+
+        font-size: 12px;
+        margin-top: 8px;
+
+    }
+
+    #frm {
+        margin-top: 10px;
+    }
+
+    .inputs-half { width: 95%; }
+
+    #frm-subdiv div:nth-child(2) input {
+        margin-top: 30px;
+    }
+
+    #frm-subdiv div:nth-child(2) p {
+
+        font-size: 11px;
+        margin-top: 40px;
+        margin-left: 3px;
+
+    }
+
+
+    #frm-subdiv {
+        justify-content: space-between;
+    }
+
+    #frm-subdiv div:nth-child(1) {
+        width: 60%;
+    }
+
+    #frm-subdiv div:nth-child(2) {
+        width: 30%;
+    }
+
+    #accepting { font-size: 7.9px; }
+
+    .sign-btn { 
+        
+        padding: 8px 20px;
+        margin-left: 36%;
+        font-size: 11px;
+    
+    }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    /* SMALL DEVICES */
+
+    #left-content {
+        display: none;
+    }
+    #right {
+
+        width: 85%;
+        display: grid;
+        place-items: center;
+
+    }
+    #right-content {
+
+        width: 90%;
+        border-radius: 10px;
+        margin-left: 0;
+
+    }
+    .sign-btn { 
+        
+        
+        margin-left: 34%;
+        font-size: 11px;
+    
+    }
+
+    
+}
+
+@media (min-width : 992px) and (max-width : 1199px) {
+
+    /* MIDDLE DEVICES */
+    #left-content {
+
+        width: 78%;
+        height: 236px;
+        margin-left: 22%;
+
+    }
+
+    #right-content {
+
+        width: 75%;
+    }
+
+    .sign-btn { 
+        
+        
+        margin-left: 33%;
+    
+    }
+}

@@ -38,7 +38,7 @@
 .menu-divs {
 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     column-gap: 10px;
     margin: 10px;
 

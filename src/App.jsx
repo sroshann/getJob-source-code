@@ -9,6 +9,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "./Context/User";
 import { onAuthStateChanged } from "firebase/auth";
 import { FirebaseAuth } from "./FIrebase/Configueration";
+import Profile from "./Pages/Profile";
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
         <Route element={ <SignupPage/> } path="signup" />
         <Route element={ <SeekerHome/> } path="seekerhome" />
         <Route element={ <EmployerHome/> } path="employerhome" />
+        <Route element={ <Profile /> } path="profile" />
 
       </Routes>
 
