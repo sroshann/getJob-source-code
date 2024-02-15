@@ -1,26 +1,33 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import NavBar from '../Components/NavBar/NavBar'
-import { AuthContext } from '../Context/User'
 import { UDContext } from '../Context/User_details'
+import SeekerProfile from '../Components/SeekerProfile/SeekerProfile'
+import EmployerProfile from '../Components/EmployerProfile/EmployerProfile'
 
 function Profile() {
 
-    const { user } = useContext( AuthContext )
-    const { user_details } = useContext( UDContext )
+  const [ seeker , setSeeker ] = useState( false )
+  const [ employer , setEmployer ] = useState( false )
 
+  const { user_details } = useContext(UDContext)
+
+  useEffect(() => {
+
+    console.log( user_details.user_type )
+    if ( user_details.user_type === 'Seeker' ) setSeeker( true )
+    else setEmployer( true )
+    
+  }, [])
+  
+  
   return (
 
     <div>
-        
-        <NavBar/>
-        <button onClick={ () => { 
-            
-            console.log( user ) 
-            console.log( user_details )
-        
-        } } >Click</button>
-        Profile Page
-        
+
+      <NavBar />
+      { seeker && <SeekerProfile /> }
+      { employer && <EmployerProfile /> }
+
     </div>
 
   )
