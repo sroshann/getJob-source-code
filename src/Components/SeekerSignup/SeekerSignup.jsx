@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './SeekerSignup.css'
 import verified from '../../Images/verified.webp'
 import signupImage from '../../Images/signupimage.png'
