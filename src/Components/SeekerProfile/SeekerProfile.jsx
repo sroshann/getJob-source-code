@@ -33,8 +33,9 @@ function SeekerProfile() {
     const [language_list, setLanguageList] = useState([]) // To store array of languages
 
     const [input_box5, setInputBox5] = useState(false) // To get a new input box
-    const [ certificate_img , setCertificateImg ] = useState() // To store certificate image
-    const [certificate_desc, setCertificateDesc] = useState('') // To store description of a certificate
+    const [certificate, setCertificate] = useState() // To store certificate image
+    const [certificate_name, setCertificateName] = useState('No file has chosen') // Inorder to store the name of file while uploading
+    const [certificate_title, setCertificateTitle] = useState('') // To store title of a certificate
     const [certificate_list, setCertificateList] = useState([]) // To store array of certificate
 
     const [resume_name, setResumeName] = useState('')
@@ -83,10 +84,12 @@ function SeekerProfile() {
             setLanguageList([...language_list, { id: Date.now(), text: language }])
             setLanguages('')
 
-        } else if ( section === 'certificates' ) {
+        } else if (section === 'certificates') {
 
-            setCertificateList([...certificate_list , { id: Date.now() , image : certificate_img , text : certificate_desc  }])
-            setCertificateDesc('')
+            setCertificateList([...certificate_list, { id: Date.now(), preview: certificate, text: certificate_title }])
+            setCertificate( null )
+            setCertificateTitle('')
+            setCertificateName('No file has chosen')
 
         }
 
@@ -134,14 +137,14 @@ function SeekerProfile() {
 
             }))
 
-        } else if ( section === 'certificates' ) {
+        } else if (section === 'certificates') {
 
-            setCertificateList( certificate_list.filter( selected => {
+            setCertificateList(certificate_list.filter(selected => {
 
-                if ( selected.id === value ) selected = null
+                if (selected.id === value) selected = null
                 return selected
 
-            } ) )
+            }))
 
         }
 
@@ -170,8 +173,6 @@ function SeekerProfile() {
         decodeName()
 
     }, [])
-
-
 
     return (
 
@@ -422,32 +423,62 @@ function SeekerProfile() {
                         {edit && <i onClick={() => setInputBox5(true)} class='bx bx-plus plus-btn'></i>}
                         {input_box5 &&
 
-                            <div style={{ display: 'grid' , rowGap: '10px' }}>
+                            <div style={{ display: 'grid', rowGap: '7px', marginTop: '5px' }}>
 
-                                <input type="file" name="" id="choode_certificate"
-                                onChange={ ( event ) => setCertificateImg( event.target.files[0] ) } />
-                                <textarea className='text-area' style={ { marginBottom: '10px' } } name="" id="" value={certificate_desc}
-                                    placeholder='Add description about the certificate'
-                                    onChange={(event) => setCertificateDesc(event.target.value)} ></textarea>
+                                <div style={{ display: 'flex' }} >
+
+                                    <button id='choose_certificate-btn'
+                                        onClick={() => document.querySelector("#choose_certificate").click()}>
+
+                                        <input type="file" name="" id="choose_certificate"
+                                            onChange={
+
+                                                (event) => {
+
+                                                    setCertificate(event.target.files[0])
+                                                    setCertificateName(event.target.files[0].name)
+
+                                                }
+
+                                            } hidden />
+                                        Choose certificate
+
+                                    </button>
+                                    <p style={{ width: 'fit-content', height: 'fit-content' , margin: '8.5px 0px 0px 10px' }}>
+                                        {certificate_name}</p>
+
+                                </div>
+                                <input type="text" className="text-area" style={{ marginBottom: '15px' }} value={certificate_title} 
+                                    placeholder='Add title of certificate'
+                                    onChange={(event) => setCertificateTitle(event.target.value)} />
 
                             </div>
 
                         }
-                        {
+                        <div id="certificate_listings">
+                            {
 
-                            certificate_list.map( ( objects , index ) => (
+                                certificate_list.map((objects, index) => (
 
-                                <div className='objects'>
+                                    <div className='objects'>
 
-                                    { objects.image ? <img src={URL.createObjectURL(objects.image)} alt="" /> : ''}
-                                    <p style={{ wordBreak: 'break-all' }}>{ objects.text }</p>
-                                    { input_box5 && <i class='bx bx-x' onClick={() => deleteItem('certificates', objects.id)}></i>}
+                                        {objects.preview ?
 
-                                </div>
+                                            <button id='certificate-listing-btn' onClick={() => {
 
-                            ) )
+                                                window.open(URL.createObjectURL(objects.preview), '_blank')
 
-                        }
+                                            }} >{objects.text}</button> : ''
+
+                                        }
+                                        {input_box5 && <i class='bx bx-x' onClick={() => deleteItem('certificates', objects.id)}></i>}
+
+                                    </div>
+
+                                ))
+
+                            }
+                        </div>
                         {input_box5 &&
 
                             <div id="certificate-btns">
@@ -554,7 +585,7 @@ function SeekerProfile() {
 
                         <p className="heading">Attatchments</p>
                         <button id='attatchment-btns' >
-                            <a rel='noreferrer' href={user_details.url} target='_blank'>{resume_name}</a>
+                            <a rel='noreferrer' target='_blank' href={user_details.url}>{resume_name}</a>
                         </button>
 
                     </div>

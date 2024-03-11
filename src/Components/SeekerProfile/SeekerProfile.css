@@ -95,17 +95,26 @@ a { text-decoration: none; color: black; }
     margin-left: 68px;
 
 }
-#choode_certificate::before {
 
-    content: 'Choose certificate';
-    margin-left: 0px;
+#choose_certificate-btn {
+
+    height: 36px;
+    width: 150px;
     background-color: #0149AB;
+    border: 0;
+    color: white;
     border: solid 2px #0149AB;
     border-radius: 3px;
-    display: block;
-    padding: 10px 10px;
-    width: fit-content;
-    color: white;
+    font-family: poppins;
+    cursor: pointer;
+    transition: all 0.3s;
+
+}
+#choose_certificate-btn:hover {
+
+    border: solid 2px #0149AB;
+    background-color: #0090ff69;
+    color: #0149AB;
 
 }
 
@@ -217,6 +226,15 @@ a { text-decoration: none; color: black; }
 #languages p ,
 #attatchments p { font-size: smaller; }
 
+#certificates { display: grid; }
+#certificates .objects { 
+    
+    float: left;
+    margin: 7px 6px 0px 0px; 
+
+}
+#certificates .objects i { margin-left: 5px; }
+
 #educational-qualifications input { width: auto; }
 
 #summary {
@@ -229,7 +247,7 @@ a { text-decoration: none; color: black; }
 }
 #summary p { word-break: break-all; } /* Inorder to avoid breking style when rendering dynamic values */
 
-#attatchment-btns {
+#attatchment-btns , #certificate-listing-btn {
 
     padding: 6px 15px;
     background-color: #ffe0e0;
@@ -239,7 +257,7 @@ a { text-decoration: none; color: black; }
     font-family: Poppins;
 
 }
-#attatchment-btns:hover {
+#attatchment-btns:hover , #certificate-listing-btn:hover {
 
     background-color: red;
     border: 0;
@@ -249,10 +267,10 @@ a { text-decoration: none; color: black; }
     border: solid 2px red;
 
 }
-#attatchment-btns:not(:hover) { transition: 0.3s; }
+#attatchment-btns:not(:hover) , #certificate-listing-btn:not(:hover) { transition: 0.3s; }
 
-#attatchment-btns a { color: red; }
-#attatchment-btns:hover a { color: white; }
+#attatchment-btns a , #certificate-listing-btn a { color: red; }
+#attatchment-btns:hover a , #certificate-listing-btn:hover a { color: white; }
 
 
 .yellow {
@@ -334,7 +352,8 @@ a { text-decoration: none; color: black; }
     justify-content: space-between;
     position: relative;
     left: 875px;
-    
+    bottom: -7px;
+
 }
 
 .done-btn {
@@ -387,3 +406,4 @@ a { text-decoration: none; color: black; }
 .bx-check:not(:hover) , .bx-x:not(:hover) { transition: 0.2s; }
 .bx-x { color: red; }
 .bx-x:hover { background-color: #ffe0e0; }
+
