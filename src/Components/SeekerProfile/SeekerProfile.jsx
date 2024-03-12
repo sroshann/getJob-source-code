@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react'
 import './SeekerProfile.css'
 import { UDContext } from '../../Context/User_details'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { FirebaseStorage } from '../../FIrebase/Configueration'
 
 function SeekerProfile() {
 
@@ -44,7 +46,7 @@ function SeekerProfile() {
     const { user_details } = useContext(UDContext); // This is the context in which the detials of user is stored
 
     const enableEdit = () => { setEdit(true) }
-    const saveChanges = () => {
+    const saveChanges = async () => {
 
         setEdit(false)
         setInputBox1(false)
@@ -52,6 +54,27 @@ function SeekerProfile() {
         setInputBox3(false)
         setInputBox4(false)
         setInputBox5(false)
+
+        try{
+
+            for ( let certificate of certificate_list ) {
+
+                const certificateRef = ref( FirebaseStorage , `Certificates/${ user_details.username }/${ certificate.text }` )
+                await uploadBytes( certificateRef , certificate.preview ).then( 
+                    
+                    ( response ) => {
+
+                        getDownloadURL( response.ref ).then( async ( url ) => console.log( url ) )
+                        .catch( ( error ) => console.log( error.message , 'Error with url' ) )
+
+                    }
+                 
+                )
+                .catch( ( error ) => console.log( error.message , 'Error with upload bytes' ) )
+
+            }
+
+        } catch ( error ) { console.log( error.message ) }
 
     }
 
@@ -159,7 +182,7 @@ function SeekerProfile() {
             const final = decodeURIComponent(fileName);
             const name = final.split('Resumes/')
             const originalName = name[name.length - 1]
-            console.log(originalName);
+            // console.log(originalName);
             setResumeName(originalName)
         } catch (error) {
             console.error('Error decoding file name:', error);
