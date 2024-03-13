@@ -14,6 +14,7 @@ function SeekerProfile() {
     const [experience, setExperience] = useState('')
     const [summary, setSummary] = useState('')
     const [image, setImage] = useState()
+    const [ image_URL , setImageURL ] = useState() // To store the URL of image
 
     const [input_box1, setInputBox1] = useState(false) // To get a new input box
     const [education, setEducation] = useState('') // To store educational qualifaication from input box 
@@ -39,6 +40,7 @@ function SeekerProfile() {
     const [certificate_name, setCertificateName] = useState('No file has chosen') // Inorder to store the name of file while uploading
     const [certificate_title, setCertificateTitle] = useState('') // To store title of a certificate
     const [certificate_list, setCertificateList] = useState([]) // To store array of certificate
+    const [ certificate_url_list , setCertificateURLList ] = useState([]) //To store the array of uploaded document url
 
     const [resume_name, setResumeName] = useState('')
 
@@ -57,24 +59,51 @@ function SeekerProfile() {
 
         try{
 
-            for ( let certificate of certificate_list ) {
+            if ( certificate_url_list ) {
 
-                const certificateRef = ref( FirebaseStorage , `Certificates/${ user_details.username }/${ certificate.text }` )
-                await uploadBytes( certificateRef , certificate.preview ).then( 
-                    
-                    ( response ) => {
+                for ( let certificate of certificate_list ) { // This will upload the all certificates to firebase storage
 
-                        getDownloadURL( response.ref ).then( async ( url ) => console.log( url ) )
-                        .catch( ( error ) => console.log( error.message , 'Error with url' ) )
-
-                    }
-                 
-                )
-                .catch( ( error ) => console.log( error.message , 'Error with upload bytes' ) )
+                    const certificateRef = ref( FirebaseStorage , `Certificates/${ user_details.username }/${ certificate.text }` )
+                    await uploadBytes( certificateRef , certificate.preview ).then( 
+                        
+                        ( response ) => {
+    
+                            getDownloadURL( response.ref ).then( ( url ) => {
+                                
+                                setCertificateURLList((prevUrls) => [...prevUrls, url])
+                                // console.log( url )
+                            
+                            } )
+                            .catch( ( error ) => console.log( error.message , 'Error with certificate URL' ) )
+    
+                        }
+                     
+                    )
+                    .catch( ( error ) => console.log( error.message , 'Error with upload bytes' ) )
+    
+                }
 
             }
 
+            if ( image ) { // This will upload the profile picture to firebase storage
+
+                const dpRef = ref( FirebaseStorage , 
+                    `Profile pictures/${ user_details.user_type }/${ user_details.username }/${ image.name }` )
+                await uploadBytes( dpRef , image ).then( ( response ) => {
+        
+                    getDownloadURL( response.ref ).then( ( url ) => {
+        
+                        setImageURL( url )
+                        // console.log( url )
+        
+                    } ).catch( ( error ) => console.log( error.message , 'Error with image URL' ) )
+        
+                } )
+    
+            }
+
         } catch ( error ) { console.log( error.message ) }
+
 
     }
 
@@ -330,7 +359,7 @@ function SeekerProfile() {
                     <div id="summary">
 
                         {
-
+                        
                             edit ? <textarea className='text-area' value={summary}
                                 onChange={(event) => setSummary(event.target.value)}
                                 style={{ marginBottom: '-15px' }} placeholder='Tell us about yourself'></textarea> :
