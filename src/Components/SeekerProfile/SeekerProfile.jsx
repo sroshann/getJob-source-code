@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from 'react'
 import './SeekerProfile.css'
 import { UDContext } from '../../Context/User_details'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-import { FirebaseStorage } from '../../FIrebase/Configueration'
+import { FirebaseFirestore, FirebaseStorage } from '../../FIrebase/Configueration'
+import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 
 function SeekerProfile() {
 
@@ -14,7 +15,7 @@ function SeekerProfile() {
     const [experience, setExperience] = useState('')
     const [summary, setSummary] = useState('')
     const [image, setImage] = useState()
-    const [ image_URL , setImageURL ] = useState() // To store the URL of image
+    const [image_URL, setImageURL] = useState() // To store the URL of image
 
     const [input_box1, setInputBox1] = useState(false) // To get a new input box
     const [education, setEducation] = useState('') // To store educational qualifaication from input box 
@@ -40,7 +41,7 @@ function SeekerProfile() {
     const [certificate_name, setCertificateName] = useState('No file has chosen') // Inorder to store the name of file while uploading
     const [certificate_title, setCertificateTitle] = useState('') // To store title of a certificate
     const [certificate_list, setCertificateList] = useState([]) // To store array of certificate
-    const [ certificate_url_list , setCertificateURLList ] = useState([]) //To store the array of uploaded document url
+    const [certificate_url_list, setCertificateURLList] = useState([]) //To store the array of uploaded document url
 
     const [resume_name, setResumeName] = useState('')
 
@@ -57,53 +58,79 @@ function SeekerProfile() {
         setInputBox4(false)
         setInputBox5(false)
 
-        try{
+        try {
 
-            if ( certificate_url_list ) {
+            if (certificate_url_list) {
 
-                for ( let certificate of certificate_list ) { // This will upload the all certificates to firebase storage
+                for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
 
-                    const certificateRef = ref( FirebaseStorage , `Certificates/${ user_details.username }/${ certificate.text }` )
-                    await uploadBytes( certificateRef , certificate.preview ).then( 
-                        
-                        ( response ) => {
-    
-                            getDownloadURL( response.ref ).then( ( url ) => {
-                                
+                    const certificateRef = ref(FirebaseStorage, `Certificates/${user_details.username}/${certificate.text}`)
+                    await uploadBytes(certificateRef, certificate.preview).then(
+
+                        (response) => {
+
+                            getDownloadURL(response.ref).then((url) => {
+
                                 setCertificateURLList((prevUrls) => [...prevUrls, url])
-                                // console.log( url )
-                            
-                            } )
-                            .catch( ( error ) => console.log( error.message , 'Error with certificate URL' ) )
-    
+                                console.log(url)
+
+                            })
+                                .catch((error) => console.log(error.message, 'Error with certificate URL'))
+
                         }
-                     
+
                     )
-                    .catch( ( error ) => console.log( error.message , 'Error with upload bytes' ) )
-    
+                        .catch((error) => console.log(error.message, 'Error with upload bytes'))
+
                 }
 
             }
 
-            if ( image ) { // This will upload the profile picture to firebase storage
+            if (image) { // This will upload the profile picture to firebase storage
 
-                const dpRef = ref( FirebaseStorage , 
-                    `Profile pictures/${ user_details.user_type }/${ user_details.username }/${ image.name }` )
-                await uploadBytes( dpRef , image ).then( ( response ) => {
-        
-                    getDownloadURL( response.ref ).then( ( url ) => {
-        
-                        setImageURL( url )
-                        // console.log( url )
-        
-                    } ).catch( ( error ) => console.log( error.message , 'Error with image URL' ) )
-        
-                } )
-    
+                const dpRef = ref(FirebaseStorage,
+                    `Profile pictures/${user_details.user_type}/${user_details.username}/${image.name}`)
+                await uploadBytes(dpRef, image).then((response) => {
+
+                    getDownloadURL(response.ref).then((url) => {
+
+                        setImageURL(url)
+                        console.log(url)
+
+                    }).catch((error) => console.log(error.message, 'Error with image URL'))
+
+                })
+
             }
 
-        } catch ( error ) { console.log( error.message ) }
+            const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
+            const condition = where('email', '==', user_details.email) // Providing the condition for selecting the user
+            const selected_user = query(user_ref, condition) // Selects the user from the total collection
 
+            await getDocs( selected_user ).then( async ( user_document ) => { // This code will upload the data to firebase firestore
+
+                const userDocRef = user_document.docs[0].ref
+                await updateDoc( userDocRef , {
+
+                    username: new_username,
+                    phone_number: new_phonenumber,
+                    location: location,
+                    age: age,
+                    experience: experience,
+                    summary: summary,
+                    profile_picture: image_URL,
+                    educational_qualification: edu_list,
+                    skills: skill_list,
+                    projects: project_list,
+                    languages_known: language_list,
+                    certificates: certificate_url_list
+    
+                }).then(alert('Profile is updated'))
+                .catch((error) => alert(error.message, 'Data are not updated'))
+
+            } ).catch( ( error ) => console.log( error.message , 'Error with getdocs' ) )
+
+        } catch (error) { console.log(error.message) }
 
     }
 
@@ -139,7 +166,7 @@ function SeekerProfile() {
         } else if (section === 'certificates') {
 
             setCertificateList([...certificate_list, { id: Date.now(), preview: certificate, text: certificate_title }])
-            setCertificate( null )
+            setCertificate(null)
             setCertificateTitle('')
             setCertificateName('No file has chosen')
 
@@ -359,7 +386,7 @@ function SeekerProfile() {
                     <div id="summary">
 
                         {
-                        
+
                             edit ? <textarea className='text-area' value={summary}
                                 onChange={(event) => setSummary(event.target.value)}
                                 style={{ marginBottom: '-15px' }} placeholder='Tell us about yourself'></textarea> :
@@ -496,11 +523,11 @@ function SeekerProfile() {
                                         Choose certificate
 
                                     </button>
-                                    <p style={{ width: 'fit-content', height: 'fit-content' , margin: '8.5px 0px 0px 10px' }}>
+                                    <p style={{ width: 'fit-content', height: 'fit-content', margin: '8.5px 0px 0px 10px' }}>
                                         {certificate_name}</p>
 
                                 </div>
-                                <input type="text" className="text-area" style={{ marginBottom: '15px' }} value={certificate_title} 
+                                <input type="text" className="text-area" style={{ marginBottom: '15px' }} value={certificate_title}
                                     placeholder='Add title of certificate'
                                     onChange={(event) => setCertificateTitle(event.target.value)} />
 
