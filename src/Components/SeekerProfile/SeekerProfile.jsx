@@ -47,6 +47,8 @@ function SeekerProfile() {
 
 
     const { user_details } = useContext(UDContext); // This is the context in which the detials of user is stored
+    const { setUserDetails } = useContext(UDContext)
+
 
     const enableEdit = () => { setEdit(true) }
     const saveChanges = async () => {
@@ -71,8 +73,13 @@ function SeekerProfile() {
 
                             getDownloadURL(response.ref).then((url) => {
 
-                                setCertificateURLList((prevUrls) => [...prevUrls, url])
                                 console.log(url)
+                                setCertificateURLList((prevUrls) => [
+                                    ...prevUrls,
+                                    { url: url, text: certificate.text },
+                                ]);
+            
+
 
                             })
                                 .catch((error) => console.log(error.message, 'Error with certificate URL'))
@@ -92,10 +99,11 @@ function SeekerProfile() {
                     `Profile pictures/${user_details.user_type}/${user_details.username}/${image.name}`)
                 await uploadBytes(dpRef, image).then((response) => {
 
-                    getDownloadURL(response.ref).then((url) => {
+                    getDownloadURL(response.ref).then(async (url) => {
 
-                        setImageURL(url)
                         console.log(url)
+                        await setImageURL(url)
+
 
                     }).catch((error) => console.log(error.message, 'Error with image URL'))
 
@@ -107,10 +115,10 @@ function SeekerProfile() {
             const condition = where('email', '==', user_details.email) // Providing the condition for selecting the user
             const selected_user = query(user_ref, condition) // Selects the user from the total collection
 
-            await getDocs( selected_user ).then( async ( user_document ) => { // This code will upload the data to firebase firestore
+            await getDocs(selected_user).then(async (user_document) => { // This code will upload the data to firebase firestore
 
                 const userDocRef = user_document.docs[0].ref
-                await updateDoc( userDocRef , {
+                await updateDoc(userDocRef, {
 
                     username: new_username,
                     phone_number: new_phonenumber,
@@ -123,14 +131,38 @@ function SeekerProfile() {
                     skills: skill_list,
                     projects: project_list,
                     languages_known: language_list,
-                    certificates: certificate_url_list
-    
-                }).then(alert('Profile is updated'))
-                .catch((error) => alert(error.message, 'Data are not updated'))
+                    certificates: certificate_url_list,
+                    job_applied: 0,
+                    job_saved: 0,
+                    profile_views: 0,
 
-            } ).catch( ( error ) => console.log( error.message , 'Error with getdocs' ) )
+
+                }).then(alert('Profile is updated'))
+                    .catch((error) => alert(error.message, 'Data are not updated'))
+
+            }).catch((error) => console.log(error.message, 'Error with getdocs'))
 
         } catch (error) { console.log(error.message) }
+
+    }
+
+
+    const getUserData = async () => { // This function in used to fetch the user data after updating profile
+
+        const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
+        const condition = where('email', '==', user_details.email) // Providing the condition for selecting the user
+        const selected_user = query(user_ref, condition) // Selects the user from the total collection
+
+        await getDocs(selected_user).then((user_data) => {
+
+            user_data.forEach(doc => {
+
+                console.log(doc.data())
+                setUserDetails(doc.data()) // The each fields of data are stored into user details context
+
+            })
+
+        })
 
     }
 
@@ -250,6 +282,7 @@ function SeekerProfile() {
     useEffect(() => {
 
         decodeName()
+        getUserData()
 
     }, [])
 
@@ -265,8 +298,14 @@ function SeekerProfile() {
 
                         <div>
 
-                            {image ? <img src={URL.createObjectURL(image)} alt="DP" id='dp' /> :
-                                <i className='bx bxs-user-circle profile-photo' ></i>}
+                            {
+                                user_details.profile_picture ? <img src={user_details.profile_picture}
+                                    className='dp' alt="DP" /> :
+                                    image ? <img src={URL.createObjectURL(image)} alt="DP" className='dp' /> :
+                                        <i className='bx bxs-user-circle profile-photo' ></i>
+
+                            }
+
                             {edit && <input type="file" name="" id="change-dp"
                                 onChange={(event) => setImage(event.target.files[0])} />}
                             {
@@ -306,10 +345,13 @@ function SeekerProfile() {
                                     {
 
                                         edit ? <input className='inp-bx' type="text" value={location}
-                                            onChange={(event) => setLocation(event.target.value)} placeholder='Enter your location' /> :
-                                            <p className='sub-heading'>ADD</p>
+                                            onChange={(event) => setLocation(event.target.value)}
+                                            placeholder={user_details.location ? user_details.location : 'Add your location'} /> :
+                                            <p className='sub-heading' style={user_details.location ? {} : { color: 'grey' }}>
+                                                {user_details.location ? user_details.location : 'Add your location'}</p>
 
                                     }
+
 
                                 </section>
                                 <section>
@@ -318,10 +360,13 @@ function SeekerProfile() {
                                     {
 
                                         edit ? <input className='inp-bx' type="number" value={age}
-                                            onChange={(event) => setAge(event.target.value)} placeholder='Enter your age' /> :
-                                            <p className='sub-heading'>0</p>
+                                            onChange={(event) => setAge(event.target.value)}
+                                            placeholder={user_details.age ? user_details.age : 'Add your age'} /> :
+                                            <p className='sub-heading' style={user_details.age ? {} : { color: 'grey' }}>
+                                                {user_details.age ? user_details.age : 'Add your age'}</p>
 
                                     }
+
 
                                 </section>
 
@@ -335,10 +380,13 @@ function SeekerProfile() {
 
                                         edit ? <input className='inp-bx' type="text" value={experience}
                                             onChange={(event) => setExperience(event.target.value)}
-                                            placeholder='Enter your experience' /> :
-                                            <p className='sub-heading'>ADD</p>
+                                            placeholder={user_details.experience ? user_details.experience
+                                                : 'Add your experience'} /> :
+                                            <p className='sub-heading' style={user_details.experience ? {} : { color: 'grey' }}>
+                                                {user_details.experience ? user_details.experience : 'Add your experience'}</p>
 
                                     }
+
 
                                 </section>
                                 <section id='margin-left'>
@@ -358,19 +406,23 @@ function SeekerProfile() {
                             <section>
 
                                 <p className='heading'>Job applied</p>
-                                <p className='sub-heading margin-left'>0</p>
+                                <p className='sub-heading margin-left'>
+                                    {user_details.job_applied ? user_details.job_applied : '0'}</p>
 
                             </section>
                             <section>
 
                                 <p className='heading'>Job saved</p>
-                                <p className='sub-heading margin-left'>0</p>
+                                <p className='sub-heading margin-left'>
+                                    {user_details.job_saved ? user_details.job_saved : '0'}</p>
+
 
                             </section>
                             <section>
 
                                 <p className='heading'>Profile views</p>
-                                <p className='sub-heading margin-left'>0</p>
+                                <p className='sub-heading margin-left'>
+                                    {user_details.profile_views ? user_details.profile_views : '0'}</p>
 
                             </section>
 
@@ -389,10 +441,17 @@ function SeekerProfile() {
 
                             edit ? <textarea className='text-area' value={summary}
                                 onChange={(event) => setSummary(event.target.value)}
-                                style={{ marginBottom: '-15px' }} placeholder='Tell us about yourself'></textarea> :
-                                <p className='sub-heading' style={summary === '' ? { color: 'grey' } : {}} >
-                                    {summary === '' ? 'Add a profile summary' : summary}
+                                style={{ marginBottom: '-15px' }}
+                                placeholder={user_details.summary ? user_details.summary : 'Tell us about yourself'}></textarea> :
+                                <p className='sub-heading' style={user_details.summary ? { color: 'black' } :
+                                    summary === '' ? { color: 'grey' } : {}} >
+                                    {
+                                        user_details.summary ? user_details.summary :
+                                            summary === '' ? 'Add a profile summary' : summary
+
+                                    }
                                 </p>
+
 
                         }
 
@@ -431,17 +490,33 @@ function SeekerProfile() {
                         }
                         {
 
-                            edu_list.map((objects, index) => (
+                            (user_details.educational_qualification !== undefined &&
+                                user_details.educational_qualification.length > 0) ?
 
-                                <div className='objects'>
-                                    <div>
-                                        <p>{objects.text}</p>
-                                        <p>{objects.institution}</p>
+                                user_details.educational_qualification.map((objects, index) => (
+
+                                    <div className='objects' key={index}>
+                                        <div>
+                                            <p>{objects.text}</p>
+                                            <p>{objects.institution}</p>
+                                        </div>
+                                        {input_box1 && <i class='bx bx-x' onClick={() => deleteItem('education', objects.id)}></i>}
                                     </div>
-                                    {input_box1 && <i class='bx bx-x' onClick={() => deleteItem('education', objects.id)}></i>}
-                                </div>
 
-                            ))
+                                ))
+
+                                :
+                                edu_list.map((objects, index) => (
+
+                                    <div className='objects' key={index}>
+                                        <div>
+                                            <p>{objects.text}</p>
+                                            <p>{objects.institution}</p>
+                                        </div>
+                                        {input_box1 && <i class='bx bx-x' onClick={() => deleteItem('education', objects.id)}></i>}
+                                    </div>
+
+                                ))
 
                             // This is used to remove educational qualification during editing 
                             // The x button is visible only when it is editable
@@ -478,14 +553,27 @@ function SeekerProfile() {
                         }
                         {
 
-                            skill_list.map((objects, index) => (
+                            (user_details.skills !== undefined && user_details.skills.length > 0) ?
 
-                                <div className='objects'>
-                                    <p>{objects.text}</p>
-                                    {input_box2 && <i class='bx bx-x' onClick={() => deleteItem('skill', objects.id)}></i>}
-                                </div>
+                                user_details.skills.map((objects, index) => (
 
-                            ))
+                                    <div className='objects' key={index}>
+                                        <p >{objects.text}</p>
+                                        {input_box2 && <i class='bx bx-x' onClick={() => deleteItem('skill', objects.id)}></i>}
+                                    </div>
+
+                                ))
+
+                                :
+
+                                skill_list.map((objects, index) => (
+
+                                    <div className='objects' key={index}>
+                                        <p>{objects.text}</p>
+                                        {input_box2 && <i class='bx bx-x' onClick={() => deleteItem('skill', objects.id)}></i>}
+                                    </div>
+
+                                ))
 
                         }
 
@@ -537,24 +625,43 @@ function SeekerProfile() {
                         <div id="certificate_listings">
                             {
 
-                                certificate_list.map((objects, index) => (
+                                (user_details.certificates !== undefined && user_details.certificates.length > 0) ?
 
-                                    <div className='objects'>
+                                    user_details.certificates.map((objects, index) => (
 
-                                        {objects.preview ?
+                                        <div className='objects' key={index}>
 
-                                            <button id='certificate-listing-btn' onClick={() => {
+                                            <button className='certificate-listing-btn' onClick={() => {
 
-                                                window.open(URL.createObjectURL(objects.preview), '_blank')
+                                                window.open(objects.url, '_blank')
 
-                                            }} >{objects.text}</button> : ''
+                                            }} >{objects.text}</button>
+                                            {input_box5 && <i class='bx bx-x'
+                                                onClick={() => deleteItem('certificates', objects.id)}></i>}
 
-                                        }
-                                        {input_box5 && <i class='bx bx-x' onClick={() => deleteItem('certificates', objects.id)}></i>}
+                                        </div>
 
-                                    </div>
+                                    ))
 
-                                ))
+                                    :
+                                    certificate_list.map((objects, index) => (
+
+                                        <div className='objects' key={index}>
+
+                                            {objects.preview ?
+
+                                                <button className='certificate-listing-btn' onClick={() => {
+
+                                                    window.open(URL.createObjectURL(objects.preview), '_blank')
+
+                                                }} >{objects.text}</button> : ''
+
+                                            }
+                                            {input_box5 && <i class='bx bx-x' onClick={() => deleteItem('certificates', objects.id)}></i>}
+
+                                        </div>
+
+                                    ))
 
                             }
                         </div>
@@ -594,20 +701,38 @@ function SeekerProfile() {
                         }
                         {
 
-                            project_list.map((objects, index) => (
+                            (user_details.projects !== undefined && user_details.projects.length > 0) ?
 
-                                <div className='objects'>
-                                    <div>
-                                        <p>{objects.text}</p>
-                                        <p style={{ wordBreak: 'break-all' }}>{objects.description}</p>
-                                        <a rel='noreferrer' target='_blank' href={objects.hosted_url}>
-                                            <p style={{ color: 'grey', cursor: 'pointer' }}>{objects.hosted_url}</p>
-                                        </a>
+                                user_details.projects.map((objects, index) => (
+
+                                    <div className='objects' key={index}>
+                                        <div>
+                                            <p>{objects.text}</p>
+                                            <p style={{ wordBreak: 'break-all' }}>{objects.description}</p>
+                                            <a rel='noreferrer' target='_blank' href={objects.hosted_url}>
+                                                <p style={{ color: 'grey', cursor: 'pointer' }}>{objects.hosted_url}</p>
+                                            </a>
+                                        </div>
+                                        {input_box3 && <i class='bx bx-x' onClick={() => deleteItem('project', objects.id)}></i>}
                                     </div>
-                                    {input_box3 && <i class='bx bx-x' onClick={() => deleteItem('project', objects.id)}></i>}
-                                </div>
 
-                            ))
+                                ))
+
+                                :
+                                project_list.map((objects, index) => (
+
+                                    <div className='objects' key={index}>
+                                        <div>
+                                            <p>{objects.text}</p>
+                                            <p style={{ wordBreak: 'break-all' }}>{objects.description}</p>
+                                            <a rel='noreferrer' target='_blank' href={objects.hosted_url}>
+                                                <p style={{ color: 'grey', cursor: 'pointer' }}>{objects.hosted_url}</p>
+                                            </a>
+                                        </div>
+                                        {input_box3 && <i class='bx bx-x' onClick={() => deleteItem('project', objects.id)}></i>}
+                                    </div>
+
+                                ))
 
                         }
 
@@ -642,9 +767,22 @@ function SeekerProfile() {
                         }
                         {
 
+                            (user_details.languages_known !== undefined && user_details.languages_known.length > 0) ?
+
+                                user_details.languages_known.map((objects, index) => (
+
+                                    <div className='objects' key={index}>
+                                        <p>{objects.text}</p>
+                                        {input_box4 && <i class='bx bx-x' onClick={() => deleteItem('language', objects.id)}></i>}
+                                    </div>
+
+                                ))
+
+                            :
+
                             language_list.map((objects, index) => (
 
-                                <div className='objects'>
+                                <div className='objects' key={index}>
                                     <p>{objects.text}</p>
                                     {input_box4 && <i class='bx bx-x' onClick={() => deleteItem('language', objects.id)}></i>}
                                 </div>

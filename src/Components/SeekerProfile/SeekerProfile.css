@@ -118,7 +118,7 @@ a { text-decoration: none; color: black; }
 
 }
 
-#dp {
+.dp {
 
     width: 135px;
     height: 133px;
@@ -247,7 +247,7 @@ a { text-decoration: none; color: black; }
 }
 #summary p { word-break: break-all; } /* Inorder to avoid breking style when rendering dynamic values */
 
-#attatchment-btns , #certificate-listing-btn {
+#attatchment-btns , .certificate-listing-btn {
 
     padding: 6px 15px;
     background-color: #ffe0e0;
@@ -257,7 +257,7 @@ a { text-decoration: none; color: black; }
     font-family: Poppins;
 
 }
-#attatchment-btns:hover , #certificate-listing-btn:hover {
+#attatchment-btns:hover , .certificate-listing-btn:hover {
 
     background-color: red;
     border: 0;
@@ -267,10 +267,10 @@ a { text-decoration: none; color: black; }
     border: solid 2px red;
 
 }
-#attatchment-btns:not(:hover) , #certificate-listing-btn:not(:hover) { transition: 0.3s; }
+#attatchment-btns:not(:hover) , .certificate-listing-btn:not(:hover) { transition: 0.3s; }
 
-#attatchment-btns a , #certificate-listing-btn a { color: red; }
-#attatchment-btns:hover a , #certificate-listing-btn:hover a { color: white; }
+#attatchment-btns a , .certificate-listing-btn a { color: red; }
+#attatchment-btns:hover a , .certificate-listing-btn:hover a { color: white; }
 
 
 .yellow {
