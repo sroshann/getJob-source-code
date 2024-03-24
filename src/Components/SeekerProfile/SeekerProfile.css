@@ -237,7 +237,7 @@ a { text-decoration: none; color: black; }
 
 #educational-qualifications input { width: auto; }
 
-#summary {
+.summary {
 
     width: 96%;
     height: fit-content;
@@ -245,7 +245,7 @@ a { text-decoration: none; color: black; }
     margin-top: 5px;
 
 }
-#summary p { word-break: break-all; } /* Inorder to avoid breking style when rendering dynamic values */
+.summary p { word-break: break-all; } /* Inorder to avoid breking style when rendering dynamic values */
 
 #attatchment-btns , .certificate-listing-btn {
 

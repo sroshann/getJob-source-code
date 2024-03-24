@@ -15,7 +15,7 @@ function SeekerProfile() {
     const [experience, setExperience] = useState('')
     const [summary, setSummary] = useState('')
     const [image, setImage] = useState()
-    const [image_URL, setImageURL] = useState() // To store the URL of image
+    const [image_URL, setImageURL] = useState(null) // To store the URL of image
 
     const [input_box1, setInputBox1] = useState(false) // To get a new input box
     const [education, setEducation] = useState('') // To store educational qualifaication from input box 
@@ -50,7 +50,13 @@ function SeekerProfile() {
     const { setUserDetails } = useContext(UDContext)
 
 
-    const enableEdit = () => { setEdit(true) }
+    const enableEdit = () => { 
+        
+        if ( edit ) setEdit( false )
+        else setEdit(true) 
+    
+    }
+    
     const saveChanges = async () => {
 
         setEdit(false)
@@ -62,54 +68,36 @@ function SeekerProfile() {
 
         try {
 
-            if (certificate_url_list) {
+            if (certificate_list) {
+
+                const store_urls = []
 
                 for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
 
-                    const certificateRef = ref(FirebaseStorage, `Certificates/${user_details.username}/${certificate.text}`)
-                    await uploadBytes(certificateRef, certificate.preview).then(
-
-                        (response) => {
-
-                            getDownloadURL(response.ref).then((url) => {
-
-                                console.log(url)
-                                setCertificateURLList((prevUrls) => [
-                                    ...prevUrls,
-                                    { url: url, text: certificate.text },
-                                ]);
-            
-
-
-                            })
-                                .catch((error) => console.log(error.message, 'Error with certificate URL'))
-
-                        }
-
-                    )
-                        .catch((error) => console.log(error.message, 'Error with upload bytes'))
+                    const certificateRef = ref(FirebaseStorage, `Certificates/${user_details.email}/${certificate.text}`)
+                    const response = await uploadBytes( certificateRef , certificate.preview )
+                    const downloadURL = await getDownloadURL( response.ref )
+                    store_urls.push( { url : downloadURL , text: certificate.text } )
 
                 }
+
+                setCertificateURLList( previous => [ ...previous , ...store_urls ] )
 
             }
 
             if (image) { // This will upload the profile picture to firebase storage
 
                 const dpRef = ref(FirebaseStorage,
-                    `Profile pictures/${user_details.user_type}/${user_details.username}/${image.name}`)
-                await uploadBytes(dpRef, image).then((response) => {
-
-                    getDownloadURL(response.ref).then(async (url) => {
-
-                        console.log(url)
-                        await setImageURL(url)
-
-
-                    }).catch((error) => console.log(error.message, 'Error with image URL'))
-
-                })
+                    `Profile pictures/${user_details.user_type}/${user_details.email}/${image.name}`)
+                
+                const response = await uploadBytes(dpRef, image)
+                const downloadURL = await getDownloadURL( response.ref )
+                setImageURL( downloadURL )
 
             }
+
+            console.log( 'Certificates = ' , certificate_url_list )
+            console.log('Profile picture = ' , image_URL)
 
             const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
             const condition = where('email', '==', user_details.email) // Providing the condition for selecting the user
@@ -435,7 +423,7 @@ function SeekerProfile() {
                 <div id="profile-summary">
 
                     <p className="heading">Profile summary</p>
-                    <div id="summary">
+                    <div className="summary">
 
                         {
 
@@ -456,6 +444,31 @@ function SeekerProfile() {
                         }
 
                     </div>
+
+                </div>
+
+                <div className="summary">
+
+                    { image_URL ? <p>{ image_URL }</p> : '' }
+                    {
+
+                        certificate_url_list ?
+                        
+                            certificate_url_list.map( ( objects , index ) => {
+
+                                <div key={index}>
+
+                                    <p >{ objects.url }</p>
+                                    <p>{ objects.text }</p>
+
+                                </div>
+                                
+
+                            } )
+                        
+                        : ''
+
+                    }
 
                 </div>
 
