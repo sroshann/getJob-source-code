@@ -285,10 +285,17 @@ a { text-decoration: none; color: black; }
 
 }
 
-#save {
+#save-changes {
 
-    left: 896px;
-    bottom: 50px;
+    display: flex;
+    column-gap: 5px;
+    position: relative;
+    left: 750px;
+    bottom: 10px;
+
+}
+.save {
+
     position: relative;
     padding: 13px 20px;
     background-color: #0149AB;
@@ -301,7 +308,7 @@ a { text-decoration: none; color: black; }
 
 }
 
-#save:hover {
+.save:hover {
 
     border: solid 2px #0149AB;
     background-color: #0090ff69;
@@ -309,7 +316,7 @@ a { text-decoration: none; color: black; }
     transition: 0.3s;
 
 }
-#save:not(:hover) { transition: 0.3s; }
+.save:not(:hover) { transition: 0.3s; }
 
 .inp-bx {  
 

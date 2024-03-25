@@ -56,6 +56,41 @@ function SeekerProfile() {
         else setEdit(true) 
     
     }
+
+    const applyChanges = async () => {
+
+        if (certificate_list) {
+
+            const store_urls = []
+
+            for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
+
+                const certificateRef = ref(FirebaseStorage, `Certificates/${user_details.email}/${certificate.text}`)
+                const response = await uploadBytes( certificateRef , certificate.preview )
+                const downloadURL = await getDownloadURL( response.ref )
+                store_urls.push( { url : downloadURL , text: certificate.text } )
+                console.log( downloadURL )
+
+            }
+
+            setCertificateURLList( previous => [ ...previous , ...store_urls ] )
+            console.log(certificate_url_list)
+
+        }
+
+        if (image) { // This will upload the profile picture to firebase storage
+
+            const dpRef = ref(FirebaseStorage,
+                `Profile pictures/${user_details.user_type}/${user_details.email}/${image.name}`)
+            
+            const response = await uploadBytes(dpRef, image)
+            const downloadURL = await getDownloadURL( response.ref )
+            setImageURL( downloadURL )
+            console.log( downloadURL )
+
+        }
+
+    }
     
     const saveChanges = async () => {
 
@@ -67,34 +102,6 @@ function SeekerProfile() {
         setInputBox5(false)
 
         try {
-
-            if (certificate_list) {
-
-                const store_urls = []
-
-                for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
-
-                    const certificateRef = ref(FirebaseStorage, `Certificates/${user_details.email}/${certificate.text}`)
-                    const response = await uploadBytes( certificateRef , certificate.preview )
-                    const downloadURL = await getDownloadURL( response.ref )
-                    store_urls.push( { url : downloadURL , text: certificate.text } )
-
-                }
-
-                setCertificateURLList( previous => [ ...previous , ...store_urls ] )
-
-            }
-
-            if (image) { // This will upload the profile picture to firebase storage
-
-                const dpRef = ref(FirebaseStorage,
-                    `Profile pictures/${user_details.user_type}/${user_details.email}/${image.name}`)
-                
-                const response = await uploadBytes(dpRef, image)
-                const downloadURL = await getDownloadURL( response.ref )
-                setImageURL( downloadURL )
-
-            }
 
             console.log( 'Certificates = ' , certificate_url_list )
             console.log('Profile picture = ' , image_URL)
@@ -447,31 +454,6 @@ function SeekerProfile() {
 
                 </div>
 
-                <div className="summary">
-
-                    { image_URL ? <p>{ image_URL }</p> : '' }
-                    {
-
-                        certificate_url_list ?
-                        
-                            certificate_url_list.map( ( objects , index ) => {
-
-                                <div key={index}>
-
-                                    <p >{ objects.url }</p>
-                                    <p>{ objects.text }</p>
-
-                                </div>
-                                
-
-                            } )
-                        
-                        : ''
-
-                    }
-
-                </div>
-
                 <div id="down-container">
 
                     {/* <p>Profile summary</p>
@@ -820,7 +802,16 @@ function SeekerProfile() {
 
                     </div>
 
-                    {edit && <button id="save" onClick={saveChanges}>Save changes</button>}
+                    {edit && 
+                    
+                        <div id="save-changes">
+
+                            <button className="save" onClick={ applyChanges } >Apply changes</button>
+                            <button className="save" onClick={saveChanges}>Save changes</button>
+
+                        </div>
+                        
+                    }
 
                 </div>
 
