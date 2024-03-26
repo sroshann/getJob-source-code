@@ -4,8 +4,11 @@ import { UDContext } from '../../Context/User_details'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { FirebaseFirestore, FirebaseStorage } from '../../FIrebase/Configueration'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import toast, { Toaster } from 'react-hot-toast'
 
 function SeekerProfile() {
+
+    const [ local_storage_data , setLoaclStorageData] = useState( '' )
 
     const [edit, setEdit] = useState(false)
     const [new_username, setNewUsername] = useState('')
@@ -45,53 +48,58 @@ function SeekerProfile() {
 
     const [resume_name, setResumeName] = useState('')
 
+    const enableEdit = () => {
 
-    const { user_details } = useContext(UDContext); // This is the context in which the detials of user is stored
-    const { setUserDetails } = useContext(UDContext)
+        if (edit) setEdit(false)
+        else setEdit(true)
 
-
-    const enableEdit = () => { 
-        
-        if ( edit ) setEdit( false )
-        else setEdit(true) 
-    
     }
 
     const applyChanges = async () => {
 
-        if (certificate_list) {
+        try {
 
-            const store_urls = []
+            if (certificate_list) {
 
-            for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
+                const store_urls = []
 
-                const certificateRef = ref(FirebaseStorage, `Certificates/${user_details.email}/${certificate.text}`)
-                const response = await uploadBytes( certificateRef , certificate.preview )
-                const downloadURL = await getDownloadURL( response.ref )
-                store_urls.push( { url : downloadURL , text: certificate.text } )
-                console.log( downloadURL )
+                for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
+
+                    const certificateRef = ref(FirebaseStorage, `Certificates/${local_storage_data.email}/${certificate.text}`)
+                    const response = await uploadBytes(certificateRef, certificate.preview)
+                    const downloadURL = await getDownloadURL(response.ref)
+                    store_urls.push({ url: downloadURL, text: certificate.text })
+                    console.log(downloadURL)
+
+                }
+
+                setCertificateURLList(previous => [...previous, ...store_urls])
 
             }
 
-            setCertificateURLList( previous => [ ...previous , ...store_urls ] )
-            console.log(certificate_url_list)
+            if (image) { // This will upload the profile picture to firebase storage
 
-        }
+                const dpRef = ref(FirebaseStorage,
+                    `Profile pictures/${local_storage_data.user_type}/${local_storage_data.email}/${image.name}`)
 
-        if (image) { // This will upload the profile picture to firebase storage
+                const response = await uploadBytes(dpRef, image)
+                const downloadURL = await getDownloadURL(response.ref)
+                setImageURL(downloadURL)
+                console.log(downloadURL)
 
-            const dpRef = ref(FirebaseStorage,
-                `Profile pictures/${user_details.user_type}/${user_details.email}/${image.name}`)
-            
-            const response = await uploadBytes(dpRef, image)
-            const downloadURL = await getDownloadURL( response.ref )
-            setImageURL( downloadURL )
-            console.log( downloadURL )
+            }
 
-        }
+            toast.promise('Profile is updated', {
+
+                loading: 'Saving...',
+                success: <b>Settings saved!</b>,
+
+            })
+
+        } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
 
     }
-    
+
     const saveChanges = async () => {
 
         setEdit(false)
@@ -103,17 +111,14 @@ function SeekerProfile() {
 
         try {
 
-            console.log( 'Certificates = ' , certificate_url_list )
-            console.log('Profile picture = ' , image_URL)
-
             const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
-            const condition = where('email', '==', user_details.email) // Providing the condition for selecting the user
+            const condition = where('email', '==', local_storage_data.email) // Providing the condition for selecting the user
             const selected_user = query(user_ref, condition) // Selects the user from the total collection
 
             await getDocs(selected_user).then(async (user_document) => { // This code will upload the data to firebase firestore
 
                 const userDocRef = user_document.docs[0].ref
-                await updateDoc(userDocRef, {
+                const changing_object = {
 
                     username: new_username,
                     phone_number: new_phonenumber,
@@ -129,39 +134,24 @@ function SeekerProfile() {
                     certificates: certificate_url_list,
                     job_applied: 0,
                     job_saved: 0,
-                    profile_views: 0,
+                    profile_views: 0
 
 
-                }).then(alert('Profile is updated'))
-                    .catch((error) => alert(error.message, 'Data are not updated'))
+                }
+
+                await updateDoc(userDocRef, changing_object )
+                .then( () => {
+
+                    toast.success('Changes applied', { style: { fontSize: '14px' } })
+
+                } )
+                .catch((error) => alert(error.message, 'Data are not updated'))
 
             }).catch((error) => console.log(error.message, 'Error with getdocs'))
 
-        } catch (error) { console.log(error.message) }
+        } catch (error) { toast.error(error.message) }
 
     }
-
-
-    const getUserData = async () => { // This function in used to fetch the user data after updating profile
-
-        const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
-        const condition = where('email', '==', user_details.email) // Providing the condition for selecting the user
-        const selected_user = query(user_ref, condition) // Selects the user from the total collection
-
-        await getDocs(selected_user).then((user_data) => {
-
-            user_data.forEach(doc => {
-
-                console.log(doc.data())
-                setUserDetails(doc.data()) // The each fields of data are stored into user details context
-
-            })
-
-        })
-
-    }
-
-
 
 
     const addItems = (section) => { // This function is to add lists of education to edu_list array
@@ -256,16 +246,15 @@ function SeekerProfile() {
 
     }
 
-    const decodeName = () => { // This function is used to get the filename from the url
+    const decodeName = ( local_url ) => { // This function is used to get the filename from the url
 
         try {
-            const url = new URL(user_details.url);
+            const url = new URL(local_url);
             const pathArray = url.pathname.split('/');
             const fileName = pathArray[pathArray.length - 1];
             const final = decodeURIComponent(fileName);
             const name = final.split('Resumes/')
             const originalName = name[name.length - 1]
-            // console.log(originalName);
             setResumeName(originalName)
         } catch (error) {
             console.error('Error decoding file name:', error);
@@ -276,8 +265,14 @@ function SeekerProfile() {
 
     useEffect(() => {
 
-        decodeName()
-        getUserData()
+        const storedUserData = localStorage.getItem('userData'); // fetching data from localstorage
+        if (storedUserData) {
+
+            const parsedUserData = JSON.parse(storedUserData);
+            setLoaclStorageData( parsedUserData )
+            decodeName( parsedUserData.url )
+
+        }
 
     }, [])
 
@@ -294,7 +289,8 @@ function SeekerProfile() {
                         <div>
 
                             {
-                                user_details.profile_picture ? <img src={user_details.profile_picture}
+
+                                local_storage_data.profile_picture ? <img src={local_storage_data.profile_picture}
                                     className='dp' alt="DP" /> :
                                     image ? <img src={URL.createObjectURL(image)} alt="DP" className='dp' /> :
                                         <i className='bx bxs-user-circle profile-photo' ></i>
@@ -306,8 +302,9 @@ function SeekerProfile() {
                             {
                                 edit ? <input style={{ textAlign: 'center', marginTop: '5px', marginBottom: '5px' }}
                                     className='inp-bx' type="text" value={new_username}
-                                    onChange={(event) => setNewUsername(event.target.value)} placeholder={user_details.username} /> :
-                                    <p id='name' style={edit ? {} : { marginTop: '-8px' }} >{user_details.username}</p>
+                                    onChange={(event) => setNewUsername(event.target.value)} placeholder={local_storage_data.username} /> :
+                                    <p id='name' style={edit ? {} : { marginTop: '-8px' }} >{local_storage_data.username}</p>
+                                // <p id='name' style={edit ? {} : { marginTop: '-8px' }} >{userData ? userData.username : 'MEDDOC USER'}</p>
 
                             }
                             <p id='username'>username</p>
@@ -326,10 +323,11 @@ function SeekerProfile() {
                                     <p className='heading'>Phone</p>
                                     {
 
-                                        edit ? <input className='inp-bx' type="number" value={new_phonenumber}
+                                        edit ? <input className='inp-bx' type="number"
+                                            value={new_phonenumber}
                                             onChange={(event) => setNewPhonenumber(event.target.value)}
-                                            placeholder={user_details.phone_number} /> :
-                                            <p className='sub-heading'>+91{user_details.phone_number}</p>
+                                            placeholder={local_storage_data.phone_number} /> :
+                                            <p className='sub-heading'>{local_storage_data.phone_number}</p>
 
                                     }
 
@@ -341,9 +339,9 @@ function SeekerProfile() {
 
                                         edit ? <input className='inp-bx' type="text" value={location}
                                             onChange={(event) => setLocation(event.target.value)}
-                                            placeholder={user_details.location ? user_details.location : 'Add your location'} /> :
-                                            <p className='sub-heading' style={user_details.location ? {} : { color: 'grey' }}>
-                                                {user_details.location ? user_details.location : 'Add your location'}</p>
+                                            placeholder={local_storage_data.location ? local_storage_data.location : 'Add your location'} /> :
+                                            <p className='sub-heading' style={local_storage_data.location ? {} : { color: 'grey' }}>
+                                                {local_storage_data.location ? local_storage_data.location : 'Add your location'}</p>
 
                                     }
 
@@ -356,9 +354,9 @@ function SeekerProfile() {
 
                                         edit ? <input className='inp-bx' type="number" value={age}
                                             onChange={(event) => setAge(event.target.value)}
-                                            placeholder={user_details.age ? user_details.age : 'Add your age'} /> :
-                                            <p className='sub-heading' style={user_details.age ? {} : { color: 'grey' }}>
-                                                {user_details.age ? user_details.age : 'Add your age'}</p>
+                                            placeholder={local_storage_data.age ? local_storage_data.age : 'Add your age'} /> :
+                                            <p className='sub-heading' style={local_storage_data.age ? {} : { color: 'grey' }}>
+                                                {local_storage_data.age ? local_storage_data.age : 'Add your age'}</p>
 
                                     }
 
@@ -375,10 +373,10 @@ function SeekerProfile() {
 
                                         edit ? <input className='inp-bx' type="text" value={experience}
                                             onChange={(event) => setExperience(event.target.value)}
-                                            placeholder={user_details.experience ? user_details.experience
+                                            placeholder={local_storage_data.experience ? local_storage_data.experience
                                                 : 'Add your experience'} /> :
-                                            <p className='sub-heading' style={user_details.experience ? {} : { color: 'grey' }}>
-                                                {user_details.experience ? user_details.experience : 'Add your experience'}</p>
+                                            <p className='sub-heading' style={local_storage_data.experience ? {} : { color: 'grey' }}>
+                                                {local_storage_data.experience ? local_storage_data.experience : 'Add your experience'}</p>
 
                                     }
 
@@ -387,7 +385,7 @@ function SeekerProfile() {
                                 <section id='margin-left'>
 
                                     <p className='heading'>Email</p>
-                                    <p className='sub-heading'>{user_details.email}</p>
+                                    <p className='sub-heading'>{local_storage_data.email}</p>
 
                                 </section>
 
@@ -402,14 +400,14 @@ function SeekerProfile() {
 
                                 <p className='heading'>Job applied</p>
                                 <p className='sub-heading margin-left'>
-                                    {user_details.job_applied ? user_details.job_applied : '0'}</p>
+                                    {local_storage_data.job_applied ? local_storage_data.job_applied : '0'}</p>
 
                             </section>
                             <section>
 
                                 <p className='heading'>Job saved</p>
                                 <p className='sub-heading margin-left'>
-                                    {user_details.job_saved ? user_details.job_saved : '0'}</p>
+                                    {local_storage_data.job_saved ? local_storage_data.job_saved : '0'}</p>
 
 
                             </section>
@@ -417,7 +415,7 @@ function SeekerProfile() {
 
                                 <p className='heading'>Profile views</p>
                                 <p className='sub-heading margin-left'>
-                                    {user_details.profile_views ? user_details.profile_views : '0'}</p>
+                                    {local_storage_data.profile_views ? local_storage_data.profile_views : '0'}</p>
 
                             </section>
 
@@ -437,11 +435,11 @@ function SeekerProfile() {
                             edit ? <textarea className='text-area' value={summary}
                                 onChange={(event) => setSummary(event.target.value)}
                                 style={{ marginBottom: '-15px' }}
-                                placeholder={user_details.summary ? user_details.summary : 'Tell us about yourself'}></textarea> :
-                                <p className='sub-heading' style={user_details.summary ? { color: 'black' } :
+                                placeholder={local_storage_data.summary ? local_storage_data.summary : 'Tell us about yourself'}></textarea> :
+                                <p className='sub-heading' style={local_storage_data.summary ? { color: 'black' } :
                                     summary === '' ? { color: 'grey' } : {}} >
                                     {
-                                        user_details.summary ? user_details.summary :
+                                        local_storage_data.summary ? local_storage_data.summary :
                                             summary === '' ? 'Add a profile summary' : summary
 
                                     }
@@ -485,10 +483,10 @@ function SeekerProfile() {
                         }
                         {
 
-                            (user_details.educational_qualification !== undefined &&
-                                user_details.educational_qualification.length > 0) ?
+                            (local_storage_data.educational_qualification !== undefined &&
+                                local_storage_data.educational_qualification.length > 0) ?
 
-                                user_details.educational_qualification.map((objects, index) => (
+                                local_storage_data.educational_qualification.map((objects, index) => (
 
                                     <div className='objects' key={index}>
                                         <div>
@@ -548,9 +546,9 @@ function SeekerProfile() {
                         }
                         {
 
-                            (user_details.skills !== undefined && user_details.skills.length > 0) ?
+                            (local_storage_data.skills !== undefined && local_storage_data.skills.length > 0) ?
 
-                                user_details.skills.map((objects, index) => (
+                                local_storage_data.skills.map((objects, index) => (
 
                                     <div className='objects' key={index}>
                                         <p >{objects.text}</p>
@@ -620,9 +618,9 @@ function SeekerProfile() {
                         <div id="certificate_listings">
                             {
 
-                                (user_details.certificates !== undefined && user_details.certificates.length > 0) ?
+                                (local_storage_data.certificates !== undefined && local_storage_data.certificates.length > 0) ?
 
-                                    user_details.certificates.map((objects, index) => (
+                                    local_storage_data.certificates.map((objects, index) => (
 
                                         <div className='objects' key={index}>
 
@@ -696,9 +694,9 @@ function SeekerProfile() {
                         }
                         {
 
-                            (user_details.projects !== undefined && user_details.projects.length > 0) ?
+                            (local_storage_data.projects !== undefined && local_storage_data.projects.length > 0) ?
 
-                                user_details.projects.map((objects, index) => (
+                                local_storage_data.projects.map((objects, index) => (
 
                                     <div className='objects' key={index}>
                                         <div>
@@ -762,9 +760,9 @@ function SeekerProfile() {
                         }
                         {
 
-                            (user_details.languages_known !== undefined && user_details.languages_known.length > 0) ?
+                            (local_storage_data.languages_known !== undefined && local_storage_data.languages_known.length > 0) ?
 
-                                user_details.languages_known.map((objects, index) => (
+                                local_storage_data.languages_known.map((objects, index) => (
 
                                     <div className='objects' key={index}>
                                         <p>{objects.text}</p>
@@ -773,16 +771,16 @@ function SeekerProfile() {
 
                                 ))
 
-                            :
+                                :
 
-                            language_list.map((objects, index) => (
+                                language_list.map((objects, index) => (
 
-                                <div className='objects' key={index}>
-                                    <p>{objects.text}</p>
-                                    {input_box4 && <i class='bx bx-x' onClick={() => deleteItem('language', objects.id)}></i>}
-                                </div>
+                                    <div className='objects' key={index}>
+                                        <p>{objects.text}</p>
+                                        {input_box4 && <i class='bx bx-x' onClick={() => deleteItem('language', objects.id)}></i>}
+                                    </div>
 
-                            ))
+                                ))
 
                         }
 
@@ -797,25 +795,27 @@ function SeekerProfile() {
 
                         <p className="heading">Attatchments</p>
                         <button id='attatchment-btns' >
-                            <a rel='noreferrer' target='_blank' href={user_details.url}>{resume_name}</a>
+                            <a rel='noreferrer' target='_blank' href={local_storage_data.url}>{resume_name}</a>
                         </button>
 
                     </div>
 
-                    {edit && 
-                    
+                    {edit &&
+
                         <div id="save-changes">
 
-                            <button className="save" onClick={ applyChanges } >Apply changes</button>
+                            <button className="save" onClick={applyChanges} >Apply changes</button>
                             <button className="save" onClick={saveChanges}>Save changes</button>
 
                         </div>
-                        
+
                     }
 
                 </div>
 
             </div>
+
+            <Toaster />
 
         </div>
 

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../Context/User'
 import { signOut } from 'firebase/auth'
 import { FirebaseAuth } from '../../FIrebase/Configueration'
+import toast, { Toaster } from 'react-hot-toast'
 
 function NavBar() {
 
@@ -24,8 +25,13 @@ function NavBar() {
 
     const handleLogout = () => {
 
-        signOut( FirebaseAuth ).then( () => navigate('/login') )
-        .catch( ( error ) => alert( error.message ) )
+        signOut( FirebaseAuth ).then( () => {
+            
+            localStorage.removeItem('userData')
+            navigate('/login')
+        
+        } )
+        .catch( ( error ) => toast.error( error.message ) )
 
     }
 
@@ -62,6 +68,8 @@ function NavBar() {
                 </div>
 
             </div>
+
+            <Toaster />
 
         </div>}
 

@@ -7,6 +7,7 @@ import { FirebaseAuth, FirebaseFirestore, FirebaseStorage } from '../../FIrebase
 import { addDoc, collection } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import toast, { Toaster } from 'react-hot-toast';
 
 function SeekerSignup() {
 
@@ -29,17 +30,7 @@ function SeekerSignup() {
 
       if( email === '' || password === '' || full_name === '' || phone_number === '' ) return alert('Please complete the form')
       else {
-    
-        const result = await createUserWithEmailAndPassword( FirebaseAuth , email , password )
-        await updateProfile( result.user , { displayName : full_name } )
-        alert ( 'You are signed in successfully' )
-         
-        setFullName('')
-        setEmail('')
-        setPassword('')
-        setPhoneNumber('')
 
-        // In these code the user is created
 
         const resumeRef = ref( FirebaseStorage , `Resumes/${ resume.name }` )
         uploadBytes( resumeRef , resume ).then( ( response ) => {
@@ -68,10 +59,23 @@ function SeekerSignup() {
         } )
 
         // These codes are used to store resume file in firebse storage and store the remaining details of user in firebase firestore
+
+        const result = await createUserWithEmailAndPassword( FirebaseAuth , email , password )
+        await updateProfile( result.user , { displayName : full_name } )
+        // alert ( 'You are signed in successfully' )
+        toast.success('You are signed in successfully' , { style : { fontSize: '14px' } })
+         
+        setFullName('')
+        setEmail('')
+        setPassword('')
+        setPhoneNumber('')
+
+        
+        // In these code the user is created
     
       }
 
-    } catch ( error ) { alert( error.message ) }
+    } catch ( error ) { toast.error( error.message , { style : { fontSize: '14px' } } ) }
   
   }
 
@@ -174,6 +178,8 @@ function SeekerSignup() {
         </div>
 
       </div>
+
+      <Toaster />
 
     </div>
 

@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NavBar from '../Components/NavBar/NavBar'
-import { UDContext } from '../Context/User_details'
+// import { UDContext } from '../Context/local_storage_data'
 import SeekerProfile from '../Components/SeekerProfile/SeekerProfile'
 import EmployerProfile from '../Components/EmployerProfile/EmployerProfile'
 
@@ -9,13 +9,21 @@ function Profile() {
   const [ seeker , setSeeker ] = useState( false )
   const [ employer , setEmployer ] = useState( false )
 
-  const { user_details } = useContext(UDContext)
+  // const { local_storage_data } = useContext(UDContext)
 
   useEffect(() => {
 
-    console.log( user_details.user_type )
-    if ( user_details.user_type === 'Seeker' ) setSeeker( true )
-    else setEmployer( true )
+    // console.log( local_storage_data.user_type )
+    // if ( local_storage_data.user_type === 'Seeker' ) setSeeker( true )
+    // else setEmployer( true )
+
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      const local_storage_data = JSON.parse(storedUserData);
+      console.log( local_storage_data.user_type )
+      if (local_storage_data.user_type === 'Seeker') setSeeker( true )
+      else setEmployer( true )
+  }
     
   }, [])
   
