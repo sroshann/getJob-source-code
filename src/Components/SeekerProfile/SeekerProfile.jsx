@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './SeekerProfile.css'
-import { UDContext } from '../../Context/User_details'
+// import { UDContext } from '../../Context/User_details'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { FirebaseFirestore, FirebaseStorage } from '../../FIrebase/Configueration'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
@@ -8,7 +8,7 @@ import toast, { Toaster } from 'react-hot-toast'
 
 function SeekerProfile() {
 
-    const [ local_storage_data , setLoaclStorageData] = useState( '' )
+    const [local_storage_data, setLoaclStorageData] = useState('')
 
     const [edit, setEdit] = useState(false)
     const [new_username, setNewUsername] = useState('')
@@ -17,7 +17,7 @@ function SeekerProfile() {
     const [age, setAge] = useState('')
     const [experience, setExperience] = useState('')
     const [summary, setSummary] = useState('')
-    const [image, setImage] = useState()
+    const [image, setImage] = useState(null)
     const [image_URL, setImageURL] = useState(null) // To store the URL of image
 
     const [input_box1, setInputBox1] = useState(false) // To get a new input box
@@ -59,42 +59,56 @@ function SeekerProfile() {
 
         try {
 
-            if (certificate_list) {
+            if (certificate_list.size === 0 || image === null)
+                return toast.error('Complete all fields', { style: { fontSize: '14px' } })
 
-                const store_urls = []
+            else {
 
-                for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
+                let certificate_link, image_link
 
-                    const certificateRef = ref(FirebaseStorage, `Certificates/${local_storage_data.email}/${certificate.text}`)
-                    const response = await uploadBytes(certificateRef, certificate.preview)
-                    const downloadURL = await getDownloadURL(response.ref)
-                    store_urls.push({ url: downloadURL, text: certificate.text })
-                    console.log(downloadURL)
+                if (certificate_list) {
+
+                    const store_urls = []
+
+                    for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
+
+                        const certificateRef = ref(FirebaseStorage, `Certificates/${local_storage_data.email}/${certificate.text}`)
+                        const response = await uploadBytes(certificateRef, certificate.preview)
+                        certificate_link = await getDownloadURL(response.ref)
+                        store_urls.push({ url: certificate_link, text: certificate.text })
+                        console.log(certificate_link)
+
+                    }
+
+                    setCertificateURLList(previous => [...previous, ...store_urls])
 
                 }
 
-                setCertificateURLList(previous => [...previous, ...store_urls])
+                if (image) { // This will upload the profile picture to firebase storage
+
+                    const dpRef = ref(FirebaseStorage,
+                        `Profile pictures/${local_storage_data.user_type}/${local_storage_data.email}/${image.name}`)
+
+                    const response = await uploadBytes(dpRef, image)
+                    image_link = await getDownloadURL(response.ref)
+                    setImageURL(image_link)
+                    console.log(image_link)
+
+                }
+
+                if (certificate_link && image_link) {
+
+                    toast.promise('Profile is updated', {
+
+                        loading: 'Saving...',
+                        success: <b>Settings saved!</b>,
+                        style: { fontSize: '14px' }
+
+                    })
+
+                }
 
             }
-
-            if (image) { // This will upload the profile picture to firebase storage
-
-                const dpRef = ref(FirebaseStorage,
-                    `Profile pictures/${local_storage_data.user_type}/${local_storage_data.email}/${image.name}`)
-
-                const response = await uploadBytes(dpRef, image)
-                const downloadURL = await getDownloadURL(response.ref)
-                setImageURL(downloadURL)
-                console.log(downloadURL)
-
-            }
-
-            toast.promise('Profile is updated', {
-
-                loading: 'Saving...',
-                success: <b>Settings saved!</b>,
-
-            })
 
         } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
 
@@ -102,54 +116,62 @@ function SeekerProfile() {
 
     const saveChanges = async () => {
 
-        setEdit(false)
-        setInputBox1(false)
-        setInputBox2(false)
-        setInputBox3(false)
-        setInputBox4(false)
-        setInputBox5(false)
-
         try {
 
             const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
             const condition = where('email', '==', local_storage_data.email) // Providing the condition for selecting the user
             const selected_user = query(user_ref, condition) // Selects the user from the total collection
 
-            await getDocs(selected_user).then(async (user_document) => { // This code will upload the data to firebase firestore
+            if (new_username === '' || new_phonenumber === '' || location === '' || age === '' || experience === '' ||
+                summary === '' || image_URL === '' || edu_list.size === 0 || skill_list.size === 0 || project_list.size === 0 ||
+                language_list.size === 0 || certificate_url_list.size === 0)
+                return toast.error('Complete all fields', { style: { fontSize: '14px' } })
+            else {
 
-                const userDocRef = user_document.docs[0].ref
-                const changing_object = {
+                await getDocs(selected_user).then(async (user_document) => { // This code will upload the data to firebase firestore
 
-                    username: new_username,
-                    phone_number: new_phonenumber,
-                    location: location,
-                    age: age,
-                    experience: experience,
-                    summary: summary,
-                    profile_picture: image_URL,
-                    educational_qualification: edu_list,
-                    skills: skill_list,
-                    projects: project_list,
-                    languages_known: language_list,
-                    certificates: certificate_url_list,
-                    job_applied: 0,
-                    job_saved: 0,
-                    profile_views: 0
+                    const userDocRef = user_document.docs[0].ref
+                    const changing_object = {
 
+                        email: local_storage_data.email,
+                        username: new_username,
+                        phone_number: new_phonenumber,
+                        location: location,
+                        age: age,
+                        experience: experience,
+                        summary: summary,
+                        profile_picture: image_URL,
+                        educational_qualification: edu_list,
+                        skills: skill_list,
+                        projects: project_list,
+                        languages_known: language_list,
+                        certificates: certificate_url_list,
+                        job_applied: 0,
+                        job_saved: 0,
+                        profile_views: 0
 
-                }
+                    }
 
-                await updateDoc(userDocRef, changing_object )
-                .then( () => {
+                    await updateDoc(userDocRef, changing_object)
+                        .then(() => {
 
-                    toast.success('Changes applied', { style: { fontSize: '14px' } })
+                            setEdit(false)
+                            setInputBox1(false)
+                            setInputBox2(false)
+                            setInputBox3(false)
+                            setInputBox4(false)
+                            setInputBox5(false)
+                            setLoaclStorageData(changing_object)
+                            toast.success('Changes applied', { style: { fontSize: '14px' } })
 
-                } )
-                .catch((error) => alert(error.message, 'Data are not updated'))
+                        })
+                        .catch((error) => toast.error('Data are not updated', { style: { fontSize: '14px' } }))
 
-            }).catch((error) => console.log(error.message, 'Error with getdocs'))
+                }).catch((error) => console.log(error.message, 'Error with getdocs'))
 
-        } catch (error) { toast.error(error.message) }
+            }
+
+        } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
 
     }
 
@@ -246,7 +268,7 @@ function SeekerProfile() {
 
     }
 
-    const decodeName = ( local_url ) => { // This function is used to get the filename from the url
+    const decodeName = (local_url) => { // This function is used to get the filename from the url
 
         try {
             const url = new URL(local_url);
@@ -263,16 +285,35 @@ function SeekerProfile() {
 
     }
 
-    useEffect(() => {
+    const getUserData = async () => { // This function in used to fetch the user data after updating profile
 
         const storedUserData = localStorage.getItem('userData'); // fetching data from localstorage
         if (storedUserData) {
 
             const parsedUserData = JSON.parse(storedUserData);
-            setLoaclStorageData( parsedUserData )
-            decodeName( parsedUserData.url )
+
+            const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
+            const condition = where('email', '==', parsedUserData.email) // Providing the condition for selecting the user
+            const selected_user = query(user_ref, condition) // Selects the user from the total collection
+
+            await getDocs(selected_user).then((user_data) => {
+
+                user_data.forEach(doc => {
+
+                    setLoaclStorageData(doc.data()) // The each fields of data are stored into a state
+
+                })
+
+            }).then(() => decodeName(parsedUserData.resume))
 
         }
+
+    }
+
+
+    useEffect(() => {
+
+        getUserData()
 
     }, [])
 

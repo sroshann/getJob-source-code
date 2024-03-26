@@ -20,8 +20,7 @@ function Profile() {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       const local_storage_data = JSON.parse(storedUserData);
-      console.log( local_storage_data.user_type )
-      if (local_storage_data.user_type === 'Seeker') setSeeker( true )
+      if (local_storage_data.user === 'Seeker') setSeeker( true )
       else setEmployer( true )
   }
     

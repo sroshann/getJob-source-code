@@ -29,18 +29,24 @@ function Login() {
 
                     user_data.forEach(doc => {
 
-                        // console.log( doc.data() )
-                        setUserDetails(doc.data())
+                        setUserDetails(doc.data()) // Storing datas into a context containing user details for further usage
+
+                        const dataToStore = { // Create an object containing only the required data inorder to store into localstorage
+
+                            email: doc.data().email,
+                            user: doc.data().user_type,
+                            resume: doc.data().url
+
+                        }
 
                         // save user datas on local storage
-                        localStorage.setItem('userData', JSON.stringify(doc.data()));
+                        localStorage.setItem('userData', JSON.stringify( dataToStore ));
                         const storedUserData = localStorage.getItem('userData');
 
                         if (storedUserData) {
                             const local_storage_data = JSON.parse(storedUserData);
-                            console.log( local_storage_data.user_type )
-                            if (local_storage_data.user_type === 'Seeker') navigate('/seekerhome')
-                            else if (local_storage_data.user_type === 'Employer') navigate('/employerhome')
+                            if (local_storage_data.user === 'Seeker') navigate('/seekerhome')
+                            else if (local_storage_data.user === 'Employer') navigate('/employerhome')
                         }
 
                     })

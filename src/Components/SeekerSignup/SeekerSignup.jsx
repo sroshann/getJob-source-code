@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import './SeekerSignup.css'
 import verified from '../../Images/verified.webp'
 import signupImage from '../../Images/signupimage.png'
@@ -28,7 +28,7 @@ function SeekerSignup() {
 
     try{
 
-      if( email === '' || password === '' || full_name === '' || phone_number === '' ) return alert('Please complete the form')
+      if( email === '' || password === '' || full_name === '' || phone_number === '' ) return toast.error('Please complete the form')
       else {
 
 
