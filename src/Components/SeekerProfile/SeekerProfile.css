@@ -174,7 +174,7 @@ a { text-decoration: none; color: black; }
 
     position: relative;
     bottom: 178px;
-    left: 715px;
+    left: 96%;
     font-size: large;
     color: #0149AB;
     cursor: pointer;
@@ -287,10 +287,11 @@ a { text-decoration: none; color: black; }
 
 #save-changes {
 
+    width: fit-content;
     display: flex;
     column-gap: 5px;
     position: relative;
-    left: 750px;
+    left: 64.3%;
     bottom: 10px;
 
 }
@@ -343,7 +344,7 @@ a { text-decoration: none; color: black; }
 .plus-btn {
 
     position: relative;
-    left: 994px;
+    left: 98.6%;
     bottom: 5px;
     font-size: larger;
     color: #0149AB;
@@ -358,7 +359,7 @@ a { text-decoration: none; color: black; }
     column-gap: 7px;
     justify-content: space-between;
     position: relative;
-    left: 875px;
+    left: 83.65%;
     bottom: -7px;
 
 }

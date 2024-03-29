@@ -98,13 +98,7 @@ function SeekerProfile() {
 
                 if (certificate_link && image_link) {
 
-                    toast.promise('Profile is updated', {
-
-                        loading: 'Saving...',
-                        success: <b>Settings saved!</b>,
-                        style: { fontSize: '14px' }
-
-                    })
+                    toast.success('Profile is updated', { style: { fontSize: '14px' } })
 
                 }
 
@@ -116,6 +110,9 @@ function SeekerProfile() {
 
     const saveChanges = async () => {
 
+        console.log('Skill list = ', skill_list)
+        console.log('Local storage skill = ', local_storage_data.skills)
+
         try {
 
             const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
@@ -123,8 +120,8 @@ function SeekerProfile() {
             const selected_user = query(user_ref, condition) // Selects the user from the total collection
 
             if (new_username === '' || new_phonenumber === '' || location === '' || age === '' || experience === '' ||
-                summary === '' || image_URL === '' || edu_list.size === 0 || skill_list.size === 0 || project_list.size === 0 ||
-                language_list.size === 0 || certificate_url_list.size === 0)
+                summary === '' || image_URL === '' || edu_list.size === 0 || skill_list.size === 0 || project_list.size === 0
+                || language_list.size === 0 || certificate_url_list.size === 0)
                 return toast.error('Complete all fields', { style: { fontSize: '14px' } })
             else {
 
@@ -180,27 +177,95 @@ function SeekerProfile() {
 
         if (section === 'education') {
 
-            setEduList([...edu_list, { id: Date.now(), text: education, institution: institution }])
-            // During adding the existing elements will destructured and added the new element with an id
-            setEducation('') // The existing value in input box is cleared
-            setInstitution('')
+            //Inorder to avoid data lose on editing the operation on education list is done same as on edu list local storage data
+
+            if (local_storage_data.educational_qualification !== undefined &&
+                local_storage_data.educational_qualification.length > 0) {
+
+                    const updated_education = [ ...local_storage_data.educational_qualification , 
+                        { id: Date.now(), text: education, institution: institution } ]
+
+                    setEduList( updated_education )
+                    setEducation('')
+                    setInstitution('')
+                    setLoaclStorageData(prevData => ({ // onorder to render on addition
+                        ...prevData,
+                        educational_qualification: updated_education
+                    }));
+
+            } else {
+
+                setEduList([...edu_list, { id: Date.now(), text: education, institution: institution }])
+                // During adding the existing elements will destructured and added the new element with an id
+                setEducation('') // The existing value in input box is cleared
+                setInstitution('')
+
+            }
 
         } else if (section === 'skill') {
 
-            setSkillList([...skill_list, { id: Date.now(), text: skill }])
-            setSkills('')
+            if (local_storage_data.skills !== undefined && local_storage_data.skills.length > 0) {
+
+                const updatedSkills = [...local_storage_data.skills, { id: Date.now(), text: skill }];
+                setSkillList(updatedSkills);
+                setSkills('')
+                setLoaclStorageData(prevData => ({
+                    ...prevData,
+                    skills: updatedSkills
+                }));
+
+
+            } else {
+
+                setSkillList([...skill_list, { id: Date.now(), text: skill }])
+                setSkills('')
+
+            }
 
         } else if (section === 'project') {
 
-            setProjectList([...project_list, { id: Date.now(), text: project, description: description, hosted_url: hosted_url }])
-            setProjects('')
-            setDescription('')
-            setHostedURL('')
+            if ( local_storage_data.projects !== undefined && local_storage_data.projects.length > 0 ) {
+
+                const updated_projects = [ ...local_storage_data.projects , 
+                    { id: Date.now(), text: project, description: description, hosted_url: hosted_url } ]
+
+                setProjectList( updated_projects )
+                setProjects('')
+                setDescription('')
+                setHostedURL('')
+                setLoaclStorageData(prevData => ({
+                    ...prevData,
+                    projects: updated_projects
+                }));
+
+
+            } else {
+
+                setProjectList([...project_list, { id: Date.now(), text: project, description: description, hosted_url: hosted_url }])
+                setProjects('')
+                setDescription('')
+                setHostedURL('')
+
+            }
 
         } else if (section === 'language') {
 
-            setLanguageList([...language_list, { id: Date.now(), text: language }])
-            setLanguages('')
+            if ( local_storage_data.languages_known !== undefined && local_storage_data.languages_known.length > 0 ) {
+
+                const updated_language = [ ...local_storage_data.languages_known , { id: Date.now(), text: language } ]
+                setLanguageList( updated_language )
+                setLanguages('')
+                setLoaclStorageData(prevData => ({
+                    ...prevData,
+                    languages_known: updated_language
+                }));
+
+            } else {
+
+                setLanguageList([...language_list, { id: Date.now(), text: language }])
+                setLanguages('')
+
+            }
 
         } else if (section === 'certificates') {
 
@@ -212,6 +277,8 @@ function SeekerProfile() {
         }
 
     }
+
+
 
     const deleteItem = (section, value) => { // This function is to remove an educational qualification from array
 
@@ -228,6 +295,25 @@ function SeekerProfile() {
             // and the id of the selected educational qualification with the id of deletion value using 'filter'.
             // and when it become equal the selected qualification becomes null
 
+        } else if (section === 'databse_education') {
+
+            // inorder to avoid data lose during editing
+
+            let updated_education = local_storage_data.educational_qualification.filter(selected => {
+
+                if (selected.id === value) selected = null
+                return selected
+
+            })
+
+            setEduList(updated_education)
+
+            setLoaclStorageData(prevData => ({ // To render on deletion
+                ...prevData,
+                educational_qualification: updated_education
+            }))
+
+
         } else if (section === 'skill') {
 
             setSkillList(skill_list.filter(selected => {
@@ -235,6 +321,22 @@ function SeekerProfile() {
                 if (selected.id === value) selected = null
                 return selected
 
+            }))
+
+        } else if (section === 'database_skill') {
+
+            let updated_skill = local_storage_data.skills.filter(selected => {
+
+                if (selected.id === value) selected = null
+                return selected
+
+            })
+
+            setSkillList(updated_skill)
+
+            setLoaclStorageData(prevData => ({
+                ...prevData,
+                skills: updated_skill
             }))
 
         } else if (section === 'project') {
@@ -246,6 +348,24 @@ function SeekerProfile() {
 
             }))
 
+        } else if ( section === 'database_project' ) {
+
+            let updated_projects = local_storage_data.projects.filter( selected => {
+
+                if ( selected.id === value ) selected = null
+                return selected
+
+            } )
+
+            setProjectList( updated_projects )
+
+            setLoaclStorageData( prevData => ( {
+
+                ...prevData,
+                projects: updated_projects
+
+            } ) )
+
         } else if (section === 'language') {
 
             setLanguageList(language_list.filter(selected => {
@@ -254,6 +374,24 @@ function SeekerProfile() {
                 return selected
 
             }))
+
+        } else if ( section === 'database_language' ) {
+
+            let updated_language = local_storage_data.languages_known.filter( selected => {
+
+                if ( selected.id === value ) selected = null
+                return selected
+
+            } )
+
+            setLanguageList( updated_language )
+
+            setLoaclStorageData( prevData => ( {
+
+                ...prevData,
+                languages_known: updated_language
+
+            } ) )
 
         } else if (section === 'certificates') {
 
@@ -310,12 +448,39 @@ function SeekerProfile() {
 
     }
 
-
     useEffect(() => {
 
         getUserData()
 
-    }, [])
+        // Inorder to prevent the datalose on clicking edit button 
+        setNewUsername(local_storage_data.username)
+        setNewPhonenumber(local_storage_data.phone_number)
+        setLocation(local_storage_data.location)
+        setAge(local_storage_data.age)
+        setExperience(local_storage_data.experience)
+        setSummary(local_storage_data.summary)
+        setImageURL( local_storage_data.profile_picture )
+
+        // Inorder to avoid datalose, it solves in additems and deleteItem functions also this is added to avoid data lose on
+        // clicking saveChanges function directly after mounting and also it is not required to add in dependency array
+        if (local_storage_data.skills && local_storage_data.skills.length > 0) {
+            setSkillList(prevSkills => [...prevSkills, ...local_storage_data.skills]);
+        }
+
+        if (local_storage_data.educational_qualification && local_storage_data.educational_qualification.length > 0) {
+            setEduList(prev => [...prev, ...local_storage_data.educational_qualification]);
+        }
+
+        if (local_storage_data.projects && local_storage_data.projects.length > 0) {
+            setProjectList(prev => [...prev, ...local_storage_data.projects]);
+        }
+
+        if (local_storage_data.languages_known && local_storage_data.languages_known.length > 0) {
+            setLanguageList(prev => [...prev, ...local_storage_data.languages_known]);
+        }
+
+    }, [local_storage_data.username, local_storage_data.phone_number, local_storage_data.location, local_storage_data.age,
+    local_storage_data.experience, local_storage_data.summary ])
 
     return (
 
@@ -339,13 +504,20 @@ function SeekerProfile() {
                             }
 
                             {edit && <input type="file" name="" id="change-dp"
-                                onChange={(event) => setImage(event.target.files[0])} />}
+                                onChange={(event) => {
+                                    
+                                    local_storage_data.profile_picture = null
+                                    setImage(event.target.files[0])
+                                    
+                                }} />}
                             {
                                 edit ? <input style={{ textAlign: 'center', marginTop: '5px', marginBottom: '5px' }}
-                                    className='inp-bx' type="text" value={new_username}
-                                    onChange={(event) => setNewUsername(event.target.value)} placeholder={local_storage_data.username} /> :
+                                    className='inp-bx' type="text"
+                                    value={new_username}
+                                    onChange={(event) => setNewUsername(event.target.value)}
+                                    placeholder='Full name' /> :
                                     <p id='name' style={edit ? {} : { marginTop: '-8px' }} >{local_storage_data.username}</p>
-                                // <p id='name' style={edit ? {} : { marginTop: '-8px' }} >{userData ? userData.username : 'MEDDOC USER'}</p>
+
 
                             }
                             <p id='username'>username</p>
@@ -367,7 +539,7 @@ function SeekerProfile() {
                                         edit ? <input className='inp-bx' type="number"
                                             value={new_phonenumber}
                                             onChange={(event) => setNewPhonenumber(event.target.value)}
-                                            placeholder={local_storage_data.phone_number} /> :
+                                            placeholder='Phone Number' /> :
                                             <p className='sub-heading'>{local_storage_data.phone_number}</p>
 
                                     }
@@ -380,7 +552,7 @@ function SeekerProfile() {
 
                                         edit ? <input className='inp-bx' type="text" value={location}
                                             onChange={(event) => setLocation(event.target.value)}
-                                            placeholder={local_storage_data.location ? local_storage_data.location : 'Add your location'} /> :
+                                            placeholder='Add your location' /> :
                                             <p className='sub-heading' style={local_storage_data.location ? {} : { color: 'grey' }}>
                                                 {local_storage_data.location ? local_storage_data.location : 'Add your location'}</p>
 
@@ -395,7 +567,7 @@ function SeekerProfile() {
 
                                         edit ? <input className='inp-bx' type="number" value={age}
                                             onChange={(event) => setAge(event.target.value)}
-                                            placeholder={local_storage_data.age ? local_storage_data.age : 'Add your age'} /> :
+                                            placeholder='Add your age' /> :
                                             <p className='sub-heading' style={local_storage_data.age ? {} : { color: 'grey' }}>
                                                 {local_storage_data.age ? local_storage_data.age : 'Add your age'}</p>
 
@@ -414,8 +586,7 @@ function SeekerProfile() {
 
                                         edit ? <input className='inp-bx' type="text" value={experience}
                                             onChange={(event) => setExperience(event.target.value)}
-                                            placeholder={local_storage_data.experience ? local_storage_data.experience
-                                                : 'Add your experience'} /> :
+                                            placeholder='Add your experience' /> :
                                             <p className='sub-heading' style={local_storage_data.experience ? {} : { color: 'grey' }}>
                                                 {local_storage_data.experience ? local_storage_data.experience : 'Add your experience'}</p>
 
@@ -476,12 +647,12 @@ function SeekerProfile() {
                             edit ? <textarea className='text-area' value={summary}
                                 onChange={(event) => setSummary(event.target.value)}
                                 style={{ marginBottom: '-15px' }}
-                                placeholder={local_storage_data.summary ? local_storage_data.summary : 'Tell us about yourself'}></textarea> :
+                                placeholder='Add profile summary'></textarea> :
                                 <p className='sub-heading' style={local_storage_data.summary ? { color: 'black' } :
                                     summary === '' ? { color: 'grey' } : {}} >
                                     {
                                         local_storage_data.summary ? local_storage_data.summary :
-                                            summary === '' ? 'Add a profile summary' : summary
+                                            summary === '' ? 'Tell us about yourself' : summary
 
                                     }
                                 </p>
@@ -534,7 +705,7 @@ function SeekerProfile() {
                                             <p>{objects.text}</p>
                                             <p>{objects.institution}</p>
                                         </div>
-                                        {input_box1 && <i class='bx bx-x' onClick={() => deleteItem('education', objects.id)}></i>}
+                                        {input_box1 && <i class='bx bx-x' onClick={() => deleteItem('databse_education', objects.id)}></i>}
                                     </div>
 
                                 ))
@@ -593,7 +764,7 @@ function SeekerProfile() {
 
                                     <div className='objects' key={index}>
                                         <p >{objects.text}</p>
-                                        {input_box2 && <i class='bx bx-x' onClick={() => deleteItem('skill', objects.id)}></i>}
+                                        {input_box2 && <i class='bx bx-x' onClick={() => deleteItem('database_skill', objects.id)}></i>}
                                     </div>
 
                                 ))
@@ -612,7 +783,10 @@ function SeekerProfile() {
                         }
 
                         {input_box2 && <button style={{ position: 'relative', left: '943px' }} className='done-btn'
-                            onClick={() => setInputBox2(false)} >Done</button>}
+                            onClick={() => {
+                                console.log('Skills = ', local_storage_data.skills)
+                                setInputBox2(false)
+                            }} >Done</button>}
 
                     </div>
 
@@ -621,7 +795,8 @@ function SeekerProfile() {
                     <div id="certificates">
 
                         <p style={edit ? { marginBottom: '-15px' } : {}} className="heading">Certificates</p>
-                        {edit && <i onClick={() => setInputBox5(true)} class='bx bx-plus plus-btn'></i>}
+                        {edit && <i onClick={() => setInputBox5(true)} class='bx bx-plus plus-btn'
+                            style={{ width: 'fit-content' }}></i>}
                         {input_box5 &&
 
                             <div style={{ display: 'grid', rowGap: '7px', marginTop: '5px' }}>
@@ -747,7 +922,7 @@ function SeekerProfile() {
                                                 <p style={{ color: 'grey', cursor: 'pointer' }}>{objects.hosted_url}</p>
                                             </a>
                                         </div>
-                                        {input_box3 && <i class='bx bx-x' onClick={() => deleteItem('project', objects.id)}></i>}
+                                        {input_box3 && <i class='bx bx-x' onClick={() => deleteItem('database_project', objects.id)}></i>}
                                     </div>
 
                                 ))
@@ -807,7 +982,8 @@ function SeekerProfile() {
 
                                     <div className='objects' key={index}>
                                         <p>{objects.text}</p>
-                                        {input_box4 && <i class='bx bx-x' onClick={() => deleteItem('language', objects.id)}></i>}
+                                        {input_box4 && <i class='bx bx-x' 
+                                        onClick={() => deleteItem('database_language', objects.id)}></i>}
                                     </div>
 
                                 ))
