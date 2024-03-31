@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './SeekerProfile.css'
 // import { UDContext } from '../../Context/User_details'
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, getMetadata, ref, uploadBytes } from 'firebase/storage'
 import { FirebaseFirestore, FirebaseStorage } from '../../FIrebase/Configueration'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import toast, { Toaster } from 'react-hot-toast'
@@ -46,6 +46,9 @@ function SeekerProfile() {
     const [certificate_list, setCertificateList] = useState([]) // To store array of certificate
     const [certificate_url_list, setCertificateURLList] = useState([]) //To store the array of uploaded document url
 
+    const [editing_certficate_list, setEditingCertificateList] = useState([])
+    const [ enable_certificate , setEnableCertificate ] = useState( false )
+
     const [resume_name, setResumeName] = useState('')
 
     const enableEdit = () => {
@@ -57,61 +60,84 @@ function SeekerProfile() {
 
     const applyChanges = async () => {
 
-        try {
+        if ( enable_certificate ) { // Inorder to avoid direct uploading of existing docs when clicking apply
+            // changes button without making any changes in certficates
 
-            if (certificate_list.size === 0 || image === null)
-                return toast.error('Complete all fields', { style: { fontSize: '14px' } })
+            try {
 
-            else {
-
-                let certificate_link, image_link
-
-                if (certificate_list) {
-
-                    const store_urls = []
-
-                    for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
-
-                        const certificateRef = ref(FirebaseStorage, `Certificates/${local_storage_data.email}/${certificate.text}`)
-                        const response = await uploadBytes(certificateRef, certificate.preview)
-                        certificate_link = await getDownloadURL(response.ref)
-                        store_urls.push({ url: certificate_link, text: certificate.text })
-                        console.log(certificate_link)
-
+                if (certificate_list.size === 0 || image_URL === null)
+                    return toast.error('Complete all fields', { style: { fontSize: '14px' } })
+    
+                else {
+    
+                    let certificate_link, image_link
+    
+                    if (editing_certficate_list && editing_certficate_list.length !== 0) {
+    
+                        console.log('Editing certificate list')
+                        const store_urls = []
+    
+                        for (let certificate of editing_certficate_list) { // This will upload the all certificates to firebase storage
+    
+                            const certificateRef = ref(FirebaseStorage, `Certificates/${local_storage_data.email}/${certificate.text}`)
+                            const response = await uploadBytes(certificateRef, certificate.preview)
+                            certificate_link = await getDownloadURL(response.ref)
+                            store_urls.push({ url: certificate_link, text: certificate.text })
+                            console.log(certificate_link)
+    
+                        }
+    
+                        setCertificateURLList(previous => [...previous, ...store_urls])
+    
+    
+                    } else if (certificate_list.length !== 0) {
+    
+                        const store_urls = []
+    
+                        for (let certificate of certificate_list) { // This will upload the all certificates to firebase storage
+    
+                            const certificateRef = ref(FirebaseStorage, `Certificates/${local_storage_data.email}/${certificate.text}`)
+                            const response = await uploadBytes(certificateRef, certificate.preview)
+                            certificate_link = await getDownloadURL(response.ref)
+                            store_urls.push({ url: certificate_link, text: certificate.text })
+                            console.log(certificate_link)
+    
+                        }
+    
+                        setCertificateURLList(previous => [...previous, ...store_urls])
+    
                     }
-
-                    setCertificateURLList(previous => [...previous, ...store_urls])
-
+    
+                    if (image) { // This will upload the profile picture to firebase storage
+    
+                        const dpRef = ref(FirebaseStorage,
+                            `Profile pictures/${local_storage_data.user_type}/${local_storage_data.email}/${image.name}`)
+    
+                        const response = await uploadBytes(dpRef, image)
+                        image_link = await getDownloadURL(response.ref)
+                        setImageURL(image_link)
+                        console.log(image_link)
+    
+                    }
+    
+                    if (certificate_link || image_link) {
+    
+                        toast.success('Profile is updated', { style: { fontSize: '14px' } })
+    
+                    }
+    
                 }
+    
+            } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
 
-                if (image) { // This will upload the profile picture to firebase storage
-
-                    const dpRef = ref(FirebaseStorage,
-                        `Profile pictures/${local_storage_data.user_type}/${local_storage_data.email}/${image.name}`)
-
-                    const response = await uploadBytes(dpRef, image)
-                    image_link = await getDownloadURL(response.ref)
-                    setImageURL(image_link)
-                    console.log(image_link)
-
-                }
-
-                if (certificate_link && image_link) {
-
-                    toast.success('Profile is updated', { style: { fontSize: '14px' } })
-
-                }
-
-            }
-
-        } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
+        } else { toast.success('Profile is updated', { style: { fontSize: '14px' } }) }
 
     }
 
     const saveChanges = async () => {
 
         console.log('Skill list = ', skill_list)
-        console.log('Local storage skill = ', local_storage_data.skills)
+        console.log('Local storage skill = ', certificate_url_list)
 
         try {
 
@@ -159,6 +185,8 @@ function SeekerProfile() {
                             setInputBox4(false)
                             setInputBox5(false)
                             setLoaclStorageData(changing_object)
+                            setEditingCertificateList([])
+                            setEnableCertificate( false )
                             toast.success('Changes applied', { style: { fontSize: '14px' } })
 
                         })
@@ -182,16 +210,16 @@ function SeekerProfile() {
             if (local_storage_data.educational_qualification !== undefined &&
                 local_storage_data.educational_qualification.length > 0) {
 
-                    const updated_education = [ ...local_storage_data.educational_qualification , 
-                        { id: Date.now(), text: education, institution: institution } ]
+                const updated_education = [...local_storage_data.educational_qualification,
+                { id: Date.now(), text: education, institution: institution }]
 
-                    setEduList( updated_education )
-                    setEducation('')
-                    setInstitution('')
-                    setLoaclStorageData(prevData => ({ // onorder to render on addition
-                        ...prevData,
-                        educational_qualification: updated_education
-                    }));
+                setEduList(updated_education)
+                setEducation('')
+                setInstitution('')
+                setLoaclStorageData(prevData => ({ // onorder to render on addition
+                    ...prevData,
+                    educational_qualification: updated_education
+                }));
 
             } else {
 
@@ -224,12 +252,12 @@ function SeekerProfile() {
 
         } else if (section === 'project') {
 
-            if ( local_storage_data.projects !== undefined && local_storage_data.projects.length > 0 ) {
+            if (local_storage_data.projects !== undefined && local_storage_data.projects.length > 0) {
 
-                const updated_projects = [ ...local_storage_data.projects , 
-                    { id: Date.now(), text: project, description: description, hosted_url: hosted_url } ]
+                const updated_projects = [...local_storage_data.projects,
+                { id: Date.now(), text: project, description: description, hosted_url: hosted_url }]
 
-                setProjectList( updated_projects )
+                setProjectList(updated_projects)
                 setProjects('')
                 setDescription('')
                 setHostedURL('')
@@ -250,10 +278,10 @@ function SeekerProfile() {
 
         } else if (section === 'language') {
 
-            if ( local_storage_data.languages_known !== undefined && local_storage_data.languages_known.length > 0 ) {
+            if (local_storage_data.languages_known !== undefined && local_storage_data.languages_known.length > 0) {
 
-                const updated_language = [ ...local_storage_data.languages_known , { id: Date.now(), text: language } ]
-                setLanguageList( updated_language )
+                const updated_language = [...local_storage_data.languages_known, { id: Date.now(), text: language }]
+                setLanguageList(updated_language)
                 setLanguages('')
                 setLoaclStorageData(prevData => ({
                     ...prevData,
@@ -269,10 +297,28 @@ function SeekerProfile() {
 
         } else if (section === 'certificates') {
 
-            setCertificateList([...certificate_list, { id: Date.now(), preview: certificate, text: certificate_title }])
-            setCertificate(null)
-            setCertificateTitle('')
-            setCertificateName('No file has chosen')
+            if (local_storage_data.certificates !== undefined && local_storage_data.certificates.length > 0) {
+
+                const update_certificate = [{ id: Date.now(), preview: certificate, text: certificate_title }]
+                setEditingCertificateList((prev) => [...prev, ...update_certificate])
+                setLoaclStorageData(prevData => ({
+                    ...prevData,
+                    certificates: [...local_storage_data.certificates, ...update_certificate]
+                }))
+                console.log(local_storage_data.certificates)
+                setCertificate(null)
+                setCertificateTitle('')
+                setCertificateName('No file has chosen')
+
+
+            } else {
+
+                setCertificateList([...certificate_list, { id: Date.now(), preview: certificate, text: certificate_title }])
+                setCertificate(null)
+                setCertificateTitle('')
+                setCertificateName('No file has chosen')
+
+            }
 
         }
 
@@ -348,23 +394,23 @@ function SeekerProfile() {
 
             }))
 
-        } else if ( section === 'database_project' ) {
+        } else if (section === 'database_project') {
 
-            let updated_projects = local_storage_data.projects.filter( selected => {
+            let updated_projects = local_storage_data.projects.filter(selected => {
 
-                if ( selected.id === value ) selected = null
+                if (selected.id === value) selected = null
                 return selected
 
-            } )
+            })
 
-            setProjectList( updated_projects )
+            setProjectList(updated_projects)
 
-            setLoaclStorageData( prevData => ( {
+            setLoaclStorageData(prevData => ({
 
                 ...prevData,
                 projects: updated_projects
 
-            } ) )
+            }))
 
         } else if (section === 'language') {
 
@@ -375,23 +421,23 @@ function SeekerProfile() {
 
             }))
 
-        } else if ( section === 'database_language' ) {
+        } else if (section === 'database_language') {
 
-            let updated_language = local_storage_data.languages_known.filter( selected => {
+            let updated_language = local_storage_data.languages_known.filter(selected => {
 
-                if ( selected.id === value ) selected = null
+                if (selected.id === value) selected = null
                 return selected
 
-            } )
+            })
 
-            setLanguageList( updated_language )
+            setLanguageList(updated_language)
 
-            setLoaclStorageData( prevData => ( {
+            setLoaclStorageData(prevData => ({
 
                 ...prevData,
                 languages_known: updated_language
 
-            } ) )
+            }))
 
         } else if (section === 'certificates') {
 
@@ -401,6 +447,10 @@ function SeekerProfile() {
                 return selected
 
             }))
+
+        } else if (section === 'database_certificates') {
+
+            console.log(value)
 
         }
 
@@ -459,7 +509,13 @@ function SeekerProfile() {
         setAge(local_storage_data.age)
         setExperience(local_storage_data.experience)
         setSummary(local_storage_data.summary)
-        setImageURL( local_storage_data.profile_picture )
+        setImageURL(local_storage_data.profile_picture)
+
+        if (local_storage_data.profile_picture) {
+            setImageURL(local_storage_data.profile_picture)
+        }
+
+        // console.log( local_storage_data.certificates )
 
         // Inorder to avoid datalose, it solves in additems and deleteItem functions also this is added to avoid data lose on
         // clicking saveChanges function directly after mounting and also it is not required to add in dependency array
@@ -479,8 +535,12 @@ function SeekerProfile() {
             setLanguageList(prev => [...prev, ...local_storage_data.languages_known]);
         }
 
+        if (local_storage_data.certificates && local_storage_data.certificates.length > 0) {
+            setCertificateList(prev => [...prev, ...local_storage_data.certificates]);
+        }
+
     }, [local_storage_data.username, local_storage_data.phone_number, local_storage_data.location, local_storage_data.age,
-    local_storage_data.experience, local_storage_data.summary ])
+    local_storage_data.experience, local_storage_data.summary])
 
     return (
 
@@ -505,10 +565,10 @@ function SeekerProfile() {
 
                             {edit && <input type="file" name="" id="change-dp"
                                 onChange={(event) => {
-                                    
+
                                     local_storage_data.profile_picture = null
                                     setImage(event.target.files[0])
-                                    
+
                                 }} />}
                             {
                                 edit ? <input style={{ textAlign: 'center', marginTop: '5px', marginBottom: '5px' }}
@@ -782,7 +842,7 @@ function SeekerProfile() {
 
                         }
 
-                        {input_box2 && <button style={{ position: 'relative', left: '943px' }} className='done-btn'
+                        {input_box2 && <button style={{ position: 'relative', left: '92.3%' }} className='done-btn'
                             onClick={() => {
                                 console.log('Skills = ', local_storage_data.skills)
                                 setInputBox2(false)
@@ -795,7 +855,13 @@ function SeekerProfile() {
                     <div id="certificates">
 
                         <p style={edit ? { marginBottom: '-15px' } : {}} className="heading">Certificates</p>
-                        {edit && <i onClick={() => setInputBox5(true)} class='bx bx-plus plus-btn'
+                        {edit && <i onClick={() => {
+                            
+                            setInputBox5(true)
+                            setEnableCertificate( true ) // Inorder to avoid direct uploading of existing docs when clicking apply
+                            // changes button without making any changes in certficates
+                        
+                        }} class='bx bx-plus plus-btn'
                             style={{ width: 'fit-content' }}></i>}
                         {input_box5 &&
 
@@ -846,7 +912,7 @@ function SeekerProfile() {
 
                                             }} >{objects.text}</button>
                                             {input_box5 && <i class='bx bx-x'
-                                                onClick={() => deleteItem('certificates', objects.id)}></i>}
+                                                onClick={() => deleteItem('database_certificates', objects.id)}></i>}
 
                                         </div>
 
@@ -879,7 +945,12 @@ function SeekerProfile() {
                             <div id="certificate-btns">
 
                                 <button className='done-btn' onClick={() => addItems('certificates')} >Add</button>
-                                <button className='done-btn' onClick={() => setInputBox5(false)} >Done</button>
+                                <button className='done-btn' onClick={() => {
+
+                                    console.log('Editing certificate list = ', editing_certficate_list)
+                                    setInputBox5(false)
+
+                                }} >Done</button>
 
                             </div>
 
@@ -982,8 +1053,8 @@ function SeekerProfile() {
 
                                     <div className='objects' key={index}>
                                         <p>{objects.text}</p>
-                                        {input_box4 && <i class='bx bx-x' 
-                                        onClick={() => deleteItem('database_language', objects.id)}></i>}
+                                        {input_box4 && <i class='bx bx-x'
+                                            onClick={() => deleteItem('database_language', objects.id)}></i>}
                                     </div>
 
                                 ))
@@ -1001,7 +1072,7 @@ function SeekerProfile() {
 
                         }
 
-                        {input_box4 && <button style={{ position: 'relative', left: '943px' }} className='done-btn'
+                        {input_box4 && <button style={{ position: 'relative', left: '92.3%' }} className='done-btn'
                             onClick={() => setInputBox4(false)} >Done</button>}
 
                     </div>

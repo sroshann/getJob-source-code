@@ -48,22 +48,25 @@ function NavBar() {
 
                 <div className="menu-divs">
 
-                    <button onClick={ () => { navigateTo('home') } } >Home</button>
-                    <button>About Us</button>
-                    <button>Companies</button>
+                    <button onClick={ () => { navigateTo('home') } } ><i class='bx bx-home-alt'></i>Home</button>
+                    <button><i class='bx bx-message-square-detail'></i>About Us</button>
+                    <button><i class='bx bx-buildings'></i>Companies</button>
 
                 </div>
                 <div className="menu-divs">
 
-                    <button>FAQ</button>
-                    <button onClick={ () => { user ? navigateTo('notification') : navigateTo('login') } } > { user ? 'Notifications' : 'Login' } </button>
-                    <button onClick={ () => { user ? handleLogout() : navigateTo('signup') } } >{ user ? 'Log out' : 'Sign up' }</button>
+                    <button><i class='bx bx-conversation'></i>FAQ</button>
+                    <button onClick={ () => { user ? navigateTo('notification') : navigateTo('login') } } > 
+                        { user ? <><i class='bx bx-bell'></i>Notifications</> : <><i class='bx bx-log-in' ></i>Login</> } </button>
+                    <button onClick={ () => { user ? handleLogout() : navigateTo('signup') } } >
+                        { user ? <><i class='bx bx-log-out' ></i>Log out</> : <><i class='bx bx-user-plus'></i>Sign up</> }</button>
 
                 </div>
                 <div className="menu-divs">
 
-                    <button id='post'>Post a job</button>
-                    { user && <button onClick={ () => { navigateTo('profile') } } >Profile</button> }
+                    <button id='post'><i class='bx bx-briefcase'></i>Post a job</button>
+                    { user && <button onClick={ () => { navigateTo('profile') } } ><i class='bx bx-user'></i>
+                    Profile</button> }
 
                 </div>
 

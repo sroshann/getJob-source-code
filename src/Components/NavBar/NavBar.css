@@ -48,29 +48,30 @@
 
     width: 150px;
     height: 3rem;
-    background: #0149AB;
-    color: white;
-    border: 0;
-    border-radius: 4.5px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    box-shadow: 0.8px 0.8px 0.5px 0.5px lightgrey;
-
-        
+    justify-content: center;
+    column-gap: 2px;
+    background-color: #0149AB;
+    border: solid 2px #0149AB;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    /* font-family: Poppins; */
+    font-size: 12.5px;
+    transition: 0.3s;
+  
 }
 
 .menu-divs button:hover {
 
-    background: white;
-    color: #0149AB ;
-    transition: 0.3s;
-    cursor: pointer;
-    box-shadow: 0px 0px 10px -7px rgba(0, 0, 0, 0.75); /* Adjust the shadow color and other parameters as needed */
+    border: solid 2px #0149AB;
+    background-color: #0090ff69;
+    color: #0149AB;
 
 }
 
-.menu-divs button:not(:hover) { transition: 0.2s; }
+i { font-size: 13px; }
 
 @media (max-width : 767px) {
 
