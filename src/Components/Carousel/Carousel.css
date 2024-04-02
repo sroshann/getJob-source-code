@@ -6,6 +6,7 @@
 }
 
 h3 { text-align: center; }
+p { margin: 0; }
 
 .swiper {
 
@@ -47,9 +48,168 @@ h3 { text-align: center; }
 
     width: 225px;
     height: 200px;
-    box-shadow: 0px 0px 10px -7px rgba(0, 0, 0, 0.75); /* Adjust the shadow color and other parameters as needed */
-    transition: box-shadow 0.3s ease; /* Add a smooth transition for the box-shadow */
+    box-shadow: 0px 0px 10px -7px rgba(0, 0, 0, 0.75); 
+    /* transition: box-shadow 0.3s ease; */
     border-radius: 6px;
+    display: grid;
+    place-items: center;
+
+}
+
+.carousel-body div {
+
+    display: grid;
+    place-items: center;
+
+}
+
+.carousel-body img {
+
+    width: 85px;
+    border-radius: 50%;
+
+}
+
+.company-name {
+
+    font-size: 18px;
+    color: #003181;
+    margin-top: 2px;
+
+}
+
+.location {
+
+    font-size: 14px;
+    margin-top: -5px;
+
+}
+
+#start-career {
+
+    height: 275px;
+    background-color: #03A9F4;
+    margin: 110px 0px 45px 0px;
+
+}
+
+#texts-section { 
+    
+    width: 68%; 
+    height: 100%;
+    display: grid;
+    place-items: center;
+    float: left;
+
+}
+
+#texts-section div {
+
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+
+}
+
+#texts-section h1 {
+
+    font-weight: 400;
+    font-size: 50px;
+    color: white;
+    cursor: default;
+
+}
+
+#texts-section button , #hire-text-section button {
+
+    /* padding: 9px 30px; */
+    width: 118.65px;
+    height: 42px;
+    transition: 0.3s;
+    background-color: #ff9c24;
+    border: solid 2px #FFBF00;
+    color: white;
+    border-radius: 3.8px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-family: Poppins;
+    font-size: 13/5px;
+
+}
+
+#texts-section button:hover , #hire-text-section button:hover {
+
+    border: solid 2px darkorange;
+    background-color: #ffce93;
+    color: darkorange;
+
+}
+
+#image-section { 
+    
+    width: 28%; 
+    display: grid;
+    place-items: center;
+    float: left;
+
+}
+
+#start-career-image { width: 310px; }
+
+#hire-talents {
+
+    width: 80%;
+    height: 365px;
+    margin: 40px auto 70px auto;
+    background-color: #03A9F4;
+    border-radius: 25px;
+    display: flex;
+
+}
+
+#hire-image-section , #hire-text-section {
+
+    width: 43%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+
+}
+
+#hire-image { width: 400px; }
+
+#hire-text-section { width: 53%; }
+
+#hire-text-section div {
+
+    display: grid;
+    place-items: center;
+
+}
+
+#hire-text-section h1{
+
+    font-weight: 400;
+    font-size: 50px;
+    color: #fff;
+    cursor: default;
+
+}
+
+#hire-text-section button {
+
+    background-color: #50C878;
+    border: solid 2px #98FB98;
+
+}
+
+#hire-text-section button:hover {
+
+    background-color: #98FB98;
+    border: solid 2px #50C878;
+    color: #50C878;
 
 }
 
@@ -77,6 +237,53 @@ h3 { text-align: center; }
 
     }
 
+    #start-career { 
+        
+        display: grid; 
+        height: fit-content;
+        margin: -5px 0px 20px 0px;
+
+    }
+    #texts-section { width: 100%; }
+    #image-section { width: 100%; }
+    #texts-section div { 
+        
+        display: grid;
+        place-items: center; 
+        margin-top: 10px;
+    
+    }
+    #texts-section h1 { font-size: 30px; }
+    #start-career-image { width: 260px; }
+    #texts-section button , #hire-talents button {
+
+        margin-left: unset;
+        width: unset;
+        height: unset;
+        padding: 5px 16px;
+        font-size: 12px;
+
+    }
+
+    #hire-talents { 
+        
+        display: grid; 
+        height: fit-content;
+    
+    }
+    #hire-image { width: 320px; }
+    #hire-image-section {
+
+        width: unset;
+        height: unset;
+
+    }
+
+    #hire-talents{ width: 75%; }
+    #hire-text-section { width: 100%; }
+    #hire-text-section h1 { font-size: 30px; }
+    #hire-text-section div { margin-bottom: 32px; }
+
 }
 
 @media (min-width : 768px) and (max-width : 991px) {
@@ -90,10 +297,61 @@ h3 { text-align: center; }
 
     .carousel-body { width: 208px; }
 
+    #texts-section { width: 60%; }
+    #image-section { width: 40%; }
+
+    #texts-section div {
+
+        display: grid;
+        place-items: center;
+
+    }
+
+    #texts-section h1 { font-size: 40px; }
+    #texts-section button , #hire-text-section button {  
+
+        margin-left: unset;
+        padding: 7px 24px;
+
+    }
+
+    #hire-talents { height: 340px; }
+    #hire-text-section div {
+
+        display: grid;
+        place-items: start;
+        margin-left: 80px;
+
+    }
+    #hire-image { width: 355px; }
+    #hire-text-section { width: 60%; }
+    #hire-text-section h1 { 
+        
+        font-size: 38px; 
+        line-height: 1.1;
+    
+    }
+    #hire-text-section button { margin-top: 5px; }
+
 }
 
 @media (min-width : 992px) and (max-width : 1199px) {
 
     .carousel-body { width: 185px; }
+    #texts-section h1 { font-size: 43px; }
+    #texts-section button , #hire-text-section button {  
+
+        width: unset;
+        height: unset;
+        padding: 8px 28px;
+
+    }
+
+    #hire-talents { height: 350px; }
+    #hire-image { width: 360px; }
+    #hire-image-section { width: 40%; }
+    #hire-text-section { width: 60%; }
+    #hire-text-section h1 { font-size: 40px; }
+    #hire-text-section button { margin-left: unset; }
 
 }

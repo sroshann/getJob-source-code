@@ -75,15 +75,20 @@
     width: 85px;
     height: 31px;
     border-radius: 20px;
-    border: 0;
     margin-left: 25px;
     background: #0149AB;
+    border: solid 2px #0149AB;
     color: white;
+    font-family: Poppins;
+    transition: 0.3s;
 
 }
 
 #search_box button:hover {
     cursor: pointer;
+    border: solid 2px #0149AB;
+    color: #0149AB;
+    background-color: #0090ff69;
 }
 
 @media (max-width : 767px) {
