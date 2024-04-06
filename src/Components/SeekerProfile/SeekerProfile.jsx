@@ -136,10 +136,12 @@ function SeekerProfile() {
 
     const saveChanges = async () => {
 
-        console.log('Skill list = ', skill_list)
-        console.log('Local storage skill = ', certificate_url_list)
+        // console.log('Skill list = ', skill_list)
+        // console.log('Local storage skill = ', certificate_url_list)
 
         try {
+
+            console.log( 'Certificate url list = ' , certificate_url_list )
 
             const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
             const condition = where('email', '==', local_storage_data.email) // Providing the condition for selecting the user
@@ -663,7 +665,7 @@ function SeekerProfile() {
 
                             </div>
 
-                            <i class='bx bxs-edit edit' onClick={enableEdit}></i>
+                            <i className='bx bxs-edit edit' onClick={enableEdit}></i>
 
                         </div>
                         <div id="details-lower">
@@ -725,13 +727,6 @@ function SeekerProfile() {
                 </div>
 
                 <div id="down-container">
-
-                    {/* <p>Profile summary</p>
-                <p>Educational qualification</p>
-                <p>Skills</p>
-                <p>Projects</p>
-                <p>Languages known</p>
-                <p>Attatchements</p> */}
 
                     <div id="educational-qualifications">
 
