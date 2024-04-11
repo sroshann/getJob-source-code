@@ -1,0 +1,66 @@
+#footer {
+
+    height: 125px;
+    background-color: #ffcb05;
+    /* background-color: #0090ff69; */
+    /* background-color:  #19195f; */
+    /* background-color: red; */
+    /* background-color: dimgray; */
+    border-radius: 20px 20px 0px 0px; 
+    display: flex;
+    align-items: center;
+    justify-content: space-around;    
+
+}
+
+.name-copy {
+
+    display: flex;
+    align-items: center;
+    column-gap: 25px;
+
+}
+.name-copy p {
+
+    font-size: 13.5px;
+    /* color: #ffcb05; */
+    color: #19195f;
+
+}
+
+.name-copy h1 {
+
+    /* color: #0149AB; */
+    cursor: default;
+    /* color: #ffcb05; */
+    color: #19195f;
+
+}
+.name-copy #job { 
+    
+    /* color: #2DB4D4;  */
+    /* color: #ffcb05; */
+    color: #19195f;
+    font-family: 'Montserrat', sans-serif;
+
+}
+
+.links {
+
+    display: flex;
+    column-gap: 8px;
+
+}
+
+.links i {  
+
+    /* color: #ffcb05; */
+    color: #19195f;
+    cursor: pointer;
+    font-size: 23px;
+    transition: ease .2s;
+    /* padding: 1px; */
+
+}
+
+.links i:hover { transform: scale(1.2); }

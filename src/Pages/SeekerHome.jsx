@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import NavBar from '../Components/NavBar/NavBar'
 import { AuthContext } from '../Context/User'
+import Footer from '../Components/Footer/Footer'
 
 function SeekerHome() {
 
@@ -12,6 +13,7 @@ function SeekerHome() {
 
       <NavBar />
       <h1>{ user ? user.displayName : '' }</h1>
+      <Footer />
 
     </div>
 

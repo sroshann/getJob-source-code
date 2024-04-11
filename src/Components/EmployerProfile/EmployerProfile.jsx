@@ -217,7 +217,7 @@ function EmployerProfile() {
 
     <section id='root-body'>
 
-      <div id="container">
+      <div id="employer-container">
 
         <section id="upper-container">
 

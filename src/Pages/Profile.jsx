@@ -3,6 +3,7 @@ import NavBar from '../Components/NavBar/NavBar'
 // import { UDContext } from '../Context/local_storage_data'
 import SeekerProfile from '../Components/SeekerProfile/SeekerProfile'
 import EmployerProfile from '../Components/EmployerProfile/EmployerProfile'
+import Footer from '../Components/Footer/Footer'
 
 function Profile() {
 
@@ -34,6 +35,7 @@ function Profile() {
       <NavBar />
       { seeker && <SeekerProfile /> }
       { employer && <EmployerProfile /> }
+      <Footer />
 
     </div>
 
