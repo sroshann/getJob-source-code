@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './EmployerProfile.css'
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { FirebaseFirestore } from '../../FIrebase/Configueration';
-
+import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { FirebaseFirestore, FirebaseStorage } from '../../FIrebase/Configueration';
+import toast, { Toaster } from 'react-hot-toast'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 function EmployerProfile() {
 
@@ -15,9 +16,11 @@ function EmployerProfile() {
   const [website, setWebsite] = useState('') // To store website URL
   const [summary, setSummary] = useState('') // To store summary
   const [image, setImage] = useState(null) // Inorder to store profile image
+  const [imageURL, setImageURL] = useState('') // To store profile pictire URL
 
 
   const [edit, setEdit] = useState(false)
+  const [profileEdit, setProfileEdit] = useState(false)
 
   const [wrdm, setWRDM] = useState(false)
   const [working_domain, setWorkinDomain] = useState('') // To store working domain
@@ -40,6 +43,7 @@ function EmployerProfile() {
         user_data.forEach(doc => {
 
           setUserData(doc.data()) // The each fields of data are stored into a state
+          // console.log( doc.data() )
 
         })
 
@@ -52,43 +56,162 @@ function EmployerProfile() {
 
   const emoloyerAddItems = () => {
 
-    setWRDMList([...wrdm_list, { id: Date.now(), text: working_domain }])
-    setWorkinDomain('')
+    if ( user_data.workingDomains !== undefined && user_data.workingDomains.length > 0 ) {
+
+      const updatedWorkingDomains = [ ...user_data.workingDomains , { id: Date.now(), text: working_domain } ]
+      setWRDMList( updatedWorkingDomains )
+      setWorkinDomain('')
+
+      setUserData((prevData) => ({ // To render on deletion
+
+        ...prevData,
+        workingDomains: updatedWorkingDomains
+
+      }))
+
+    } else {
+
+      setWRDMList([...wrdm_list, { id: Date.now(), text: working_domain }])
+      setWorkinDomain('')
+
+    }
 
   }
 
-  const employerDeleteItems = (value) => {
+  const employerDeleteItems = (section, value) => {
 
-    setWRDMList(wrdm_list.filter(selected => {
+    if (section === 'databaseList') {
 
-      if (selected.id === value) selected = null
-      return selected
+      let updatedWorkingDomains = user_data.workingDomains.filter(selected => {
 
-    }))
+        if (selected.id === value) selected = null
+        return selected
+
+      })
+
+      setWRDMList(updatedWorkingDomains)
+
+      setUserData((prevData) => ({ // To render on deletion
+
+        ...prevData,
+        workingDomains: updatedWorkingDomains
+
+      }))
+
+    } else if (section === 'localList') {
+
+      setWRDMList(wrdm_list.filter(selected => {
+
+        if (selected.id === value) selected = null
+        return selected
+
+      }))
+
+    }
 
   }
 
+  const applyChanges = async () => {
+
+    if (profileEdit) { // Inorder to avoid direct uploading of existing docs when clicking apply
+      // changes button without making any changes in profile picture
+
+      try {
+
+        if (image === null)
+          return toast.error('Complete all fields', { style: { fontSize: '14px' } })
+
+        else {
+
+          const dpRef = ref(FirebaseStorage,
+            `Profile pictures/${user_data.user_type}/${user_data.email}/${image.name}`)
+
+          const response = await uploadBytes(dpRef, image)
+          const imageLink = await getDownloadURL(response.ref)
+          setImageURL(imageLink)
+          console.log(imageLink)
+          toast.success('Profile is updated', { style: { fontSize: '14px' } })
+
+        }
+
+      } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
+
+    } else { toast.success('Profile is updated', { style: { fontSize: '14px' } }) }
+
+  }
+
+  const saveChanges = async () => {
+
+    try {
+
+      if (updated_username === '' || contact_person === '' || updated_number === '' || address === '' || summary === '' ||
+        imageURL === '' || wrdm_list.size === 0) return toast.error('Complete all fields', { style: { fontSize: '14px' } })
+
+      else {
+
+        const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
+        const condition = where('email', '==', user_data.email) // Providing the condition for selecting the user
+        const selected_user = query(user_ref, condition) // Selects the user from the total collection
+
+        await getDocs(selected_user).then(async (userDocument) => {
+
+          const userDocRef = userDocument.docs[0].ref
+          const changingObject = {
+
+            profile_picture: imageURL,
+            username: updated_username,
+            contact_person: contact_person,
+            phone_number: updated_number,
+            address,
+            website,
+            summary,
+            workingDomains: wrdm_list,
+            job_posted: 0,
+            applications: 0,
+            hired: 0
+
+          }
+
+          await updateDoc(userDocRef, changingObject).then(() => {
+
+            setEdit(false)
+            setProfileEdit(false)
+            setWRDM(false)
+            getUserData()
+            toast.success('Changes applied', { style: { fontSize: '14px' } })
+
+          }).catch((error) => toast.error('Data are not updated', { style: { fontSize: '14px' } }))
+
+        }).catch((error) => console.log(error.message, 'Error with getdocs'))
+
+      }
+
+    } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
+
+  }
 
   useEffect(() => {
 
     getUserData()
 
-
     // avoidDataLoseOnEdit
     setUdatedUsername(user_data.username)
-    // This also should be added for PROFILE PICTURE after uploading it into firestore
     setContactPerson(user_data.contact_person)
     setUPdatedNumber(user_data.phone_number)
-    // ADDRESS
-    // WEBSITE
-    // SUMMARY
+    if (user_data.profile_picture) setImageURL(user_data.profile_picture)
+    setAddress(user_data.address)
+    setWebsite(user_data.website)
+    setSummary(user_data.summary)
+
+    if ( user_data.workingDomains && user_data.workingDomains.length > 0 ) 
+      setWRDMList( previous => [ ...previous , ...user_data.workingDomains ] )
 
     // return () => {
     //   second
     // }
 
 
-  }, [user_data.username, user_data.contact_person, user_data.phone_number])
+  }, [user_data.username, user_data.contact_person, user_data.phone_number, user_data.address, user_data.website, user_data.summary])
 
   return (
 
@@ -104,15 +227,21 @@ function EmployerProfile() {
 
               {
 
-                image ? <img src={URL.createObjectURL(image)} alt="DP" className='employer-dp' /> :
-                  <i className='bx bxs-user-circle profile-icon' ></i>
+                user_data.profile_picture ? <img src={user_data.profile_picture} alt="DP" className='employer-dp' /> :
+                  image ? <img src={URL.createObjectURL(image)} alt="DP" className='employer-dp' /> :
+                    <i className='bx bxs-user-circle profile-icon' ></i>
 
               }
 
               {
 
                 edit && <p id='choose-dp-text' style={image ? {} : { marginTop: '-13px' }}
-                  onClick={() => { document.querySelector("#choose-dp").click() }} >
+                  onClick={() => {
+
+                    document.querySelector("#choose-dp").click()
+                    setProfileEdit(true)
+
+                  }} >
 
                   <input type="file" name="" id="choose-dp" accept="image/*" hidden
                     onChange={(event) => {
@@ -190,7 +319,7 @@ function EmployerProfile() {
               </section>
               <section id='lower-details-content'>
 
-                <div>
+                <div style={{ width: '305px' }}>
 
                   <p className="heading">Address</p>
                   {
@@ -215,10 +344,10 @@ function EmployerProfile() {
                       className='inp-bx'
                       placeholder='Add website URL'
                       onChange={(event) => setWebsite(event.target.value)} /> :
-                      <a href={user_data.website}
+                      <a href={ 'https://' + user_data.website}
                         rel='noreferrer' target='_blank'>
-                        <p className="sub-heading" style={user_data.website ? {} : { color: 'grey' }}>
-                          {user_data.website ? <><i class='bx bx-link'></i> {user_data.website}</> :
+                        <p className="sub-heading" style={user_data.website ? { cursor: 'pointer' } : { color: 'grey' }}>
+                          {user_data.website ? <><i className='bx bx-link'></i> {user_data.website}</> :
                             'Add your website URL for more information'}</p>
                       </a>
 
@@ -284,18 +413,34 @@ function EmployerProfile() {
 
             {
 
-              wrdm_list.map((objects, index) => (
+              (user_data.workingDomains !== undefined && user_data.workingDomains.length > 0) ?
 
-                <div className="employer-objects" key={index}>
+                user_data.workingDomains.map((objects, index) => (
 
-                  <p>{objects.text}</p>
-                  {wrdm &&
-                    <i class='bx bx-x x' onClick={() => employerDeleteItems(objects.id)}></i>
-                  }
+                  <div className="employer-objects" key={index}>
 
-                </div>
+                    <p>{objects.text}</p>
+                    {wrdm &&
+                      <i class='bx bx-x x' onClick={() => employerDeleteItems('databaseList', objects.id)}></i>
+                    }
 
-              ))
+                  </div>
+
+                ))
+
+                :
+                wrdm_list.map((objects, index) => (
+
+                  <div className="employer-objects" key={index}>
+
+                    <p>{objects.text}</p>
+                    {wrdm &&
+                      <i class='bx bx-x x' onClick={() => employerDeleteItems('localList', objects.id)}></i>
+                    }
+
+                  </div>
+
+                ))
 
             }
 
@@ -317,7 +462,7 @@ function EmployerProfile() {
 
               <div>
                 <p className="heading">Job posted</p>
-                <p className="sub-heading">{ user_data.job_posted ? user_data.job_posted : '0' }</p>
+                <p className="sub-heading">{user_data.job_posted ? user_data.job_posted : '0'}</p>
               </div>
 
             </section>
@@ -325,7 +470,7 @@ function EmployerProfile() {
 
               <div>
                 <p className="heading">Applications</p>
-                <p className="sub-heading">{user_data.applications?user_data.applications:'0'}</p>
+                <p className="sub-heading">{user_data.applications ? user_data.applications : '0'}</p>
               </div>
 
             </section>
@@ -333,19 +478,19 @@ function EmployerProfile() {
 
               <div>
                 <p className='heading'>Hired</p>
-                <p className="sub-heading">{ user_data.hired ? user_data.hired : '0' }</p>
+                <p className="sub-heading">{user_data.hired ? user_data.hired : '0'}</p>
               </div>
 
             </section>
 
           </div>
 
-          { edit &&
+          {edit &&
 
             <div id="employer-save-changes">
 
-              <button className='employer-save'>Apply changes</button>
-              <button className="employer-save">Save changes</button>
+              <button className='employer-save' onClick={applyChanges}>Apply changes</button>
+              <button className="employer-save" onClick={saveChanges}>Save changes</button>
 
             </div>
 
@@ -354,6 +499,8 @@ function EmployerProfile() {
         </section>
 
       </div>
+
+      <Toaster />
 
     </section>
 

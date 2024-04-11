@@ -27,7 +27,7 @@ function NavBar() {
 
         signOut( FirebaseAuth ).then( () => {
             
-            localStorage.removeItem('userData')
+            localStorage.clear()
             navigate('/login')
         
         } )

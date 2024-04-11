@@ -186,7 +186,7 @@ function SeekerProfile() {
                             setInputBox3(false)
                             setInputBox4(false)
                             setInputBox5(false)
-                            setLoaclStorageData(changing_object)
+                            // setLoaclStorageData(changing_object)
                             setEditingCertificateList([])
                             setEnableCertificate( false )
                             toast.success('Changes applied', { style: { fontSize: '14px' } })
@@ -984,7 +984,7 @@ function SeekerProfile() {
                                         <div>
                                             <p>{objects.text}</p>
                                             <p style={{ wordBreak: 'break-all' }}>{objects.description}</p>
-                                            <a rel='noreferrer' target='_blank' href={objects.hosted_url}>
+                                            <a rel='noreferrer' target='_blank' href={ 'https://' + objects.hosted_url}>
                                                 <p style={{ color: 'grey', cursor: 'pointer' }}>{objects.hosted_url}</p>
                                             </a>
                                         </div>
@@ -1000,7 +1000,7 @@ function SeekerProfile() {
                                         <div>
                                             <p>{objects.text}</p>
                                             <p style={{ wordBreak: 'break-all' }}>{objects.description}</p>
-                                            <a rel='noreferrer' target='_blank' href={objects.hosted_url}>
+                                            <a rel='noreferrer' target='_blank' href={ 'https://' + objects.hosted_url}>
                                                 <p style={{ color: 'grey', cursor: 'pointer' }}>{objects.hosted_url}</p>
                                             </a>
                                         </div>

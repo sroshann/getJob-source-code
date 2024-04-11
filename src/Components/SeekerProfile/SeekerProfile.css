@@ -63,6 +63,13 @@ a { text-decoration: none; color: black; }
 
 }
 
+#photo div {
+
+    position: relative;
+    left: 17px;
+
+}
+
 .profile-photo {
 
     font-size: 150px;
@@ -120,8 +127,8 @@ a { text-decoration: none; color: black; }
 
 .dp {
 
-    width: 135px;
-    height: 133px;
+    width: 200px;
+    height: 195px;
     object-fit: cover;
     border-radius: 50%;
     padding: 10px;
@@ -291,7 +298,7 @@ a { text-decoration: none; color: black; }
     display: flex;
     column-gap: 5px;
     position: relative;
-    left: 64.3%;
+    left: 70.3%;
     bottom: 10px;
 
 }
