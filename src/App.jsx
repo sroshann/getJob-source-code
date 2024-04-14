@@ -10,6 +10,7 @@ import { AuthContext } from "./Context/User";
 import { onAuthStateChanged } from "firebase/auth";
 import { FirebaseAuth } from "./FIrebase/Configueration";
 import Profile from "./Pages/Profile";
+import PostJobPage from "./Pages/PostJobPage";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
         <Route element={ <SeekerHome/> } path="seekerhome" />
         <Route element={ <EmployerHome/> } path="employerhome" />
         <Route element={ <Profile /> } path="profile" />
+        <Route element={ <PostJobPage /> } path="postjob" />
 
       </Routes>
 
