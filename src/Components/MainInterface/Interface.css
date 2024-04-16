@@ -36,7 +36,12 @@
 
 }
 
-#job { color: #2DB4D4; }
+#job { 
+    
+    color: #2DB4D4; 
+    font-family: 'Montserrat', sans-serif;
+
+}
 
 #search_box {
 

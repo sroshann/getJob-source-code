@@ -1,0 +1,234 @@
+#home-root {
+
+    margin-top: 15px;
+    margin-bottom: 40px;
+    display: grid;
+
+}
+
+/* Search input */
+
+#searching-area {
+
+    height: 70px;
+    display: grid;
+    place-items: center;
+
+}
+
+#searching-area div {
+
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    width: 315px;
+    height: 38px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+
+}
+
+#input-search {
+
+    height: 100%;
+    width: 77.8%;
+    padding-left: 13px;
+    border-radius: 20px 0px 0px 20px;
+    outline: none;
+    border: 0;
+    font-size: 12.5px;
+
+}
+
+.search-icon {
+
+    font-size: 15px;
+    background-color: #0149AB;
+    padding: 4px 13px;
+    color: white;
+    border: solid 2px #0149AB;
+    border-radius: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+
+}
+
+.search-icon:hover {
+
+    border: solid 2px #0149AB;
+    background-color: #0090ff69;
+    color: #0149AB;
+
+}
+
+/* Search input */
+
+/* Main contents */
+
+#main-contents {
+
+    display: flex;
+
+}
+
+#category {
+
+    width: 30%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    overflow-y: auto;
+    position: sticky;
+    left: 0; /* Adjust this value based on your layout */
+    top: 20px; /* Adjust this value based on your layout */
+
+}
+
+#catgory-listing {
+
+    height: fit-content;
+    width: 56%;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 8px;
+    position: relative;
+    top: 20px;
+    margin-bottom: 50px;
+    left: 145px;
+    display: grid;
+    place-items: center;
+    padding: 8px 0px 8px 0px;
+
+}
+
+#catgory-listing section { width: 85%; }
+
+#catgory-listing div {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    height: 38px;
+    margin: 5px;
+    border: solid 2px white;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.2s;
+
+}
+
+#catgory-listing div:hover {
+
+    border: solid 2px #0149AB;
+    background-color: #0090ff69;
+    color: #0149AB;
+    cursor: pointer;
+    transform: scale(1.08);
+
+}
+
+#catgory-listing div:hover i { cursor: pointer; }
+#catgory-listing div:hover p { cursor: pointer; }
+
+#jobs {
+
+    width: 70%;
+    height: fit-content;
+
+}
+
+#jobs p {
+
+    height: fit-content;
+    width: fit-content;
+
+}
+
+#job-listing {
+
+    width: 80%;
+    display: grid;
+    row-gap: 13px;
+    margin-top: 20px;
+
+}
+
+.job-objects {
+
+    height: fit-content;
+    width: 100%;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    padding: 13px 0px 13px 0px;
+
+
+}
+
+.job-objects section {
+
+    width: 95%;
+    height: fit-content;
+    display: grid;
+    row-gap: 15px;
+    /* background-color: yellow; */
+
+}
+
+
+
+#other-details { 
+
+    display: flex;
+    column-gap: 15px;
+
+}
+
+#other-details div , #date-save div { 
+    
+    display: flex; 
+    column-gap: 4px;
+    align-items: center;
+
+}
+
+#job-skills {
+
+    display: flex;
+    column-gap: 10px;
+    margin-top: -13px;
+
+}
+#job-skills p { font-size: 11px; }
+
+#date-save {
+
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#date-save div { 
+    
+    column-gap: 2px; 
+    cursor: pointer;
+
+}
+#date-save i , #date-save p { cursor: pointer; }
+
+
+
+#job-title { font-size: 15px; }
+#company-name { font-size: 13.5px; }
+.grey { 
+    
+    color: grey; 
+    font-size: 13px;
+
+}
+
+/* Main contents */

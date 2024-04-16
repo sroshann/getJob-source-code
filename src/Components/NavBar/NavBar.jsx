@@ -15,19 +15,33 @@ function NavBar() {
     const navigate = useNavigate()
     const navigateTo = (destination) => {
 
-        if (destination === 'home') navigate('/')
+        let userType
+
+        const storedUserData = localStorage.getItem('userData')
+        if ( storedUserData ) {
+
+            const parsedUserData = JSON.parse( storedUserData )
+            userType = parsedUserData.user
+
+        }
+
+        if (destination === 'home') {
+
+            if ( userType === 'Seeker' ) navigate('/seekerhome')
+            else if ( userType === 'Employer' ) navigate('/employerhome')
+            else navigate('/')
+
+        }
         else if (destination === 'login') navigate('/login')
         else if (destination === 'signup') navigate('/signup')
         else if (destination === 'notification') navigate('/notification')
         else if (destination === 'profile') navigate('/profile')
         else if (destination === 'postjob') {
 
-            const storedUserData = localStorage.getItem('userData')
 
             if (storedUserData) {
 
-                const parsedUserData = JSON.parse(storedUserData)
-                if (parsedUserData.user === 'Employer') navigate('/postjob')
+                if (userType === 'Employer') navigate('/postjob')
                 else navigate('/signup')
 
             }else navigate('/signup')
