@@ -54,7 +54,7 @@ function Login() {
                 })
 
             })
-                .catch(() => toast.error('Password or email is not matching', { style: { fontSize: '14px' } }))
+            .catch((error) => toast.error(error.message, { style: { fontSize: '13px' } }))
 
         } catch (error) { toast.error(error.message) }
 

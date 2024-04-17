@@ -13,8 +13,11 @@ function PostJob() {
     const [salary, setSalary] = useState('')
     const [description, setDescription] = useState('')
     const [experience, setExperience] = useState('')
-    const [ location , setLocation ] = useState('')
-    const [ companyName , setCompanyName ] = useState('')
+    const [location, setLocation] = useState('')
+    const [companyName, setCompanyName] = useState('')
+    const [dp, setDP] = useState('')
+    const [workingType, setworkingType] = useState('')
+    const [jobType, setJobType] = useState('')
 
     const [skills, setSkills] = useState('')
     const [skillArray, setSkillsArray] = useState([])
@@ -101,7 +104,7 @@ function PostJob() {
                 await addDoc(collection(FirebaseFirestore, 'Jobs'), {
 
                     jobID: Date.now(),
-                    postedOn : date.toDateString(),
+                    postedOn: date.toDateString(),
                     userEmail: parsedUserData.email,
                     jobTitle,
                     category,
@@ -111,6 +114,9 @@ function PostJob() {
                     experience,
                     location,
                     companyName,
+                    dp,
+                    workingType,
+                    jobType,
                     skillsRequired: skillArray,
                     responsibilities: resArray,
                     requirements: reqArray
@@ -145,23 +151,24 @@ function PostJob() {
     const getUser = async () => {
 
         const localStorageData = localStorage.getItem('userData')
-        if ( localStorageData ) {
+        if (localStorageData) {
 
-            const localJSON = JSON.parse( localStorageData )
+            const localJSON = JSON.parse(localStorageData)
             const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
             const condition = where('email', '==', localJSON.email) // Providing the condition for selecting the user
             const selected_user = query(user_ref, condition) // Selects the user from the total collection
 
-            await getDocs( selected_user ).then( ( userData ) => {
+            await getDocs(selected_user).then((userData) => {
 
-                userData.forEach( doc => {
+                userData.forEach(doc => {
 
-                    setLocation( doc.data().address )
-                    setCompanyName( doc.data().username )
+                    setLocation(doc.data().address)
+                    setCompanyName(doc.data().username)
+                    setDP(doc.data().profile_picture)
 
-                } )
+                })
 
-            } )
+            })
 
         }
 
@@ -170,13 +177,13 @@ function PostJob() {
     useEffect(() => {
 
         getUser()
-    
-    //   return () => {
-    //     second
-    //   }
+
+        //   return () => {
+        //     second
+        //   }
 
     }, [])
-    
+
 
     return (
 
@@ -197,6 +204,10 @@ function PostJob() {
                             <label for="jobQualif">Qualification</label>
                             <input type="text" placeholder="Qualification" value={qualification}
                                 onChange={(event) => setQualification(event.target.value)} />
+
+                            <label for="jobQualif">Job Type</label>
+                            <input type="text" placeholder="Provide job type " value={jobType}
+                                onChange={(event) => setJobType(event.target.value)} />
 
                             <label for="jobDesc">Skills Required</label>
                             <div className="textAreaInput">
@@ -223,6 +234,10 @@ function PostJob() {
                             <label for="jobSalary">Salary</label>
                             <input type="text" placeholder="Salary" value={salary}
                                 onChange={(event) => setSalary(event.target.value)} />
+
+                            <label for="jobQualif">Working Mode</label>
+                            <input type="text" placeholder="On site/Remote/Full time " value={workingType}
+                                onChange={(event) => setworkingType(event.target.value)} />
 
                             <label for="jobSalary">Experience</label>
                             <input type="text" placeholder="Experience" value={experience}
@@ -315,7 +330,7 @@ function PostJob() {
                                 <div key={index} className='postObjects'>
 
                                     <p>{objects.text}</p>
-                                    <i class='bx bx-x x' style={{ cursor: 'pointer' }}
+                                    <i className='bx bx-x x' style={{ cursor: 'pointer' }}
                                         onClick={() => deleteItems('requirements', objects.id)}></i>
 
                                 </div>

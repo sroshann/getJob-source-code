@@ -46,7 +46,7 @@ function NavBar() {
 
             }else navigate('/signup')
 
-        }
+        } else if ( destination === 'saved' ) navigate('/saved')
 
     }
 
@@ -92,6 +92,7 @@ function NavBar() {
                     <div className="menu-divs">
 
                         <button id='post' onClick={() => { navigateTo('postjob') }}><i class='bx bx-briefcase'></i>Post a job</button>
+                        { user && <button onClick={ () => navigateTo('saved') }><i class='bx bx-bookmarks' ></i>Saved jobs</button>}
                         {user && <button onClick={() => { navigateTo('profile') }} ><i class='bx bx-user'></i>
                             Profile</button>}
 

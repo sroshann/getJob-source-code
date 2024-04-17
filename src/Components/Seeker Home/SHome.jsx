@@ -3,13 +3,16 @@ import './SHome.css'
 import toast, { Toaster } from 'react-hot-toast'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
+import { useNavigate } from 'react-router-dom'
 
 function SHome() {
 
     const [saveArray, setSaveArray] = useState([])
     const [jobs, setJobs] = useState([])
 
-    const saveJob = async (object) => {
+    const navigate = useNavigate()
+
+    const saveJob = async ( object) => {
 
         const index = saveArray.findIndex(value => value.jobID === object.jobID)
         let uploadArray = [] // Inorder to solve asynchronous nature, we cannot access state directly 
@@ -76,7 +79,6 @@ function SHome() {
             return parseToJSON.email
 
         }
-
         
     }
 
@@ -89,6 +91,13 @@ function SHome() {
 
         const userData = await getDocs( selectedUser )
         userData.forEach( doc => { setSaveArray( doc.data().savedJobs ) } )
+
+    }
+
+    const pageView = ( ID ) => {
+
+        localStorage.setItem('jobID', JSON.stringify( ID ))
+        navigate('/view')
 
     }
 
@@ -197,7 +206,7 @@ function SHome() {
                                 :
                                 jobs.map((objects, index) => (
 
-                                    <div className="job-objects" key={index}>
+                                    <div className="job-objects" key={index} onClick={ ()=> pageView( objects.jobID ) } >
 
                                         <section>
 
@@ -252,7 +261,12 @@ function SHome() {
                                             <div id="date-save">
 
                                                 <p className='grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
-                                                <div onClick={() => { saveJob(objects, objects.jobID) }}>
+                                                <div onClick={( event ) => { 
+                                                    
+                                                    saveJob(objects) 
+                                                    event.stopPropagation()
+                                                    
+                                                }}>
 
                                                     {saveArray.some(saved => saved.jobID === objects.jobID) ?
                                                         <i className='bx bxs-bookmark grey' ></i> :

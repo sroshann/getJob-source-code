@@ -7,66 +7,66 @@ function Category() {
 
         <div id='categories'>
 
-            <div class="top">
+            <div className="top">
 
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-home-alt'></i>
+                    <i className='bx bx-home-alt'></i>
                     <p>Remote</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:'3px'}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:'3px'}}></i>
 
                 </div>
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-buildings'></i>
+                    <i className='bx bx-buildings'></i>
                     <p>MNC</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
 
                 </div>
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-shopping-bag'></i>
+                    <i className='bx bx-shopping-bag'></i>
                     <p>Sales</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
 
                 </div>
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-line-chart' ></i>
+                    <i className='bx bx-line-chart' ></i>
                     <p>Marketing</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
 
                 </div>
 
             </div>
-            <div class="bottom">
+            <div className="bottom">
 
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-group'></i>
+                    <i className='bx bx-group'></i>
                     <p>HR</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
 
                 </div>
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-rocket'></i>
+                    <i className='bx bx-rocket'></i>
                     <p>Startup</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
 
                 </div>
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-cog'></i>
+                    <i className='bx bx-cog'></i>
                     <p>Engineering</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
 
                 </div>
-                <div class="remote">
+                <div className="remote">
 
-                    <i class='bx bx-package'></i>
+                    <i className='bx bx-package'></i>
                     <p>Supply Chain</p>
-                    <i class='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
+                    <i className='bx bx-chevron-right' style={{marginTop:"3px"}}></i>
 
                 </div>
 

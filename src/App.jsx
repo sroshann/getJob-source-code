@@ -11,6 +11,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { FirebaseAuth } from "./FIrebase/Configueration";
 import Profile from "./Pages/Profile";
 import PostJobPage from "./Pages/PostJobPage";
+import SavedJobsPage from "./Pages/SavedJobsPage";
+import ViewPage from "./Pages/ViewPage";
 
 function App() {
 
@@ -28,7 +30,7 @@ function App() {
 
   return (
 
-    <div className="App">
+    <div classNameName="App">
       
       <Routes>
 
@@ -39,6 +41,8 @@ function App() {
         <Route element={ <EmployerHome/> } path="employerhome" />
         <Route element={ <Profile /> } path="profile" />
         <Route element={ <PostJobPage /> } path="postjob" />
+        <Route element={ <SavedJobsPage/> } path="/saved" />
+        <Route element={ <ViewPage /> } path='/view' />
 
       </Routes>
 
