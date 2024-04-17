@@ -1,27 +1,108 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './SHome.css'
 import toast, { Toaster } from 'react-hot-toast'
+import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { FirebaseFirestore } from '../../FIrebase/Configueration'
 
 function SHome() {
 
-    const [ save , setSave ] = useState( false )
+    const [saveArray, setSaveArray] = useState([])
+    const [jobs, setJobs] = useState([])
 
-    const saveJob = () => {
+    const saveJob = async (object) => {
 
-        if ( save ) {
-            
-            setSave( false )
+        const index = saveArray.findIndex(value => value.jobID === object.jobID)
+        let uploadArray = [] // Inorder to solve asynchronous nature, we cannot access state directly 
+        // without the actual completion of the function. So this array is created to store the updations in saveArray
+        // which is a state.
+
+        if (index !== -1) {
+
+            const newArray = [...saveArray]
+            newArray.splice(index, 1)
+            // the first parameter of splice is index of element and the 
+            // second is how many elements to remove from the provided index
+            setSaveArray(newArray)
+            uploadArray = [...newArray]
             toast.error('Job removed from saved collections', { style: { fontSize: '14px' } })
-        
-        }
-        else {
-    
-            setSave( true )
+
+        } else {
+
+            setSaveArray([...saveArray, object])
+            uploadArray = [...saveArray, object]
             toast.success('Job saved', { style: { fontSize: '14px' } })
-        
+
         }
+
+        // The saved job array is going to upload into user details 
+
+        try {
+
+            const email = localStorageEmail()
+            const ref = collection(FirebaseFirestore, 'Users')
+            const condition = where('email', '==', email)
+            const selectedUser = query(ref, condition)
+
+            await getDocs(selectedUser).then(async (userDocument) => {
+
+                const userRef = userDocument.docs[0].ref
+                await updateDoc(userRef, { savedJobs: uploadArray })
+
+            })
+
+        } catch (error) { console.log(error) }
 
     }
+
+    const getJobData = async () => {
+
+        const ref = collection(FirebaseFirestore, 'Jobs')
+        const jobData = await getDocs(ref)
+        const allJobs = jobData.docs.map(values => ({
+
+            ...values.data()
+
+        }))
+        setJobs(allJobs)
+
+    }
+
+    const localStorageEmail = () => { // Inorder to get user data
+
+        const localStorageData = localStorage.getItem('userData')
+        if (localStorageData) {
+
+            const parseToJSON = JSON.parse(localStorageData)
+            return parseToJSON.email
+
+        }
+
+        
+    }
+
+    const userAlreadySaved = async () => { //Inorder to get already saved jobs in database to show in saved jobs
+
+        const email = localStorageEmail()
+        const ref = collection(FirebaseFirestore, 'Users')
+        const condition = where('email', '==', email)
+        const selectedUser = query(ref, condition)
+
+        const userData = await getDocs( selectedUser )
+        userData.forEach( doc => { setSaveArray( doc.data().savedJobs ) } )
+
+    }
+
+    useEffect(() => {
+
+        getJobData()
+        userAlreadySaved ()
+
+        //   return () => {
+        //     second
+        //   }
+
+    }, [])
+
 
     return (
 
@@ -32,7 +113,7 @@ function SHome() {
                 <div>
 
                     <input type="text" id='input-search' placeholder='Find your job' />
-                    <i class='bx bx-search search-icon'></i>
+                    <i class='bx bx-search search-icon'  ></i>
 
                 </div>
 
@@ -109,69 +190,90 @@ function SHome() {
 
                     <div id="job-listing">
 
-                        <div className="job-objects">
+                        {
 
-                            <section>
+                            jobs.length === 0 ? <div id="no-jobs"> <p>No jobs were found</p> </div>
 
-                                <div id='job-company-detail'>
+                                :
+                                jobs.map((objects, index) => (
 
-                                    <p id='job-title'>Python software developer</p>
-                                    <p id='company-name'>Teamless Digital</p>
+                                    <div className="job-objects" key={index}>
 
-                                </div>
-                                <div id="other-details">
+                                        <section>
 
-                                    <div id="experience">
+                                            <div id='job-company-detail'>
 
-                                        <i className='bx bx-briefcase-alt grey'></i>
-                                        <p className='grey'>6-11 Yrs</p>
+                                                <p id='job-title'>{objects.jobTitle}</p>
+                                                <p id='company-name'>{objects.companyName}</p>
+
+                                            </div>
+                                            <div id="other-details">
+
+                                                <div id="experience">
+
+                                                    <i className='bx bx-briefcase-alt grey'></i>
+                                                    <p className='grey'>{objects.experience}</p>
+
+                                                </div>
+                                                <p className="grey">|</p>
+                                                <div id="salary">
+
+                                                    <i className='bx bx-rupee grey' ></i>
+                                                    <p className='grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
+
+                                                </div>
+                                                <p className="grey">|</p>
+                                                <div id="location">
+
+                                                    <i className='bx bx-map grey'></i>
+                                                    <p className='grey'>{objects.location}</p>
+
+                                                </div>
+
+                                            </div>
+                                            <div id="job-skills">
+
+                                                {
+
+                                                    objects.skillsRequired.map((skillObj, index) => (
+
+                                                        <div key={index}>
+
+                                                            {index === 0 ? <></> : <i className='bx bx-wifi-0 grey'></i>}
+                                                            <p className='grey'>{skillObj.text}</p>
+
+                                                        </div>
+
+                                                    ))
+
+                                                }
+
+                                            </div>
+                                            <div id="date-save">
+
+                                                <p className='grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
+                                                <div onClick={() => { saveJob(objects, objects.jobID) }}>
+
+                                                    {saveArray.some(saved => saved.jobID === objects.jobID) ?
+                                                        <i className='bx bxs-bookmark grey' ></i> :
+                                                        <i className='bx bx-bookmark grey'></i>}
+                                                    <p className='grey'>
+                                                        {saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
+                                                    </p>
+
+                                                    {/* .some check the provided condition is exist atleast one time in that array */}
+
+                                                </div>
+
+                                            </div>
+
+                                        </section>
 
                                     </div>
-                                    <p className="grey">|</p>
-                                    <div id="salary">
 
-                                        <i className='bx bx-rupee grey' ></i>
-                                        <p className='grey'>Not desclosed</p>
+                                ))
 
-                                    </div>
-                                    <p className="grey">|</p>
-                                    <div id="location">
-
-                                        <i className='bx bx-map grey'></i>
-                                        <p className='grey'>Banglore</p>
-
-                                    </div>
-
-                                </div>
-                                <div id="job-skills">
-
-                                    <p className='grey'>Python</p>
-                                    <i className='bx bx-wifi-0 grey'></i>
-                                    <p className='grey'>Automation</p>
-                                    <i className='bx bx-wifi-0 grey'></i>
-                                    <p className='grey'>Development</p>
-                                    <i className='bx bx-wifi-0 grey'></i>
-                                    <p className='grey'>Data Strucure</p>
-
-                                </div>
-                                <div id="date-save">
-
-                                    <p className='grey'>6 days ago</p>
-                                    <div onClick={ saveJob }>
-
-                                        { save ? <i className='bx bxs-bookmark grey' ></i> : 
-                                            <i className='bx bx-bookmark grey'></i>}
-                                        <p className='grey'>{save ? 'Saved' : 'Save'}</p>
-
-                                    </div>
-
-                                </div>
-
-                            </section>
-
-                        </div>
-
-                        
+                        }
 
                     </div>
 

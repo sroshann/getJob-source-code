@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './PostJob.css'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import toast, { Toaster } from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 function PostJob() {
 
@@ -12,6 +12,9 @@ function PostJob() {
     const [qualification, setQualification] = useState('')
     const [salary, setSalary] = useState('')
     const [description, setDescription] = useState('')
+    const [experience, setExperience] = useState('')
+    const [ location , setLocation ] = useState('')
+    const [ companyName , setCompanyName ] = useState('')
 
     const [skills, setSkills] = useState('')
     const [skillArray, setSkillsArray] = useState([])
@@ -19,12 +22,12 @@ function PostJob() {
     const [responsibilities, setResponsibilities] = useState('')
     const [resArray, setResArray] = useState([])
 
-    const [experience, setExperience] = useState('')
-    const [expArray, setExpArray] = useState([])
+    const [requirements, setrequirements] = useState('')
+    const [reqArray, setreqArray] = useState([])
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
-    const addItems = ( section) => {
+    const addItems = (section) => {
 
         if (section === 'responsibilities') {
 
@@ -36,10 +39,10 @@ function PostJob() {
             setSkillsArray([...skillArray, { id: Date.now(), text: skills }])
             setSkills('')
 
-        } else if (section === 'experience') {
+        } else if (section === 'requirements') {
 
-            setExpArray([...expArray, { id: Date.now(), text: experience }])
-            setExperience('')
+            setreqArray([...reqArray, { id: Date.now(), text: requirements }])
+            setrequirements('')
 
         }
 
@@ -65,9 +68,9 @@ function PostJob() {
 
             }))
 
-        } else if (section === 'experience') {
+        } else if (section === 'requirements') {
 
-            setExpArray(expArray.filter(selected => {
+            setreqArray(reqArray.filter(selected => {
 
                 if (selected.id === value) selected = null
                 return selected
@@ -83,12 +86,13 @@ function PostJob() {
         event.preventDefault()
 
         if (jobTitle === '' || category === '' || qualification === '' || salary === '' || description === '' ||
-            skillArray.size === 0 || resArray.size === 0 || expArray.size === 0)
+            experience === '' || skillArray.size === 0 || resArray.size === 0 || reqArray.size === 0)
             return toast.error('Complete all fields', { style: { fontSize: '14px' } })
 
         else {
 
             const storedUserData = localStorage.getItem('userData')
+            const date = new Date()
 
             if (storedUserData) {
 
@@ -97,21 +101,33 @@ function PostJob() {
                 await addDoc(collection(FirebaseFirestore, 'Jobs'), {
 
                     jobID: Date.now(),
+                    postedOn : date.toDateString(),
                     userEmail: parsedUserData.email,
                     jobTitle,
                     category,
                     qualification,
                     salary,
                     description,
+                    experience,
+                    location,
+                    companyName,
                     skillsRequired: skillArray,
                     responsibilities: resArray,
-                    experience: expArray
+                    requirements: reqArray
 
                 }).then(() => {
-                    
+
                     toast.success('Job posted successfully', { style: { fontSize: '14px' } })
-                    navigate('/home')
-                
+                    setJobTitle('')
+                    setCategory('')
+                    setQualification('')
+                    setSalary('')
+                    setDescription('')
+                    setExperience('')
+                    setSkillsArray([])
+                    setResArray([])
+                    setreqArray([])
+
                 })
                     .catch((error) => {
 
@@ -125,6 +141,42 @@ function PostJob() {
         }
 
     }
+
+    const getUser = async () => {
+
+        const localStorageData = localStorage.getItem('userData')
+        if ( localStorageData ) {
+
+            const localJSON = JSON.parse( localStorageData )
+            const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
+            const condition = where('email', '==', localJSON.email) // Providing the condition for selecting the user
+            const selected_user = query(user_ref, condition) // Selects the user from the total collection
+
+            await getDocs( selected_user ).then( ( userData ) => {
+
+                userData.forEach( doc => {
+
+                    setLocation( doc.data().address )
+                    setCompanyName( doc.data().username )
+
+                } )
+
+            } )
+
+        }
+
+    }
+
+    useEffect(() => {
+
+        getUser()
+    
+    //   return () => {
+    //     second
+    //   }
+
+    }, [])
+    
 
     return (
 
@@ -151,11 +203,11 @@ function PostJob() {
 
                                 <input type="text" placeholder="Provide required skills" value={skills}
                                     onChange={(event) => setSkills(event.target.value)} />
-                                <button id="add" onClick={(event) => { 
-                                    
+                                <button id="add" onClick={(event) => {
+
                                     event.stopPropagation()
-                                    addItems('skills') 
-                                    
+                                    addItems('skills')
+
                                 }}>Add</button>
 
                             </div>
@@ -171,6 +223,11 @@ function PostJob() {
                             <label for="jobSalary">Salary</label>
                             <input type="text" placeholder="Salary" value={salary}
                                 onChange={(event) => setSalary(event.target.value)} />
+
+                            <label for="jobSalary">Experience</label>
+                            <input type="text" placeholder="Experience" value={experience}
+                                onChange={(event) => setExperience(event.target.value)} />
+
 
 
                         </div>
@@ -212,11 +269,11 @@ function PostJob() {
 
                             <textarea placeholder='Provide key responsibilities as points' value={responsibilities}
                                 onChange={(event) => setResponsibilities(event.target.value)} ></textarea>
-                            <button id='done' onClick={(event) => { 
-                                
+                            <button id='done' onClick={(event) => {
+
                                 event.stopPropagation()
-                                addItems('responsibilities') 
-                                
+                                addItems('responsibilities')
+
                             }}>Add</button>
 
                         </div>
@@ -237,29 +294,29 @@ function PostJob() {
 
                         }
 
-                        <label for="jobDesc">Experiences</label>
+                        <label for="jobDesc">Requirements</label>
                         <div className='textAreaDiv'>
 
-                            <textarea placeholder='Provide experience required as points' value={experience}
-                                onChange={(event) => setExperience(event.target.value)} ></textarea>
-                            <button id='done' onClick={(event) => { 
-                                
+                            <textarea placeholder='Provide requirements as points' value={requirements}
+                                onChange={(event) => setrequirements(event.target.value)} ></textarea>
+                            <button id='done' onClick={(event) => {
+
                                 event.stopPropagation()
-                                addItems('experience') 
-                                
+                                addItems('requirements')
+
                             }}>Add</button>
 
                         </div>
 
-                        {expArray &&
+                        {reqArray &&
 
-                            expArray.map((objects, index) => (
+                            reqArray.map((objects, index) => (
 
                                 <div key={index} className='postObjects'>
 
                                     <p>{objects.text}</p>
                                     <i class='bx bx-x x' style={{ cursor: 'pointer' }}
-                                        onClick={() => deleteItems('experience', objects.id)}></i>
+                                        onClick={() => deleteItems('requirements', objects.id)}></i>
 
                                 </div>
 

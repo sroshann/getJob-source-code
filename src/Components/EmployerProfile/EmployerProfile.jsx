@@ -12,7 +12,7 @@ function EmployerProfile() {
   const [updated_username, setUdatedUsername] = useState('') // To store new username
   const [contact_person, setContactPerson] = useState('') //To store name of contact person
   const [updated_number, setUPdatedNumber] = useState('') //To store new phone number
-  const [address, setAddress] = useState('') //To store address
+  const [location, setlocation] = useState('') //To store location
   const [website, setWebsite] = useState('') // To store website URL
   const [summary, setSummary] = useState('') // To store summary
   const [image, setImage] = useState(null) // Inorder to store profile image
@@ -144,7 +144,7 @@ function EmployerProfile() {
 
     try {
 
-      if (updated_username === '' || contact_person === '' || updated_number === '' || address === '' || summary === '' ||
+      if (updated_username === '' || contact_person === '' || updated_number === '' || location === '' || summary === '' ||
         imageURL === '' || wrdm_list.size === 0) return toast.error('Complete all fields', { style: { fontSize: '14px' } })
 
       else {
@@ -162,7 +162,7 @@ function EmployerProfile() {
             username: updated_username,
             contact_person: contact_person,
             phone_number: updated_number,
-            address,
+            location,
             website,
             summary,
             workingDomains: wrdm_list,
@@ -199,7 +199,7 @@ function EmployerProfile() {
     setContactPerson(user_data.contact_person)
     setUPdatedNumber(user_data.phone_number)
     if (user_data.profile_picture) setImageURL(user_data.profile_picture)
-    setAddress(user_data.address)
+    setlocation(user_data.location)
     setWebsite(user_data.website)
     setSummary(user_data.summary)
 
@@ -211,7 +211,7 @@ function EmployerProfile() {
     // }
 
 
-  }, [user_data.username, user_data.contact_person, user_data.phone_number, user_data.address, user_data.website, user_data.summary])
+  }, [user_data.username, user_data.contact_person, user_data.phone_number, user_data.location, user_data.website, user_data.summary])
 
   return (
 
@@ -321,15 +321,15 @@ function EmployerProfile() {
 
                 <div style={{ width: '305px' }}>
 
-                  <p className="heading">Address</p>
+                  <p className="heading">location</p>
                   {
 
-                    edit ? <textarea name="" value={address}
-                      className='employer-text-area'
-                      placeholder='Add address'
-                      onChange={(event) => setAddress(event.target.value)}></textarea> :
-                      <p className="sub-heading" style={user_data.address ? {} : { color: 'grey' }}>
-                        {user_data.address ? user_data.address : 'Provide your address'}</p>
+                    edit ? <input type='text' value={location}
+                      className='inp-bx'
+                      placeholder='Add location'
+                      onChange={(event) => setlocation(event.target.value)}/> :
+                      <p className="sub-heading" style={user_data.location ? {} : { color: 'grey' }}>
+                        {user_data.location ? user_data.location : 'Provide your location'}</p>
 
                   }
 

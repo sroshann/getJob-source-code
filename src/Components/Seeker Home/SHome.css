@@ -203,7 +203,14 @@
     margin-top: -13px;
 
 }
+#job-skills div { 
+    
+    display: flex;
+    column-gap: 5px;
+
+}
 #job-skills p { font-size: 11px; }
+.bx-wifi-0 { margin-top: -1px; }
 
 #date-save {
 
@@ -228,6 +235,14 @@
     
     color: grey; 
     font-size: 13px;
+
+}
+
+
+#no-jobs {
+
+    display: grid;
+    place-items: center;
 
 }
 
