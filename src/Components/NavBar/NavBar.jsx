@@ -43,6 +43,7 @@ function NavBar() {
 
         } else if ( destination === 'saved' ) navigate('/saved')
         else if ( destination === 'applied' ) navigate('/applied')
+        else if ( destination === 'posted' ) navigate('/posted')
 
     }
 
@@ -108,7 +109,8 @@ function NavBar() {
 
                         { userType === 'Seeker' ? <button onClick={() => { navigateTo('applied') }}><i class='bx bx-accessibility'></i>Applied jobs</button> :
                              <button id='post' onClick={() => { navigateTo('postjob') }}><i class='bx bx-briefcase'></i>Post a job</button>}
-                        { userType == 'Seeker' && <button onClick={ () => navigateTo('saved') }><i class='bx bx-bookmarks' ></i>Saved jobs</button>}
+                        { userType == 'Seeker' ? <button onClick={ () => navigateTo('saved') }><i class='bx bx-bookmarks' ></i>Saved jobs</button> :
+                            userType == 'Employer' ? <button onClick={ () => navigateTo('posted') }>Posted jobs</button> : <></>}
                         {user && <button onClick={() => { navigateTo('profile') }} ><i class='bx bx-user'></i>
                             Profile</button>}
 

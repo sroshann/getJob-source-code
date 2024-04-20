@@ -3,6 +3,7 @@ import './View.css'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import toast, { Toaster } from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 function View() {
 
@@ -12,10 +13,12 @@ function View() {
     const [ uploadApply , setUploadApply ] = useState({})
     // const [ alreadySaved , setAlreadySaved ] = useState( false )
 
+    const [ userType , setUserType ] = useState('')
+    const navigate = useNavigate()
+
     const getJobDetails = async () => {
 
         let array
-
 
         const localStorageData = localStorage.getItem('jobID')
         if (localStorageData) {
@@ -47,7 +50,9 @@ function View() {
 
         }
 
-        userAlreadyDone(array)
+        const user = localStorageUser()
+        setUserType( user )
+        if ( user === 'Seeker' ) userAlreadyDone( array )
 
     }
 
@@ -58,6 +63,18 @@ function View() {
 
             const parseToJSON = JSON.parse(localStorageData)
             return parseToJSON.email
+
+        }
+
+    }
+
+    const localStorageUser = () => {
+
+        const localStorageUser = localStorage.getItem('userData')
+        if ( localStorageUser ) {
+
+            const parse = JSON.parse( localStorageUser )
+            return parse.user
 
         }
 
@@ -250,11 +267,14 @@ function View() {
                 </div>
 
                 <div className="job-btns">
-                    <button className="afj" onClick={applyJob}>{apply ? 'Applied' : 'Apply for job'}</button>
+                    { userType === 'Seeker' ? <button className="afj" onClick={applyJob}>{apply ? 'Applied' : 'Apply for job'}</button> :
+                        <button className="afj" onClick={ () => navigate('/applicants') }>View applicants</button>
+                    }
                     {
 
-                        saved ? <i className='bx bxs-bookmark save' onClick={saveJob}></i> :
-                            <i className='bx bx-bookmark save' onClick={saveJob}></i>
+                        userType === 'Seeker' ? (saved ? <i className='bx bxs-bookmark save' onClick={saveJob}></i> :
+                            <i className='bx bx-bookmark save' onClick={saveJob}></i>) :
+                            <button className="afj">Delete</button>
 
                     }
                 </div>

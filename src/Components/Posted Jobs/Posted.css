@@ -1,0 +1,135 @@
+#posted-main {
+
+    margin-top: 15px;
+    margin-bottom: 40px;
+    /* display: grid; */
+    place-items: center;
+    min-height: 66.7vh;
+
+}
+
+/* Main contents */
+
+#main-contents {
+
+    display: flex;
+
+}
+
+#jobs-posted {
+
+    width: 100%;
+    height: fit-content;
+    display: grid;
+    place-items: center;
+
+}
+
+#jobs p {
+
+    height: fit-content;
+    width: fit-content;
+
+}
+
+#job-posted-listing {
+
+    width: 60%;
+    display: grid;
+    row-gap: 13px;
+    margin-top: 20px;
+
+}
+
+.job-objects {
+
+    height: fit-content;
+    width: 100%;
+    background-color: white;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    padding: 13px 0px 13px 0px;
+
+
+}
+
+.job-objects section {
+
+    width: 95%;
+    height: fit-content;
+    display: grid;
+    row-gap: 15px;
+    /* background-color: yellow; */
+
+}
+
+
+
+#other-details { 
+
+    display: flex;
+    column-gap: 15px;
+
+}
+
+#other-details div , #date-save div { 
+    
+    display: flex; 
+    column-gap: 4px;
+    align-items: center;
+
+}
+
+#job-skills {
+
+    display: flex;
+    column-gap: 10px;
+    margin-top: -13px;
+
+}
+#job-skills div { 
+    
+    display: flex;
+    column-gap: 5px;
+
+}
+#job-skills p { font-size: 11px; }
+.bx-wifi-0 { margin-top: -1px; }
+
+#date-save {
+
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#date-save div { 
+    
+    column-gap: 2px; 
+    cursor: pointer;
+
+}
+#date-save i , #date-save p { cursor: pointer; }
+
+
+
+#job-title { font-size: 15px; }
+#company-name { font-size: 13.5px; }
+.grey { 
+    
+    color: grey; 
+    font-size: 13px;
+
+}
+
+
+#no-jobs {
+
+    display: grid;
+    place-items: center;
+
+}
+
+/* Main contents */

@@ -56,10 +56,10 @@ function EmployerProfile() {
 
   const emoloyerAddItems = () => {
 
-    if ( user_data.workingDomains !== undefined && user_data.workingDomains.length > 0 ) {
+    if (user_data.workingDomains !== undefined && user_data.workingDomains.length > 0) {
 
-      const updatedWorkingDomains = [ ...user_data.workingDomains , { id: Date.now(), text: working_domain } ]
-      setWRDMList( updatedWorkingDomains )
+      const updatedWorkingDomains = [...user_data.workingDomains, { id: Date.now(), text: working_domain }]
+      setWRDMList(updatedWorkingDomains)
       setWorkinDomain('')
 
       setUserData((prevData) => ({ // To render on deletion
@@ -203,8 +203,8 @@ function EmployerProfile() {
     setWebsite(user_data.website)
     setSummary(user_data.summary)
 
-    if ( user_data.workingDomains && user_data.workingDomains.length > 0 ) 
-      setWRDMList( previous => [ ...previous , ...user_data.workingDomains ] )
+    if (user_data.workingDomains && user_data.workingDomains.length > 0)
+      setWRDMList(previous => [...previous, ...user_data.workingDomains])
 
     // return () => {
     //   second
@@ -327,7 +327,7 @@ function EmployerProfile() {
                     edit ? <input type='text' value={location}
                       className='inp-bx'
                       placeholder='Add location'
-                      onChange={(event) => setlocation(event.target.value)}/> :
+                      onChange={(event) => setlocation(event.target.value)} /> :
                       <p className="sub-heading" style={user_data.location ? {} : { color: 'grey' }}>
                         {user_data.location ? user_data.location : 'Provide your location'}</p>
 
@@ -344,7 +344,7 @@ function EmployerProfile() {
                       className='inp-bx'
                       placeholder='Add website URL'
                       onChange={(event) => setWebsite(event.target.value)} /> :
-                      <a href={ 'https://' + user_data.website}
+                      <a href={'https://' + user_data.website}
                         rel='noreferrer' target='_blank'>
                         <p className="sub-heading" style={user_data.website ? { cursor: 'pointer' } : { color: 'grey' }}>
                           {user_data.website ? <><i className='bx bx-link'></i> {user_data.website}</> :
