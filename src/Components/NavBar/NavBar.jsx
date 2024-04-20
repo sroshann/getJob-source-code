@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './NavBar.css'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../Context/User'
@@ -9,21 +9,21 @@ import toast, { Toaster } from 'react-hot-toast'
 function NavBar() {
 
     const [options, setOptions] = useState(false)
-
+    const [ userType ,setUserType ] = useState('')
     const { user } = useContext(AuthContext)
 
     const navigate = useNavigate()
     const navigateTo = (destination) => {
 
-        let userType
+        // let userType
 
-        const storedUserData = localStorage.getItem('userData')
-        if ( storedUserData ) {
+        // const storedUserData = localStorage.getItem('userData')
+        // if ( storedUserData ) {
 
-            const parsedUserData = JSON.parse( storedUserData )
-            userType = parsedUserData.user
+        //     const parsedUserData = JSON.parse( storedUserData )
+        //     userType = parsedUserData.user
 
-        }
+        // }
 
         if (destination === 'home') {
 
@@ -38,15 +38,11 @@ function NavBar() {
         else if (destination === 'profile') navigate('/profile')
         else if (destination === 'postjob') {
 
-
-            if (storedUserData) {
-
-                if (userType === 'Employer') navigate('/postjob')
-                else navigate('/signup')
-
-            }else navigate('/signup')
+            if (userType === 'Employer') navigate('/postjob')
+            else navigate('/signup')
 
         } else if ( destination === 'saved' ) navigate('/saved')
+        else if ( destination === 'applied' ) navigate('/applied')
 
     }
 
@@ -61,6 +57,25 @@ function NavBar() {
             .catch((error) => toast.error(error.message))
 
     }
+
+    const getUserData = () => {
+
+        const storedUserData = localStorage.getItem('userData')
+        if ( storedUserData ) {
+
+            const parsedUserData = JSON.parse( storedUserData )
+            setUserType( parsedUserData.user )
+
+        }
+
+    }
+
+    useEffect(() => {
+      
+        getUserData()
+      
+    }, [])
+    
 
     return (
 
@@ -91,8 +106,9 @@ function NavBar() {
                     </div>
                     <div className="menu-divs">
 
-                        <button id='post' onClick={() => { navigateTo('postjob') }}><i class='bx bx-briefcase'></i>Post a job</button>
-                        { user && <button onClick={ () => navigateTo('saved') }><i class='bx bx-bookmarks' ></i>Saved jobs</button>}
+                        { userType === 'Seeker' ? <button onClick={() => { navigateTo('applied') }}><i class='bx bx-accessibility'></i>Applied jobs</button> :
+                             <button id='post' onClick={() => { navigateTo('postjob') }}><i class='bx bx-briefcase'></i>Post a job</button>}
+                        { userType == 'Seeker' && <button onClick={ () => navigateTo('saved') }><i class='bx bx-bookmarks' ></i>Saved jobs</button>}
                         {user && <button onClick={() => { navigateTo('profile') }} ><i class='bx bx-user'></i>
                             Profile</button>}
 

@@ -1,4 +1,4 @@
-#main {
+#applied-main {
 
     margin-top: 15px;
     margin-bottom: 40px;
@@ -16,7 +16,7 @@
 
 }
 
-#jobs-saved {
+#jobs-applied {
 
     width: 100%;
     height: fit-content;
@@ -32,7 +32,7 @@
 
 }
 
-#job-saved-listing {
+#job-applied-listing {
 
     width: 60%;
     display: grid;

@@ -119,7 +119,8 @@ function PostJob() {
                     jobType,
                     skillsRequired: skillArray,
                     responsibilities: resArray,
-                    requirements: reqArray
+                    requirements: reqArray,
+                    appliedSeekers : []
 
                 }).then(() => {
 

@@ -13,6 +13,7 @@ import Profile from "./Pages/Profile";
 import PostJobPage from "./Pages/PostJobPage";
 import SavedJobsPage from "./Pages/SavedJobsPage";
 import ViewPage from "./Pages/ViewPage";
+import AppliedJobsPage from "./Pages/AppliedJobsPage";
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
         <Route element={ <PostJobPage /> } path="postjob" />
         <Route element={ <SavedJobsPage/> } path="/saved" />
         <Route element={ <ViewPage /> } path='/view' />
+        <Route element={ <AppliedJobsPage/> } path="/applied" />
 
       </Routes>
 

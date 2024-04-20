@@ -268,11 +268,11 @@ function SHome() {
                                                     
                                                 }}>
 
-                                                    {saveArray.some(saved => saved.jobID === objects.jobID) ?
+                                                    { saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ?
                                                         <i className='bx bxs-bookmark grey' ></i> :
                                                         <i className='bx bx-bookmark grey'></i>}
                                                     <p className='grey'>
-                                                        {saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
+                                                        { saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
                                                     </p>
 
                                                     {/* .some check the provided condition is exist atleast one time in that array */}

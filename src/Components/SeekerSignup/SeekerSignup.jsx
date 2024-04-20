@@ -45,7 +45,9 @@ function SeekerSignup() {
               phone_number : phone_number,
               password : password,
               user_type : radio,
-              url
+              url,
+              savedJobs : [],
+              appliedJobs : []
     
             } )
 

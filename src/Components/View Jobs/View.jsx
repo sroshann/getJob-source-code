@@ -7,12 +7,15 @@ import toast, { Toaster } from 'react-hot-toast'
 function View() {
 
     const [job, setJob] = useState([])
-    const [ saved , setSaved ] = useState( false )
+    const [saved, setSaved] = useState(false)
+    const [apply, setApply] = useState(false)
+    const [ uploadApply , setUploadApply ] = useState({})
     // const [ alreadySaved , setAlreadySaved ] = useState( false )
 
     const getJobDetails = async () => {
 
         let array
+
 
         const localStorageData = localStorage.getItem('jobID')
         if (localStorageData) {
@@ -25,15 +28,26 @@ function View() {
 
             const userData = await getDocs(selectedUser)
             userData.forEach(doc => {
-                
+
                 array = doc.data()
+                setUploadApply({
+
+                    title : doc.data().jobTitle,
+                    company : doc.data().companyName,
+                    experience : doc.data().experience,
+                    salary: doc.data().salary,
+                    location : doc.data().location,
+                    skills: doc.data().skillsRequired,
+                    date : doc.data().postedOn
+
+                })
                 setJob(doc.data())
-            
+
             })
 
         }
 
-        userAlreadySaved( array )
+        userAlreadyDone(array)
 
     }
 
@@ -46,7 +60,7 @@ function View() {
             return parseToJSON.email
 
         }
-        
+
     }
 
     const saveJob = async () => {
@@ -55,7 +69,7 @@ function View() {
         // So on clicking the icon fetc the savedJob data of corresponding user
         // then check if the job is already saved or not by finding the index of object from fetched data
         // if it not found fetched data destructured and stored into new array (uploadArray inorder to prevent crash) and the 
-            // current object is apended behind it
+        // current object is apended behind it
         // if it found it is removed from the savedArray by splicing it and stored into uploadArray by desconstructing.
 
         // After all the process the uploadArray is uploaded to the database
@@ -72,22 +86,22 @@ function View() {
 
             await getDocs(selectedUser).then(async (userDocument) => {
 
-                userDocument.forEach( doc => { savedArray = [ ...doc.data().savedJobs ] } )
+                userDocument.forEach(doc => { savedArray = [...doc.data().savedJobs] })
 
-                const index = savedArray.findIndex( value => value.jobID === job.jobID )
+                const index = savedArray.findIndex(value => value.jobID === job.jobID)
 
-                if ( index !== -1 ) {
+                if (index !== -1) {
 
                     savedArray.splice(index, 1)
-                    uploadArray = [ ...savedArray ]
+                    uploadArray = [...savedArray]
                     // setAlreadySaved( false )
                     toast.error('Job removed from saved collections', { style: { fontSize: '14px' } })
- 
-                } else { 
-                    
-                    uploadArray = [ ...savedArray , job ] 
+
+                } else {
+
+                    uploadArray = [...savedArray, job]
                     toast.success('Job saved', { style: { fontSize: '14px' } })
-                
+
                 }
 
                 const userRef = userDocument.docs[0].ref
@@ -97,27 +111,113 @@ function View() {
 
         } catch (error) { console.log(error) }
 
-        if ( saved ) setSaved( false ) 
-        else { setSaved( true ) }
+        if (saved) setSaved(false)
+        else { setSaved(true) }
 
     }
 
-    const userAlreadySaved = async ( object ) => { //Inorder to get already saved jobs in database to show in saved jobs
+    const userAlreadyDone = async (object) => { //Inorder to get already saved jobs in database to show in saved jobs
 
-        let array = []
+        let saveArray = []
+        let applyArray = []
 
         const email = localStorageEmail()
         const ref = collection(FirebaseFirestore, 'Users')
         const condition = where('email', '==', email)
         const selectedUser = query(ref, condition)
 
-        const userData = await getDocs( selectedUser )
-        userData.forEach( doc => { array = [ ...doc.data().savedJobs ] } )
+        const userData = await getDocs(selectedUser)
+        userData.forEach(doc => {
 
-        const isExist = array.some( value => value.jobID === object.jobID )
+            saveArray = [...doc.data().savedJobs]
+            applyArray = [...doc.data().appliedJobs]
 
-        if ( isExist ) setSaved( true ) 
-        else setSaved( false )
+        })
+
+        const saveExist = saveArray.some(value => value.jobID === object.jobID)
+        const applyExist = applyArray.some(value => value.jobID === object.jobID)
+
+        if (saveExist) setSaved(true)
+        else setSaved(false)
+
+        if (applyExist) setApply(true)
+        else setApply(false)
+
+    }
+
+    const applyJob = async () => {
+
+        if (apply) return toast.success('You already applied for this job', { style: { fontSize: '14px' } })
+        else {
+
+            let savedArray = []
+            let uploadArray = []
+
+            let jobArray = []
+            let uploadJobArray = []
+            let userDetails 
+
+            try {
+
+                // This section add job details into corresponding user database 
+                const email = localStorageEmail()
+                const ref = collection(FirebaseFirestore, 'Users')
+                const condition = where('email', '==', email)
+                const selectedUser = query(ref, condition)
+
+                await getDocs(selectedUser).then(async (userDocument) => {
+
+                    userDocument.forEach(doc => { 
+                        
+                        savedArray = [...doc.data().appliedJobs] 
+                        userDetails = { // Inorder to store the user details in corresponding job details
+
+                            name: doc.data().username,
+                            phoneNumber : doc.data().phone_number,
+                            email : doc.data().email,
+                            dp : doc.data().profile_picture,
+                            resume : doc.data().url
+
+                        }
+                    
+                    })
+                    uploadArray = [...savedArray, uploadApply]
+                    const userRef = userDocument.docs[0].ref
+                    await updateDoc(userRef, { appliedJobs: uploadArray })
+
+                })
+
+                
+
+                // This section add the user details into jobs database
+                const reference = collection( FirebaseFirestore , 'Jobs' )
+                const jobCondition = where( 'jobID' , '==' , job.jobID )
+                const selectedJob = query( reference , jobCondition )
+
+                await getDocs( selectedJob ).then( async (jobDocument) => {
+
+                    jobDocument.forEach( doc => {
+
+                        jobArray = [ ...doc.data().appliedSeekers ]
+
+                    } )
+
+                    uploadJobArray = [ ...jobArray , userDetails ]
+                    const jobRef = jobDocument.docs[0].ref
+                    await updateDoc( jobRef , { appliedSeekers : uploadJobArray } )
+
+                } ).then(() => {
+                    toast.success('You have successfully applied for this job', { style: { fontSize: '14px' } })
+                })
+                .catch((error) => console.log(error.message) )
+
+
+            } catch (error) { console.log(error.message) }
+
+            if (apply) setApply(false)
+            else setApply(true)
+
+        }
 
     }
 
@@ -150,12 +250,12 @@ function View() {
                 </div>
 
                 <div className="job-btns">
-                    <button className="afj">Apply for job</button>
-                    { 
-                    
-                        saved ? <i className='bx bxs-bookmark save' onClick={ saveJob }></i> :
-                        <i className='bx bx-bookmark save' onClick={ saveJob }></i>
-                    
+                    <button className="afj" onClick={applyJob}>{apply ? 'Applied' : 'Apply for job'}</button>
+                    {
+
+                        saved ? <i className='bx bxs-bookmark save' onClick={saveJob}></i> :
+                            <i className='bx bx-bookmark save' onClick={saveJob}></i>
+
                     }
                 </div>
 
@@ -169,7 +269,7 @@ function View() {
                         <p>{job.description}</p>
                     </div>
                     <div className="key-respon">
-                        <p className="jhead">{ job.skillsRequired && job.skillsRequired.length === 1 ? 'Skill' : 'Skills' }</p>
+                        <p className="jhead">{job.skillsRequired && job.skillsRequired.length === 1 ? 'Skill' : 'Skills'}</p>
                         {job.skillsRequired && job.skillsRequired.map((objects, index) => (
 
                             <div key={index} style={{ display: 'flex', columnGap: '3px' }}>
