@@ -36,6 +36,7 @@ function View() {
                 setUploadApply({
 
                     title : doc.data().jobTitle,
+                    id : doc.data().jobID , 
                     company : doc.data().companyName,
                     experience : doc.data().experience,
                     salary: doc.data().salary,
@@ -152,7 +153,7 @@ function View() {
         })
 
         const saveExist = saveArray.some(value => value.jobID === object.jobID)
-        const applyExist = applyArray.some(value => value.jobID === object.jobID)
+        const applyExist = applyArray.some(value => value.id === object.jobID)
 
         if (saveExist) setSaved(true)
         else setSaved(false)
@@ -272,7 +273,7 @@ function View() {
                     }
                     {
 
-                        userType === 'Seeker' ? (saved ? <i className='bx bxs-bookmark save' onClick={saveJob}></i> :
+                        userType === 'Seeker' ? (saved ? <i className='bx bxs-bookmark view-save' onClick={saveJob}></i> :
                             <i className='bx bx-bookmark save' onClick={saveJob}></i>) :
                             <button className="afj">Delete</button>
 

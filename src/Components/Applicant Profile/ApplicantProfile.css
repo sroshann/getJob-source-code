@@ -17,7 +17,7 @@
 p { cursor: default; }
 a { text-decoration: none; color: black; }
 
-#top-container {
+#applicant-top-container {
 
     height: 280px;
     background-color: white;
@@ -125,7 +125,7 @@ a { text-decoration: none; color: black; }
 
 }
 
-.dp {
+.applicant-dp {
 
     width: 160px;
     height: 155px;
@@ -144,9 +144,9 @@ a { text-decoration: none; color: black; }
 }
 
 #username { margin-top: -5px; }
-#details-upper { height: 100%; }
+#applicant-details-upper { height: 100%; }
 
-/* #details-upper div { 
+#applicant-details-upper div { 
     
     height: 40%; 
     width: 90%;
@@ -154,9 +154,9 @@ a { text-decoration: none; color: black; }
     align-items: center;
     justify-content: space-around;
 
-} */
+}
 
-#details-upper div:nth-child(1) { padding-top: 25px; }
+#applicant-details-upper div:nth-child(1) { padding-top: 25px; }
 #details-lower { 
     
     height: 40%; 
@@ -291,40 +291,6 @@ a { text-decoration: none; color: black; }
     width: 95%;
 
 }
-
-#save-changes {
-
-    width: fit-content;
-    display: flex;
-    column-gap: 5px;
-    position: relative;
-    left: 70.3%;
-    bottom: 10px;
-
-}
-.save {
-
-    position: relative;
-    padding: 13px 20px;
-    background-color: #0149AB;
-    border: solid 2px #0149AB;
-    border-radius: 5px;
-    color: white;
-    cursor: pointer;
-    margin-bottom: -15px;
-    font-family: Poppins;
-
-}
-
-.save:hover {
-
-    border: solid 2px #0149AB;
-    background-color: #0090ff69;
-    color: #0149AB;
-    transition: 0.3s;
-
-}
-.save:not(:hover) { transition: 0.3s; }
 
 .inp-bx {  
 

@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { FirebaseAuth, FirebaseFirestore } from '../../FIrebase/Configueration'
 import { addDoc, collection } from 'firebase/firestore'
 import { useNavigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast';
 
 function EmployerSignup() {
 
@@ -29,7 +30,7 @@ function EmployerSignup() {
         
         const result = await createUserWithEmailAndPassword( FirebaseAuth , email , password )
         await updateProfile( result.user , { displayName : company_name } )
-        alert ('You are signed in successfully')
+        toast.success('You are signed in successfully' , { style : { fontSize: '14px' } })
 
         setCompanyName('')
         setContactPerson('')
@@ -53,7 +54,7 @@ function EmployerSignup() {
         
       }
 
-    } catch ( error ) { alert( error.message ) }
+    } catch ( error ) { toast.error( error.message , { style : { fontSize: '14px' } } ) }
 
   }
 
@@ -124,6 +125,8 @@ function EmployerSignup() {
         </form>
 
       </div>
+
+      <Toaster />
 
     </div>
 

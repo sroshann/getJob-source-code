@@ -31,22 +31,22 @@ h2{
 }
 
 .item{
-    margin-left: 20%;
+    margin-left: 18%;
     padding-top: 10px;
     color: black;
     font-size: 12px;
     cursor: default;
 }
 .container input{
-    border-radius:20px;
+    border-radius: 20px;
     height: 25px;
-    padding-left: 10%;
-    margin-left: 15%;
+    padding-left: 15px;
+    margin-left: 13%;
     border: solid 1.5px;
     border-color: #0149AB;
     padding-top: 2.5px;
     padding-bottom: 2.5px;
-    width: 200px;
+    width: 225px;
     outline: none;
 }
 #forget{

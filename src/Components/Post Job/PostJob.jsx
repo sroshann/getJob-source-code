@@ -87,6 +87,7 @@ function PostJob() {
     const handleSubmit = async (event) => {
 
         event.preventDefault()
+        console.log(location)
 
         if (jobTitle === '' || category === '' || qualification === '' || salary === '' || description === '' ||
             experience === '' || skillArray.size === 0 || resArray.size === 0 || reqArray.size === 0)
@@ -99,49 +100,54 @@ function PostJob() {
 
             if (storedUserData) {
 
-                const parsedUserData = JSON.parse(storedUserData)
+                try {
 
-                await addDoc(collection(FirebaseFirestore, 'Jobs'), {
+                    const parsedUserData = JSON.parse(storedUserData)
 
-                    jobID: Date.now(),
-                    postedOn: date.toDateString(),
-                    userEmail: parsedUserData.email,
-                    jobTitle,
-                    category,
-                    qualification,
-                    salary,
-                    description,
-                    experience,
-                    location,
-                    companyName,
-                    dp,
-                    workingType,
-                    jobType,
-                    skillsRequired: skillArray,
-                    responsibilities: resArray,
-                    requirements: reqArray,
-                    appliedSeekers : []
+                    
+                    await addDoc(collection(FirebaseFirestore, 'Jobs'), {
 
-                }).then(() => {
+                        jobID: Date.now(),
+                        postedOn: date.toDateString(),
+                        userEmail: parsedUserData.email,
+                        jobTitle,
+                        category,
+                        qualification,
+                        salary,
+                        description,
+                        experience,
+                        location : location,
+                        companyName,
+                        dp,
+                        workingType,
+                        jobType,
+                        skillsRequired: skillArray,
+                        responsibilities: resArray,
+                        requirements: reqArray,
+                        appliedSeekers: []
 
-                    toast.success('Job posted successfully', { style: { fontSize: '14px' } })
-                    setJobTitle('')
-                    setCategory('')
-                    setQualification('')
-                    setSalary('')
-                    setDescription('')
-                    setExperience('')
-                    setSkillsArray([])
-                    setResArray([])
-                    setreqArray([])
+                    }).then(() => {
 
-                })
-                    .catch((error) => {
-
-                        toast.error('An error occured', { style: { fontSize: '14px' } })
-                        console.log(error.message)
+                        toast.success('Job posted successfully', { style: { fontSize: '14px' } })
+                        setJobTitle('')
+                        setCategory('')
+                        setQualification('')
+                        setSalary('')
+                        setDescription('')
+                        setExperience('')
+                        setSkillsArray([])
+                        setResArray([])
+                        setreqArray([])
 
                     })
+                        .catch((error) => {
+
+                            toast.error('An error occured', { style: { fontSize: '14px' } })
+                            console.log(error.message)
+
+                        })
+
+                } catch (error) { console.log(error) }
 
             }
 
@@ -163,7 +169,7 @@ function PostJob() {
 
                 userData.forEach(doc => {
 
-                    setLocation(doc.data().address)
+                    setLocation(doc.data().location)
                     setCompanyName(doc.data().username)
                     setDP(doc.data().profile_picture)
 
@@ -207,7 +213,7 @@ function PostJob() {
                                 onChange={(event) => setQualification(event.target.value)} />
 
                             <label for="jobQualif">Job Type</label>
-                            <input type="text" placeholder="Provide job type " value={jobType}
+                            <input type="text" placeholder="Part time/Full time " value={jobType}
                                 onChange={(event) => setJobType(event.target.value)} />
 
                             <label for="jobDesc">Skills Required</label>
@@ -237,7 +243,7 @@ function PostJob() {
                                 onChange={(event) => setSalary(event.target.value)} />
 
                             <label for="jobQualif">Working Mode</label>
-                            <input type="text" placeholder="On site/Remote/Full time " value={workingType}
+                            <input type="text" placeholder="On site/Remote " value={workingType}
                                 onChange={(event) => setworkingType(event.target.value)} />
 
                             <label for="jobSalary">Experience</label>

@@ -39,6 +39,7 @@ function Applied() {
 
         localStorage.setItem('jobID', JSON.stringify(ID))
         navigate('/view')
+        // console.log( ID )
     
     }
 
@@ -63,7 +64,7 @@ function Applied() {
                             :
                             applied.map((objects, index) => (
 
-                                <div className="job-objects" key={index} onClick={ () => pageView( objects.jobID ) } >
+                                <div className="job-objects" key={index} onClick={ () => pageView( objects.id ) } >
 
                                     <section>
 

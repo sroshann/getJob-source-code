@@ -148,7 +148,7 @@ function SeekerProfile() {
             const selected_user = query(user_ref, condition) // Selects the user from the total collection
 
             if (new_username === '' || new_phonenumber === '' || location === '' || age === '' || experience === '' ||
-                summary === '' || image_URL === '' || edu_list.size === 0 || skill_list.size === 0 || project_list.size === 0
+                summary === '' || image_URL === '' || edu_list.size === 0 || skill_list.size === 0 
                 || language_list.size === 0 || certificate_url_list.size === 0)
                 return toast.error('Complete all fields', { style: { fontSize: '14px' } })
             else {
@@ -186,13 +186,13 @@ function SeekerProfile() {
                             setInputBox3(false)
                             setInputBox4(false)
                             setInputBox5(false)
-                            // setLoaclStorageData(changing_object)
+                            setLoaclStorageData(changing_object)
                             setEditingCertificateList([])
                             setEnableCertificate( false )
                             toast.success('Changes applied', { style: { fontSize: '14px' } })
 
                         })
-                        .catch((error) => toast.error('Data are not updated', { style: { fontSize: '14px' } }))
+                    .catch((error) => toast.error('Data are not updated', { style: { fontSize: '14px' } }))
 
                 }).catch((error) => console.log(error.message, 'Error with getdocs'))
 

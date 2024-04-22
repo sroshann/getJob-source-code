@@ -41,7 +41,7 @@ function ApplicantProfile() {
 
             <div id="containers">
 
-                <div id="top-container">
+                <div id="applicant-top-container">
 
                     <div id="photo">
 
@@ -50,7 +50,7 @@ function ApplicantProfile() {
                             {
 
                                 user.profile_picture ? <img src={user.profile_picture}
-                                    className='dp' alt="DP" /> :
+                                    className='applicant-dp' alt="DP" /> :
                                     <i className='bx bxs-user-circle profile-photo' ></i>
 
                             }
@@ -61,7 +61,7 @@ function ApplicantProfile() {
                     </div>
                     <div id="details">
 
-                        <div id='details-upper'>
+                        <div id='applicant-details-upper'>
 
                             <div>
 

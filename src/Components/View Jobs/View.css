@@ -142,7 +142,7 @@
     font-weight: 500;
 }
 
-.save {
+.view-save {
 
     background-color: #a7c9ff;
     color: #003181;
@@ -152,7 +152,7 @@
     border: 0;
 
 }
-.save:hover { 
+.view-save:hover { 
     
     border: 0; 
     background-color: #a7c9ff;

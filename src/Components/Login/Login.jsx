@@ -90,7 +90,7 @@ function Login() {
                     loginUser()
 
                 }} >Login</button>
-                <p id='alre'>Aleady have a account ?</p>
+                <p id='alre'>Don't have an account ?</p>
                 <button id='reg' onClick={() => { navigate('/signup') }} >Register</button>
 
             </div>
