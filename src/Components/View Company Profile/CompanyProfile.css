@@ -1,0 +1,136 @@
+#main-company {
+
+    display: grid;
+    place-items: center;
+    margin-top: 40px;
+
+}
+
+#company-container {
+
+    width: 79%;
+    height: fit-content;
+    margin-bottom: 65px;
+
+}
+
+#company-upper-container , #company-middle-container {
+
+    height: 330px;
+    background-color: white;
+    border-radius: 18px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    /* Upper section contains basic informations like name,email,location,profile picture,etc. */
+
+}
+
+#company-photo {
+
+    width: 35%;
+    height: 100%;
+    float: left;
+    display: grid;
+    place-items: center;
+
+}
+
+.company-dp {
+
+    width: 230px;
+    height: 230px;
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 10px;
+
+}
+
+#company-details {
+
+    width: 65%;
+    height: 100%;
+    float: left;
+
+}
+
+#company-section-username {
+
+    display: block;
+    height: fit-content;
+    width: fit-content;
+    margin-top: 25px;
+    position: relative;
+    top: 10px;
+
+}
+
+#company-profile-name { 
+    
+    font-size: 33px; 
+    color: #0149AB;
+
+}
+
+#company-details-content {
+
+    display: grid;
+    height: fit-content;
+    row-gap: 60px;
+}
+
+#company-upper-details-content , #company-lower-details-content {
+
+    display: flex;
+    column-gap: 95px;
+    height: fit-content;
+
+}
+
+#company-upper-details-content { margin-top: 35px; }
+
+#company-middle-container {
+
+    /* Middle section contains profile summary */
+    height: fit-content;
+    background-color: white;
+    border-radius: 18px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    margin-top: 15px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+
+}
+
+#company-middle-container .heading { margin-left: 23px; }
+
+#company-summary {
+
+    width: 96%;
+    height: fit-content;
+    margin: 0 auto;
+    margin-top: 5px;
+
+}
+#company-summary p { word-break: break-all; }
+
+#company-lower-container {
+
+    height: fit-content;
+    background-color: white;
+    border-radius: 18px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    margin-top: 15px;
+    padding-top: 15px;
+    padding-bottom: 20px;
+
+}
+#company-lower-container .heading { font-size: medium; }
+#company-lower-container p { font-size: small; }
+#company-working-domains { margin-left: 23px; }
+
+.company-objects {
+
+    width: fit-content;
+    display: flex;
+    margin-top: 10px;
+
+}

@@ -242,6 +242,13 @@ function View() {
 
     }
 
+    const viewProfile = () => {
+
+        localStorage.setItem('companyProfile', JSON.stringify(job.userEmail))
+        navigate('/company-profile')
+
+    }
+
     useEffect(() => {
 
         getJobDetails()
@@ -271,7 +278,10 @@ function View() {
                 </div>
 
                 <div className="job-btns">
-                    { userType === 'Seeker' ? <button className="afj" onClick={applyJob}>{apply ? 'Applied' : 'Apply for job'}</button> :
+                    { userType === 'Seeker' && <button className="afj" onClick={ viewProfile }>Profile</button> }
+                    { userType === 'Seeker' ? 
+                        <button className="afj" style={ apply ? {} : {width: '125px',padding: 'unset',height: '64px'} } onClick={applyJob}>
+                            {apply ? 'Applied' : 'Apply for job'}</button> :
                         <button className="afj" onClick={ () => navigate('/applicants') }>View applicants</button>
                     }
                     {

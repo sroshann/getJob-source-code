@@ -51,10 +51,10 @@
 .job-btns{
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
 }
 
-.job-btns button.afj{
+.job-btns button.afj , .company-profile{
     border: solid 2px #003181;
     background-color: #003181;
     color: #fff;
@@ -64,7 +64,7 @@
     cursor: pointer;
     
 }
-.job-btns button.afj:hover{
+.job-btns button.afj:hover , .company-profile:hover{
     background-color: #0090ff69;
     border: solid 2px #003181;
     color: #003181;
