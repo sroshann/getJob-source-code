@@ -18,6 +18,7 @@ import PostedJobsPage from "./Pages/PostedJobsPage";
 import ApplicantsList from "./Pages/ApplicantsList";
 import ApplicantProfilePage from "./Pages/ApplicantProfilePage";
 import CompanyProfilePage from "./Pages/CompanyProfilePage";
+import AboutUsPage from "./Pages/AboutUsPage";
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
         <Route element={ <ApplicantsList /> } path="/applicants" />
         <Route element={ <ApplicantProfilePage /> } path="/applicant-profile" />
         <Route element={ <CompanyProfilePage /> } path="/company-profile" />
+        <Route element={ <AboutUsPage/> } path="/about" />
 
       </Routes>
 

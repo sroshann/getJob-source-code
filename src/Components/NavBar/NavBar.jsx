@@ -15,16 +15,6 @@ function NavBar() {
     const navigate = useNavigate()
     const navigateTo = (destination) => {
 
-        // let userType
-
-        // const storedUserData = localStorage.getItem('userData')
-        // if ( storedUserData ) {
-
-        //     const parsedUserData = JSON.parse( storedUserData )
-        //     userType = parsedUserData.user
-
-        // }
-
         if (destination === 'home') {
 
             if ( userType === 'Seeker' ) navigate('/seekerhome')
@@ -44,6 +34,7 @@ function NavBar() {
         } else if ( destination === 'saved' ) navigate('/saved')
         else if ( destination === 'applied' ) navigate('/applied')
         else if ( destination === 'posted' ) navigate('/posted')
+        else if ( destination === 'about' ) navigate('/about')
 
     }
 
@@ -92,7 +83,7 @@ function NavBar() {
                     <div className="menu-divs">
 
                         <button onClick={() => { navigateTo('home') }} ><i class='bx bx-home-alt'></i>Home</button>
-                        <button><i class='bx bx-message-square-detail'></i>About Us</button>
+                        <button onClick={() => navigateTo('about')} ><i class='bx bx-message-square-detail'></i>About Us</button>
                         <button><i class='bx bx-buildings'></i>Companies</button>
 
                     </div>
@@ -109,8 +100,8 @@ function NavBar() {
 
                         { userType === 'Seeker' ? <button onClick={() => { navigateTo('applied') }}><i class='bx bx-accessibility'></i>Applied jobs</button> :
                              <button id='post' onClick={() => { navigateTo('postjob') }}><i class='bx bx-briefcase'></i>Post a job</button>}
-                        { userType == 'Seeker' ? <button onClick={ () => navigateTo('saved') }><i class='bx bx-bookmarks' ></i>Saved jobs</button> :
-                            userType == 'Employer' ? <button onClick={ () => navigateTo('posted') }>Posted jobs</button> : <></>}
+                        { userType === 'Seeker' ? <button onClick={ () => navigateTo('saved') }><i class='bx bx-bookmarks' ></i>Saved jobs</button> :
+                            userType === 'Employer' ? <button onClick={ () => navigateTo('posted') }>Posted jobs</button> : <></>}
                         {user && <button onClick={() => { navigateTo('profile') }} ><i class='bx bx-user'></i>
                             Profile</button>}
 
