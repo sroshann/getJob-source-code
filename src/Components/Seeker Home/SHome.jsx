@@ -10,9 +10,12 @@ function SHome() {
     const [saveArray, setSaveArray] = useState([])
     const [jobs, setJobs] = useState([])
 
+    const [search, setSearch] = useState('')
+    const [searchedJobs, setSearchedJobs] = useState([])
+
     const navigate = useNavigate()
 
-    const saveJob = async ( object) => {
+    const saveJob = async (object) => {
 
         const index = saveArray.findIndex(value => value.jobID === object.jobID)
         let uploadArray = [] // Inorder to solve asynchronous nature, we cannot access state directly 
@@ -79,7 +82,7 @@ function SHome() {
             return parseToJSON.email
 
         }
-        
+
     }
 
     const userAlreadySaved = async () => { //Inorder to get already saved jobs in database to show in saved jobs
@@ -89,22 +92,74 @@ function SHome() {
         const condition = where('email', '==', email)
         const selectedUser = query(ref, condition)
 
-        const userData = await getDocs( selectedUser )
-        userData.forEach( doc => { setSaveArray( doc.data().savedJobs ) } )
+        const userData = await getDocs(selectedUser)
+        userData.forEach(doc => { setSaveArray(doc.data().savedJobs) })
 
     }
 
-    const pageView = ( ID ) => {
+    const pageView = (ID) => {
 
-        localStorage.setItem('jobID', JSON.stringify( ID ))
+        localStorage.setItem('jobID', JSON.stringify(ID))
         navigate('/view')
+
+    }
+
+    const searchJob = async () => {
+
+        try {
+
+            const loadingId = toast.loading('Searching')
+            const reference = collection(FirebaseFirestore, 'Jobs')
+
+            const queries = [ //Inorder to handle multiple queries
+
+                where('category', '==', search),
+                where('jobTitle', '==', search),
+                where('location', '==', search),
+                where('qualification', '==', search)
+
+            ]
+
+            let array = []
+            const promises = queries.map(async (objects) => { // Firebase provides AND operation as default 
+                // to avoid that we can use this method creating promise and iterationg among them
+
+                const selectedJob = query(reference, objects)
+                const jobDetails = await getDocs(selectedJob)
+                jobDetails.forEach((doc) => {
+
+                    array.push({
+
+                        jobTitle: doc.data().jobTitle,
+                        jobID: doc.data().jobID,
+                        companyName: doc.data().companyName,
+                        experience: doc.data().experience,
+                        salary: doc.data().salary,
+                        location: doc.data().location,
+                        skillsRequired: doc.data().skillsRequired,
+                        postedOn: doc.data().postedOn
+
+                    })
+
+                })
+
+            })
+
+            await Promise.all(promises) // Wait for all queries to complete
+
+            if (array.length === 0) toast.error('No jobs were found', { style: { fontSize: '14px' } })
+            else setSearchedJobs(array)
+
+            toast.remove(loadingId)
+
+        } catch (error) { console.log(error.message) }
 
     }
 
     useEffect(() => {
 
         getJobData()
-        userAlreadySaved ()
+        userAlreadySaved()
 
         //   return () => {
         //     second
@@ -119,10 +174,18 @@ function SHome() {
 
             <section id='searching-area'>
 
-                <div>
+                <div style={ search ? { paddingRight : '6px' } : {} }>
 
-                    <input type="text" id='input-search' placeholder='Find your job' />
-                    <i class='bx bx-search search-icon'  ></i>
+                    <input type="text" id='input-search' placeholder='Find your job' 
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)} />
+                        { search && <i className='bx bx-x' style={{ cursor: 'pointer' }} onClick={ () => {
+
+                            setSearch('')
+                            setSearchedJobs([])
+
+                        } }></i>}
+                    <i className='bx bx-search search-icon' onClick={searchJob} ></i>
 
                 </div>
 
@@ -204,9 +267,9 @@ function SHome() {
                             jobs.length === 0 ? <div id="no-jobs"> <p>No jobs were found</p> </div>
 
                                 :
-                                jobs.map((objects, index) => (
+                                searchedJobs.length > 0 ? searchedJobs.map((objects, index) => (
 
-                                    <div className="job-objects" key={index} onClick={ ()=> pageView( objects.jobID ) } >
+                                    <div className="job-objects" key={index} onClick={() => pageView(objects.jobID)} >
 
                                         <section>
 
@@ -261,18 +324,18 @@ function SHome() {
                                             <div id="date-save">
 
                                                 <p className='grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
-                                                <div onClick={( event ) => { 
-                                                    
-                                                    saveJob(objects) 
+                                                <div onClick={(event) => {
+
+                                                    saveJob(objects)
                                                     event.stopPropagation()
-                                                    
+
                                                 }}>
 
-                                                    { saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ?
+                                                    {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ?
                                                         <i className='bx bxs-bookmark grey' ></i> :
                                                         <i className='bx bx-bookmark grey'></i>}
                                                     <p className='grey'>
-                                                        { saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
+                                                        {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
                                                     </p>
 
                                                     {/* .some check the provided condition is exist atleast one time in that array */}
@@ -285,7 +348,89 @@ function SHome() {
 
                                     </div>
 
-                                ))
+                                )) :
+                                    jobs.map((objects, index) => (
+
+                                        <div className="job-objects" key={index} onClick={() => pageView(objects.jobID)} >
+
+                                            <section>
+
+                                                <div id='job-company-detail'>
+
+                                                    <p id='job-title'>{objects.jobTitle}</p>
+                                                    <p id='company-name'>{objects.companyName}</p>
+
+                                                </div>
+                                                <div id="other-details">
+
+                                                    <div id="experience">
+
+                                                        <i className='bx bx-briefcase-alt grey'></i>
+                                                        <p className='grey'>{objects.experience}</p>
+
+                                                    </div>
+                                                    <p className="grey">|</p>
+                                                    <div id="salary">
+
+                                                        <i className='bx bx-rupee grey' ></i>
+                                                        <p className='grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
+
+                                                    </div>
+                                                    <p className="grey">|</p>
+                                                    <div id="location">
+
+                                                        <i className='bx bx-map grey'></i>
+                                                        <p className='grey'>{objects.location}</p>
+
+                                                    </div>
+
+                                                </div>
+                                                <div id="job-skills">
+
+                                                    {
+
+                                                        objects.skillsRequired.map((skillObj, index) => (
+
+                                                            <div key={index}>
+
+                                                                {index === 0 ? <></> : <i className='bx bx-wifi-0 grey'></i>}
+                                                                <p className='grey'>{skillObj.text}</p>
+
+                                                            </div>
+
+                                                        ))
+
+                                                    }
+
+                                                </div>
+                                                <div id="date-save">
+
+                                                    <p className='grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
+                                                    <div onClick={(event) => {
+
+                                                        saveJob(objects)
+                                                        event.stopPropagation()
+
+                                                    }}>
+
+                                                        {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ?
+                                                            <i className='bx bxs-bookmark grey' ></i> :
+                                                            <i className='bx bx-bookmark grey'></i>}
+                                                        <p className='grey'>
+                                                            {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
+                                                        </p>
+
+                                                        {/* .some check the provided condition is exist atleast one time in that array */}
+
+                                                    </div>
+
+                                                </div>
+
+                                            </section>
+
+                                        </div>
+
+                                    ))
 
                         }
 
