@@ -177,6 +177,8 @@ function View() {
 
             try {
 
+                const loadingToast = toast.loading('Applying for this job')
+
                 // This section add job details into corresponding user database 
                 const email = localStorageEmail()
                 const ref = collection(FirebaseFirestore, 'Users')
@@ -225,6 +227,7 @@ function View() {
                     await updateDoc( jobRef , { appliedSeekers : uploadJobArray } )
 
                 } ).then(() => {
+                    toast.remove( loadingToast )
                     toast.success('You have successfully applied for this job', { style: { fontSize: '14px' } })
                 })
                 .catch((error) => console.log(error.message) )

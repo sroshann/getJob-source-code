@@ -17,6 +17,8 @@ function EmployerProfile() {
   const [summary, setSummary] = useState('') // To store summary
   const [image, setImage] = useState(null) // Inorder to store profile image
   const [imageURL, setImageURL] = useState('') // To store profile pictire URL
+  const [jobsPosted, setJobPosted] = useState(0)
+  const [applicants, setApplicants] = useState(0)
 
 
   const [edit, setEdit] = useState(false)
@@ -48,6 +50,24 @@ function EmployerProfile() {
         })
 
       })
+
+
+      // This will find number of jobs posted by the user
+      const jobRef = collection(FirebaseFirestore, 'Jobs')
+      const jobCondition = where('userEmail', '==', parsedUserData.email)
+      const selectedJobs = query(jobRef, jobCondition)
+
+      const jobData = await getDocs(selectedJobs)
+      const allJobs = jobData.docs.map(values => ({
+
+        ...values.data()
+
+      }))
+      setJobPosted(allJobs.length)
+
+      let sum = 0
+      allJobs.map((objects) => { sum = sum + objects.appliedSeekers.length })
+      setApplicants( sum )
 
     }
 
@@ -131,7 +151,7 @@ function EmployerProfile() {
           const imageLink = await getDownloadURL(response.ref)
           setImageURL(imageLink)
           console.log(imageLink)
-          toast.remove( loadingToast )
+          toast.remove(loadingToast)
           toast.success('Profile is updated', { style: { fontSize: '14px' } })
 
         }
@@ -181,7 +201,7 @@ function EmployerProfile() {
             setProfileEdit(false)
             setWRDM(false)
             getUserData()
-            toast.remove( loadingToast )
+            toast.remove(loadingToast)
             toast.success('Changes applied', { style: { fontSize: '14px' } })
 
           }).catch((error) => toast.error('Data are not updated', { style: { fontSize: '14px' } }))
@@ -205,9 +225,9 @@ function EmployerProfile() {
     setContactPerson(user_data.contact_person)
     setUPdatedNumber(user_data.phone_number)
     if (user_data.profile_picture) setImageURL(user_data.profile_picture)
-    if (user_data.location ) setlocation(user_data.location)
-    if ( user_data.website ) setWebsite(user_data.website)
-    if ( user_data.summary ) setSummary(user_data.summary)
+    if (user_data.location) setlocation(user_data.location)
+    if (user_data.website) setWebsite(user_data.website)
+    if (user_data.summary) setSummary(user_data.summary)
 
     if (user_data.workingDomains && user_data.workingDomains.length > 0)
       setWRDMList(previous => [...previous, ...user_data.workingDomains])
@@ -468,15 +488,15 @@ function EmployerProfile() {
 
               <div>
                 <p className="heading">Job posted</p>
-                <p className="sub-heading">{user_data.job_posted ? user_data.job_posted : '0'}</p>
+                <p className="sub-heading">{jobsPosted}</p>
               </div>
 
             </section>
             <section>
 
               <div>
-                <p className="heading">Applications</p>
-                <p className="sub-heading">{user_data.applications ? user_data.applications : '0'}</p>
+                <p className="heading">Total applicants</p>
+                <p className="sub-heading">{applicants}</p>
               </div>
 
             </section>

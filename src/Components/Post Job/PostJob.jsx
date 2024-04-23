@@ -95,6 +95,7 @@ function PostJob() {
 
         else {
 
+            const loadingToast = toast.loading('Posting')
             const storedUserData = localStorage.getItem('userData')
             const date = new Date()
 
@@ -128,6 +129,7 @@ function PostJob() {
 
                     }).then(() => {
 
+                        toast.remove( loadingToast )
                         toast.success('Job posted successfully', { style: { fontSize: '14px' } })
                         setJobTitle('')
                         setCategory('')

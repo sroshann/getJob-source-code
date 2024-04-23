@@ -18,6 +18,8 @@ function SeekerProfile() {
     const [summary, setSummary] = useState('')
     const [image, setImage] = useState(null)
     const [image_URL, setImageURL] = useState(null) // To store the URL of image
+    const [ appliedJos , setAppliedJobs ] = useState(0)
+    const [ savedJobs , setSavedJobs ] = useState(0)
 
     const [input_box1, setInputBox1] = useState(false) // To get a new input box
     const [education, setEducation] = useState('') // To store educational qualifaication from input box 
@@ -174,9 +176,6 @@ function SeekerProfile() {
                         projects: project_list,
                         languages_known: language_list,
                         certificates: certificate_url_list,
-                        job_applied: 0,
-                        job_saved: 0,
-                        profile_views: 0
 
                     }
 
@@ -495,6 +494,8 @@ function SeekerProfile() {
                 user_data.forEach(doc => {
 
                     setLoaclStorageData(doc.data()) // The each fields of data are stored into a state
+                    setAppliedJobs( doc.data().appliedJobs.length)
+                    setSavedJobs( doc.data().savedJobs.length )
 
                 })
 
@@ -676,16 +677,14 @@ function SeekerProfile() {
 
                             <section>
 
-                                <p className='heading'>Job applied</p>
-                                <p className='sub-heading margin-left'>
-                                    {local_storage_data.job_applied ? local_storage_data.job_applied : '0'}</p>
+                                <p className='heading'>Jobs applied</p>
+                                <p className='sub-heading margin-left'>{appliedJos}</p>
 
                             </section>
                             <section>
 
-                                <p className='heading'>Job saved</p>
-                                <p className='sub-heading margin-left'>
-                                    {local_storage_data.job_saved ? local_storage_data.job_saved : '0'}</p>
+                                <p className='heading'>Jobs saved</p>
+                                <p className='sub-heading margin-left'> {savedJobs}</p>
 
 
                             </section>

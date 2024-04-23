@@ -325,18 +325,6 @@ a { text-decoration: none; color: black; }
 
 }
 
-#edu-btns , #project-btns , #certificate-btns {
-
-    width: fit-content;
-    display: flex;
-    column-gap: 7px;
-    justify-content: space-between;
-    position: relative;
-    left: 83.65%;
-    bottom: -7px;
-
-}
-
 .done-btn {
 
     padding: 5px 15px;
