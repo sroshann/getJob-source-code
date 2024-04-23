@@ -274,7 +274,7 @@ function View() {
                     {
 
                         userType === 'Seeker' ? (saved ? <i className='bx bxs-bookmark view-save' onClick={saveJob}></i> :
-                            <i className='bx bx-bookmark save' onClick={saveJob}></i>) :
+                            <i className='bx bx-bookmark view-save' onClick={saveJob}></i>) :
                             <button className="afj">Delete</button>
 
                     }

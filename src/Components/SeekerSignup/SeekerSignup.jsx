@@ -11,74 +11,76 @@ import toast, { Toaster } from 'react-hot-toast';
 
 function SeekerSignup() {
 
-  const [ full_name , setFullName ] = useState('')
-  const [ email , setEmail ] = useState('')
-  const [ phone_number , setPhoneNumber ] = useState('')
-  const [ password , setPassword ] = useState('')
-  let [ radio , setRadio ] = useState('')
-  const [ resume , setResume ] = useState()
+  const [full_name, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone_number, setPhoneNumber] = useState('')
+  const [password, setPassword] = useState('')
+  let [radio, setRadio] = useState('')
+  const [resume, setResume] = useState()
 
   // These states are used to store the data from each input boxes
 
   const navigate = useNavigate()
 
-  const createUser = async ( event ) => { // This function is to create an user with firebase
+  const createUser = async (event) => { // This function is to create an user with firebase
 
     event.preventDefault()
 
-    try{
+    try {
 
-      if( email === '' || password === '' || full_name === '' || phone_number === '' ) return toast.error('Please complete the form')
+      if (email === '' || password === '' || full_name === '' || phone_number === '') return toast.error('Please complete the form')
       else {
 
+        const toastID = toast.loading('Creating account')
+        const resumeRef = ref(FirebaseStorage, `Resumes/${resume.name}`)
+        uploadBytes(resumeRef, resume).then((response) => {
 
-        const resumeRef = ref( FirebaseStorage , `Resumes/${ resume.name }` )
-        uploadBytes( resumeRef , resume ).then( ( response ) => {
+          getDownloadURL(response.ref).then(async (url) => {
 
-          getDownloadURL( response.ref ).then( async ( url ) => {
+            await addDoc(collection(FirebaseFirestore, 'Users'), { // This code is used to store the remaining details of an user in database
 
-            await addDoc( collection( FirebaseFirestore , 'Users' ) , { // This code is used to store the remaining details of an user in database
-
-              id : result.user.uid,
-              email : email,
-              username : full_name,
-              phone_number : phone_number,
-              password : password,
-              user_type : radio,
+              id: result.user.uid,
+              email: email,
+              username: full_name,
+              phone_number: phone_number,
+              password: password,
+              user_type: radio,
               url,
-              savedJobs : [],
-              appliedJobs : []
-    
-            } )
+              savedJobs: [],
+              appliedJobs: []
 
-          } ).then( () => { 
-            
-            setResume( null )
-            navigate('/login')
+            })
+
+          })
+
+        })
+        .then( () => {
           
-          } )
-
+          toast.remove(toastSuccess)
+          navigate('/login')
+        
         } )
 
         // These codes are used to store resume file in firebse storage and store the remaining details of user in firebase firestore
 
-        const result = await createUserWithEmailAndPassword( FirebaseAuth , email , password )
-        await updateProfile( result.user , { displayName : full_name } )
+        const result = await createUserWithEmailAndPassword(FirebaseAuth, email, password)
+        await updateProfile(result.user, { displayName: full_name })
         // alert ( 'You are signed in successfully' )
-        toast.success('You are signed in successfully' , { style : { fontSize: '14px' } })
-         
+        const toastSuccess = toast.success('Account created successfully', { style: { fontSize: '14px' } })
+        toast.remove( toastID )
+
         setFullName('')
         setEmail('')
         setPassword('')
         setPhoneNumber('')
+        setResume( null )
 
-        
         // In these code the user is created
-    
+
       }
 
-    } catch ( error ) { toast.error( error.message , { style : { fontSize: '14px' } } ) }
-  
+    } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
+
   }
 
   return (
@@ -89,7 +91,7 @@ function SeekerSignup() {
 
         <div id="left-content">
 
-          <div id="image"><img src={ signupImage } alt="" /></div>
+          <div id="image"><img src={signupImage} alt="" /></div>
           <div id="texts">
 
             <p id='bold-p' >On registration, you can</p>
@@ -119,33 +121,33 @@ function SeekerSignup() {
         <div id="right-content">
 
           <p id='grow'>Let's grow your career</p>
-          <form id="frm" onSubmit={ createUser }>
+          <form id="frm" onSubmit={createUser}>
 
             <p className='labels' >Full Name</p>
-            <input type="text" name="" className='inputs' placeholder="What's your name ?" value={ full_name } onChange={
+            <input type="text" name="" className='inputs' placeholder="What's your name ?" value={full_name} onChange={
 
-              ( event ) => setFullName( event.target.value )
+              (event) => setFullName(event.target.value)
 
             } />
 
             <p className='labels' >Email ID</p>
-            <input type="email" name="" className='inputs' placeholder="Tell us your Email ID" value={ email } onChange={
+            <input type="email" name="" className='inputs' placeholder="Tell us your Email ID" value={email} onChange={
 
-              ( event ) => setEmail( event.target.value )
+              (event) => setEmail(event.target.value)
 
             } />
 
             <p className='labels' >Mobile</p>
-            <input type="number" name="" className='inputs' placeholder="Mobile number" value={ phone_number } onChange={
+            <input type="number" name="" className='inputs' placeholder="Mobile number" value={phone_number} onChange={
 
-              ( event ) => setPhoneNumber( event.target.value )
+              (event) => setPhoneNumber(event.target.value)
 
             } />
 
             <p className='labels' >Password</p>
-            <input type="password" name="" className='inputs' placeholder="Create a strong password" value={ password } onChange={
+            <input type="password" name="" className='inputs' placeholder="Create a strong password" value={password} onChange={
 
-              ( event ) => setPassword( event.target.value )
+              (event) => setPassword(event.target.value)
 
             } />
 
@@ -164,7 +166,7 @@ function SeekerSignup() {
 
               <div>
 
-                <input type="radio" checked = { radio = 'Seeker' } value={ radio } onChange={ ( event ) => setRadio( event.target.value ) } />
+                <input type="radio" checked={radio = 'Seeker'} value={radio} onChange={(event) => setRadio(event.target.value)} />
                 <p id='radio'>Job seeker</p>
 
               </div>

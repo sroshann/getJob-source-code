@@ -25,12 +25,15 @@ function EmployerSignup() {
 
     try {
 
-      if ( company_name === '' || email === '' || contact_person === '' || phone_number === '' || password === '' ) return alert ('Please complete the form')
+      if ( company_name === '' || email === '' || contact_person === '' || phone_number === '' || password === '' ) 
+        return toast.error( 'Complete all the fields' , { style : { fontSize: '14px' } } )
       else {
         
+        const toastID = toast.loading('Creating user')
         const result = await createUserWithEmailAndPassword( FirebaseAuth , email , password )
         await updateProfile( result.user , { displayName : company_name } )
-        toast.success('You are signed in successfully' , { style : { fontSize: '14px' } })
+        toast.remove( toastID )
+        const toastSuccess = toast.success('You are signed in successfully' , { style : { fontSize: '14px' } })
 
         setCompanyName('')
         setContactPerson('')
@@ -50,7 +53,12 @@ function EmployerSignup() {
           password : password,
           user_type : radio
 
-        } ).then( () => { navigate('/login') } )
+        } ).then( () => { 
+          
+          toast.remove( toastSuccess )
+          navigate('/login') 
+        
+        } )
         
       }
 

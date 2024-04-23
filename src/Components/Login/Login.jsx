@@ -21,6 +21,7 @@ function Login() {
 
             signInWithEmailAndPassword(FirebaseAuth, email, password).then(async () => {
 
+                const toastID = toast.loading('Loading')
                 const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
                 const condition = where('email', '==', email) // Providing the condition for selecting the user
                 const selected_user = query(user_ref, condition) // Selects the user from the total collection
@@ -39,8 +40,9 @@ function Login() {
 
                         }
 
+                        toast.dismiss(toastID)
                         // save user datas on local storage
-                        localStorage.setItem('userData', JSON.stringify( dataToStore ));
+                        localStorage.setItem('userData', JSON.stringify(dataToStore));
                         const storedUserData = localStorage.getItem('userData');
 
                         if (storedUserData) {
@@ -54,7 +56,7 @@ function Login() {
                 })
 
             })
-            .catch((error) => toast.error(error.message, { style: { fontSize: '13px' } }))
+                .catch((error) => toast.error(error.message, { style: { fontSize: '13px' } }))
 
         } catch (error) { toast.error(error.message) }
 
@@ -75,7 +77,7 @@ function Login() {
                 } />
 
                 <p className='item'>Password</p>
-                <input type="text" placeholder='Password' value={password} onChange={
+                <input type="password" placeholder='Password' value={password} onChange={
 
                     (event) => setPassword(event.target.value)
 
