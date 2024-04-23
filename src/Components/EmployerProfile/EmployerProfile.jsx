@@ -119,10 +119,11 @@ function EmployerProfile() {
       try {
 
         if (image === null)
-          return toast.error('Complete all fields', { style: { fontSize: '14px' } })
+          return toast.error('Image is not selected', { style: { fontSize: '14px' } })
 
         else {
 
+          const loadingToast = toast.loading('Please wait this will take seconds')
           const dpRef = ref(FirebaseStorage,
             `Profile pictures/${user_data.user_type}/${user_data.email}/${image.name}`)
 
@@ -130,6 +131,7 @@ function EmployerProfile() {
           const imageLink = await getDownloadURL(response.ref)
           setImageURL(imageLink)
           console.log(imageLink)
+          toast.remove( loadingToast )
           toast.success('Profile is updated', { style: { fontSize: '14px' } })
 
         }
@@ -149,6 +151,7 @@ function EmployerProfile() {
 
       else {
 
+        const loadingToast = toast.loading('Saving changes')
         const user_ref = collection(FirebaseFirestore, 'Users')  // Selects the collection
         const condition = where('email', '==', user_data.email) // Providing the condition for selecting the user
         const selected_user = query(user_ref, condition) // Selects the user from the total collection
@@ -178,6 +181,7 @@ function EmployerProfile() {
             setProfileEdit(false)
             setWRDM(false)
             getUserData()
+            toast.remove( loadingToast )
             toast.success('Changes applied', { style: { fontSize: '14px' } })
 
           }).catch((error) => toast.error('Data are not updated', { style: { fontSize: '14px' } }))
@@ -187,6 +191,8 @@ function EmployerProfile() {
       }
 
     } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
+
+    // console.log( location )
 
   }
 
@@ -199,9 +205,9 @@ function EmployerProfile() {
     setContactPerson(user_data.contact_person)
     setUPdatedNumber(user_data.phone_number)
     if (user_data.profile_picture) setImageURL(user_data.profile_picture)
-    setlocation(user_data.location)
-    setWebsite(user_data.website)
-    setSummary(user_data.summary)
+    if (user_data.location ) setlocation(user_data.location)
+    if ( user_data.website ) setWebsite(user_data.website)
+    if ( user_data.summary ) setSummary(user_data.summary)
 
     if (user_data.workingDomains && user_data.workingDomains.length > 0)
       setWRDMList(previous => [...previous, ...user_data.workingDomains])
@@ -321,7 +327,7 @@ function EmployerProfile() {
 
                 <div style={{ width: '305px' }}>
 
-                  <p className="heading">location</p>
+                  <p className="heading">Location</p>
                   {
 
                     edit ? <input type='text' value={location}
@@ -402,7 +408,7 @@ function EmployerProfile() {
 
                 <input type="text" value={working_domain}
                   className='inp-bx'
-                  style={{ width: '175px' }}
+                  style={{ width: '180px' }}
                   placeholder='Add your working domain'
                   onChange={(event) => setWorkinDomain(event.target.value)} />
                 <i class='bx bx-check tick' onClick={emoloyerAddItems}></i>

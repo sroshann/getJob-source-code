@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './SeekerProfile.css'
-// import { UDContext } from '../../Context/User_details'
-import { getDownloadURL, getMetadata, ref, uploadBytes } from 'firebase/storage'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { FirebaseFirestore, FirebaseStorage } from '../../FIrebase/Configueration'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import toast, { Toaster } from 'react-hot-toast'
@@ -71,6 +70,8 @@ function SeekerProfile() {
                 else {
     
                     let certificate_link, image_link
+
+                    const loadingToast = toast.loading('Please wait this will take seconds')
     
                     if (editing_certficate_list && editing_certficate_list.length !== 0) {
     
@@ -122,6 +123,7 @@ function SeekerProfile() {
     
                     if (certificate_link || image_link) {
     
+                        toast.remove( loadingToast )
                         toast.success('Profile is updated', { style: { fontSize: '14px' } })
     
                     }
@@ -153,6 +155,7 @@ function SeekerProfile() {
                 return toast.error('Complete all fields', { style: { fontSize: '14px' } })
             else {
 
+                const loadingToast = toast.loading('Saving changes')
                 await getDocs(selected_user).then(async (user_document) => { // This code will upload the data to firebase firestore
 
                     const userDocRef = user_document.docs[0].ref
@@ -189,6 +192,7 @@ function SeekerProfile() {
                             setLoaclStorageData(changing_object)
                             setEditingCertificateList([])
                             setEnableCertificate( false )
+                            toast.remove( loadingToast )
                             toast.success('Changes applied', { style: { fontSize: '14px' } })
 
                         })
@@ -565,7 +569,7 @@ function SeekerProfile() {
 
                             }
 
-                            {edit && <input type="file" name="" id="change-dp"
+                            {edit && <input type="file" name="" id="change-dp" accept="image/*"
                                 onChange={(event) => {
 
                                     local_storage_data.profile_picture = null
