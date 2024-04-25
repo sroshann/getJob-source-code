@@ -17,6 +17,7 @@ function SeekerSignup() {
   const [password, setPassword] = useState('')
   let [radio, setRadio] = useState('')
   const [resume, setResume] = useState()
+  const [resumeName, setResumeName] = useState('')
 
   // These states are used to store the data from each input boxes
 
@@ -54,12 +55,12 @@ function SeekerSignup() {
           })
 
         })
-        .then( () => {
-          
-          toast.remove(toastSuccess)
-          navigate('/login')
-        
-        } )
+          .then(() => {
+
+            toast.remove(toastSuccess)
+            navigate('/login')
+
+          })
 
         // These codes are used to store resume file in firebse storage and store the remaining details of user in firebase firestore
 
@@ -67,13 +68,13 @@ function SeekerSignup() {
         await updateProfile(result.user, { displayName: full_name })
         // alert ( 'You are signed in successfully' )
         const toastSuccess = toast.success('Account created successfully', { style: { fontSize: '14px' } })
-        toast.remove( toastID )
+        toast.remove(toastID)
 
         setFullName('')
         setEmail('')
         setPassword('')
         setPhoneNumber('')
-        setResume( null )
+        setResume(null)
 
         // In these code the user is created
 
@@ -156,15 +157,28 @@ function SeekerSignup() {
               <div>
 
                 <p className='labels' >Resume</p>
-                <input type="file" name="" className='inputs-half' placeholder="Upload resume" onChange={
+                <div id='resume-div'>
+                  <button onClick={() => document.querySelector('.inputs-half').click()} id='choose-resume'>
 
-                  (event) => { setResume(event.target.files[0]) }
+                    <input type="file" name="" className='inputs-half' onChange={
 
-                } />
+                      (event) => {
+
+                        setResume(event.target.files[0])
+                        setResumeName(event.target.files[0].name)
+
+                      }
+
+                    } hidden />
+                    Upload resume
+
+                  </button>
+                  <p>{resumeName}</p>
+                </div>
 
               </div>
 
-              <div>
+              <div id='radio-div'>
 
                 <input type="radio" checked={radio = 'Seeker'} value={radio} onChange={(event) => setRadio(event.target.value)} />
                 <p id='radio'>Job seeker</p>

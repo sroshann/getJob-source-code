@@ -215,8 +215,13 @@ function PostJob() {
                                 onChange={(event) => setQualification(event.target.value)} />
 
                             <label for="jobQualif">Job Type</label>
-                            <input type="text" placeholder="Part time/Full time " value={jobType}
-                                onChange={(event) => setJobType(event.target.value)} />
+                            <select value={jobType} onChange={(event) => setJobType(event.target.value)} style={{appearance: 'none'}}>
+
+                                <option value="" disabled selected>Choose job type</option>
+                                <option value="Part time">Part time</option>
+                                <option value="Full time">Full time</option>
+
+                            </select>
 
                             <label for="jobDesc">Skills Required</label>
                             <div className="textAreaInput">
@@ -237,16 +242,36 @@ function PostJob() {
                         <div class="side">
 
                             <label for="jobCate">Category</label>
-                            <input type="text" placeholder="Category" value={category}
-                                onChange={(event) => setCategory(event.target.value)} />
+                            <select value={category} onChange={(event) => setCategory(event.target.value)} 
+                                style={{appearance: 'none'}}> 
+
+                                <option value="" disabled selected>Choose category</option>
+                                <option value="Medical">Medical</option>
+                                <option value="Education">Education</option>
+                                <option value="Engineering">Engineering</option>
+                                <option value="Hospitality">Hospitality</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Designing">Designing</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Automotive">Automotive</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Other">Other</option>
+
+                            </select>
 
                             <label for="jobSalary">Salary</label>
                             <input type="text" placeholder="Salary" value={salary}
                                 onChange={(event) => setSalary(event.target.value)} />
 
                             <label for="jobQualif">Working Mode</label>
-                            <input type="text" placeholder="On site/Remote " value={workingType}
-                                onChange={(event) => setworkingType(event.target.value)} />
+                            <select value={workingType} onChange={(event) => setworkingType(event.target.value)} 
+                                style={{appearance: 'none'}}>
+
+                                <option value="" disabled selected>Choose working mode</option>
+                                <option value="On site">On site</option>
+                                <option value="Remote">Remote</option>
+
+                            </select>
 
                             <label for="jobSalary">Experience</label>
                             <input type="text" placeholder="Experience" value={experience}
@@ -348,7 +373,7 @@ function PostJob() {
 
                         }
 
-                        <button type="submit" onClick={handleSubmit} >Post</button>
+                        <button type="submit" onClick={handleSubmit} id='post-a-job-done-btn'>Post</button>
 
                     </div>
 

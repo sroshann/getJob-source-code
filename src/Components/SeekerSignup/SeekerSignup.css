@@ -1,3 +1,4 @@
+
 #seeker-signup {
     margin-left: 13%;
 }
@@ -42,12 +43,12 @@
 #right-content {
 
     width: 67%;
-    height: 545px;
+    height: fit-content;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0px 0px 10px -7px;
-    margin-top: 40px;
-    margin-left: 2.5%;
+    margin: 40px 0px 50px 2.5%;
+    padding: 0px 0px 35px 0px;
 
 }
 
@@ -117,8 +118,7 @@
 
 }
 
-.labels,
-#accepting {
+.labels {
 
     font-size: 16px;
     margin-left: 2%;
@@ -154,29 +154,36 @@
 
 }
 
-#frm-subdiv div:nth-child(2) {
+#radio-div {
 
     display: flex;
     justify-content: space-evenly;
     width: 25%;
+    margin: 0px 0px 0px 130px;
+    align-items: baseline;
 
 }
 
-#frm-subdiv div:nth-child(2) input {
-    margin-top: 39.2px;
+#radio-div input {
+
+    position: relative;
+    top: 3px;
+
 }
 
-#frm-subdiv div:nth-child(2) p {
+#radio {
 
     font-size: 13px;
-    margin-top: 47.5px;
+    margin-top: 40px;
 
 }
 
 #accepting {
 
     font-size: 9px;
-    margin-top: 30px;
+    position: relative;
+    top: 15px;
+    padding: 0px 0px 0px 50px;
 
 }
 
@@ -192,21 +199,21 @@
     background-color: #0149AB;
     color: white;
     padding: 10px 35px;
-    margin-left: 30%;
-    border: 0;
-    border-radius: 20px;
+    border: solid 2px #0149AB;
+    border-radius: 25px;
     font-size: 12px;
-    margin-top: 13px;
     cursor: pointer;
+    margin: 5px 0px 0px 36%;
+    position: relative;
+    top: 15px;
+    transition: 0.3s;
 
 }
 
 .sign-btn:hover {
 
     color: #0149AB;
-    background-color: white;
-    transition: 0.3s;
-    box-shadow: 0px 0px 12px -7px;
+    background-color: #0090ff69;
 
 }
 
@@ -216,6 +223,24 @@
 
 #radio {
     cursor: default;
+}
+
+#resume-div p { font-size: 13px; }
+#choose-resume {
+
+    padding: 7px 15px;
+    border: solid 2px #0149AB;
+    background-color: #0149AB;
+    color: white;
+    border-radius: 4px;
+    transition: 0.3s;
+
+}
+#choose-resume:hover {
+
+    background-color: #0090ff69;
+    color: #0149AB;
+
 }
 
 @media (max-width : 767px) {

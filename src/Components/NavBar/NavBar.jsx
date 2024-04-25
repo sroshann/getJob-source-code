@@ -43,10 +43,10 @@ function NavBar() {
         signOut(FirebaseAuth).then(() => {
 
             localStorage.clear()
-            navigate('/login')
+            navigate('/')
 
         })
-            .catch((error) => toast.error(error.message))
+        .catch((error) => toast.error(error.message))
 
     }
 

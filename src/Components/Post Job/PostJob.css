@@ -38,10 +38,9 @@
     font-weight: 500;
     font-size: 18px;
     color: #0e47a1;
-    margin-left: 15px;
 }
 
-.jobForm input{
+.jobForm input , .jobForm select{
     width: -webkit-fill-available;
     padding: 8px 6px;
     border: 2px solid;
@@ -116,20 +115,31 @@
     cursor: pointer;
     padding: unset;
     margin-top: unset;
+    transition: 0.3s;
 
 }
 
-.jobForm button {
+#done:hover , #add:hover {
+
+    color: #0149AB;
+    background-color: #0090ff69;
+
+}
+
+#post-a-job-done-btn {
     background-color: #0e47a1;
+    border: solid 2px #0e47a1;
     color: #fff;
-    padding: 6px 80px;
-    border: none;
+    padding: 10px 50px;
     margin-top: 15px;
-    border-radius: 15px;
-    transition: .5s;
+    border-radius: 5px;
+    transition: .3s;
+    cursor: pointer;
 }
-.jobForm button:hover{
-    background-color: #0d56ca;
+#post-a-job-done-btn:hover{
+    border: solid 2px #0e47a1;
+    background-color: #0090ff69;
+    color: #0e47a1;
 }
 
 .postObjects {
@@ -137,6 +147,7 @@
     display: flex;
     width: 85%;
     font-size: smaller;
+    margin: 0px 0px 12px 0px;
 
 }
 
