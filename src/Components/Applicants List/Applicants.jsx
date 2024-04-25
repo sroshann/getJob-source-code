@@ -66,7 +66,11 @@ function Applicants() {
                                 <p className='txt txt-email'>{objects.email}</p>
                                 <div id="resume">
 
-                                    <button><a rel='noreferrer' target='_blank' href={objects.resume}>Resume</a></button>
+                                    <button><a rel='noreferrer' target='_blank' href={objects.resume} onClick={
+
+                                        ( event ) => event.stopPropagation() 
+
+                                    }>Resume</a></button>
 
                                 </div>
 

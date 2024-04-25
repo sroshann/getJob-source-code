@@ -174,17 +174,17 @@ function SHome() {
 
             <section id='searching-area'>
 
-                <div style={ search ? { paddingRight : '6px' } : {} }>
+                <div style={search ? { paddingRight: '6px' } : {}}>
 
-                    <input type="text" id='input-search' placeholder='Find your job' 
+                    <input type="text" id='input-search' placeholder='Find your job'
                         value={search}
                         onChange={(event) => setSearch(event.target.value)} />
-                        { search && <i className='bx bx-x' style={{ cursor: 'pointer' }} onClick={ () => {
+                    {search && <i className='bx bx-x' style={{ cursor: 'pointer' }} onClick={() => {
 
-                            setSearch('')
-                            setSearchedJobs([])
+                        setSearch('')
+                        setSearchedJobs([])
 
-                        } }></i>}
+                    }}></i>}
                     <i className='bx bx-search search-icon' onClick={searchJob} ></i>
 
                 </div>
@@ -200,44 +200,14 @@ function SHome() {
 
                             <div>
 
-                                <i class='bx bx-shopping-bag'></i>
-                                <p>Sales</p>
+                                <i class='bx bx-clinic'></i>
+                                <p>Medical</p>
 
                             </div>
                             <div>
 
-                                <i class='bx bx-package'></i>
-                                <p>Supply Chain</p>
-
-                            </div>
-                            <div>
-
-                                <i class='bx bx-home-alt'></i>
-                                <p>Remote</p>
-
-                            </div>
-                            <div>
-
-                                <i class='bx bx-buildings'></i>
-                                <p>MNC</p>
-
-                            </div>
-                            <div>
-
-                                <i class='bx bx-line-chart' ></i>
-                                <p>Marketing</p>
-
-                            </div>
-                            <div>
-
-                                <i class='bx bx-group'></i>
-                                <p>HR</p>
-
-                            </div>
-                            <div>
-
-                                <i class='bx bx-rocket'></i>
-                                <p>Startup</p>
+                                <i class='bx bxs-graduation'></i>
+                                <p>Education</p>
 
                             </div>
                             <div>
@@ -248,7 +218,43 @@ function SHome() {
                             </div>
                             <div>
 
-                                <i class='bx bx-package'></i>
+                                <i class='bx bx-restaurant'></i>
+                                <p>Hospitality</p>
+
+                            </div>
+                            <div>
+
+                                <i class='bx bx-shopping-bag'></i>
+                                <p>Sales</p>
+
+                            </div> 
+                            <div>
+
+                                <i class='bx bxs-car-mechanic' ></i>
+                                <p>Automotive</p>
+
+                            </div>
+                            <div>
+
+                                <i class='bx bx-line-chart' ></i>
+                                <p>Marketing</p>
+
+                            </div>
+                            <div>
+
+                                <i class='bx bx-closet'></i>
+                                <p>Fashion</p>
+
+                            </div>
+                            <div>
+
+                                <i class='bx bx-tv'></i>
+                                <p>Telecommunications</p>
+
+                            </div>
+                            <div>
+
+                                <i class='bx bx-dots-horizontal-rounded'></i>
                                 <p>Other</p>
 
                             </div>
