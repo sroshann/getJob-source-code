@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './View.css'
-import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import toast, { Toaster } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
@@ -10,10 +10,10 @@ function View() {
     const [job, setJob] = useState([])
     const [saved, setSaved] = useState(false)
     const [apply, setApply] = useState(false)
-    const [ uploadApply , setUploadApply ] = useState({})
+    const [uploadApply, setUploadApply] = useState({})
     // const [ alreadySaved , setAlreadySaved ] = useState( false )
 
-    const [ userType , setUserType ] = useState('')
+    const [userType, setUserType] = useState('')
     const navigate = useNavigate()
 
     const getJobDetails = async () => {
@@ -35,14 +35,14 @@ function View() {
                 array = doc.data()
                 setUploadApply({
 
-                    title : doc.data().jobTitle,
-                    id : doc.data().jobID , 
-                    company : doc.data().companyName,
-                    experience : doc.data().experience,
+                    title: doc.data().jobTitle,
+                    id: doc.data().jobID,
+                    company: doc.data().companyName,
+                    experience: doc.data().experience,
                     salary: doc.data().salary,
-                    location : doc.data().location,
+                    location: doc.data().location,
                     skills: doc.data().skillsRequired,
-                    date : doc.data().postedOn
+                    date: doc.data().postedOn
 
                 })
                 setJob(doc.data())
@@ -52,8 +52,8 @@ function View() {
         }
 
         const user = localStorageUser()
-        setUserType( user )
-        if ( user === 'Seeker' ) userAlreadyDone( array )
+        setUserType(user)
+        if (user === 'Seeker') userAlreadyDone(array)
 
     }
 
@@ -72,9 +72,9 @@ function View() {
     const localStorageUser = () => {
 
         const localStorageUser = localStorage.getItem('userData')
-        if ( localStorageUser ) {
+        if (localStorageUser) {
 
-            const parse = JSON.parse( localStorageUser )
+            const parse = JSON.parse(localStorageUser)
             return parse.user
 
         }
@@ -173,7 +173,7 @@ function View() {
 
             let jobArray = []
             let uploadJobArray = []
-            let userDetails 
+            let userDetails
 
             try {
 
@@ -187,19 +187,19 @@ function View() {
 
                 await getDocs(selectedUser).then(async (userDocument) => {
 
-                    userDocument.forEach(doc => { 
-                        
-                        savedArray = [...doc.data().appliedJobs] 
+                    userDocument.forEach(doc => {
+
+                        savedArray = [...doc.data().appliedJobs]
                         userDetails = { // Inorder to store the user details in corresponding job details
 
                             name: doc.data().username,
-                            phoneNumber : doc.data().phone_number,
-                            email : doc.data().email,
-                            dp : doc.data().profile_picture,
-                            resume : doc.data().url
+                            phoneNumber: doc.data().phone_number,
+                            email: doc.data().email,
+                            dp: doc.data().profile_picture,
+                            resume: doc.data().url
 
                         }
-                    
+
                     })
                     uploadArray = [...savedArray, uploadApply]
                     const userRef = userDocument.docs[0].ref
@@ -207,30 +207,30 @@ function View() {
 
                 })
 
-                
+
 
                 // This section add the user details into jobs database
-                const reference = collection( FirebaseFirestore , 'Jobs' )
-                const jobCondition = where( 'jobID' , '==' , job.jobID )
-                const selectedJob = query( reference , jobCondition )
+                const reference = collection(FirebaseFirestore, 'Jobs')
+                const jobCondition = where('jobID', '==', job.jobID)
+                const selectedJob = query(reference, jobCondition)
 
-                await getDocs( selectedJob ).then( async (jobDocument) => {
+                await getDocs(selectedJob).then(async (jobDocument) => {
 
-                    jobDocument.forEach( doc => {
+                    jobDocument.forEach(doc => {
 
-                        jobArray = [ ...doc.data().appliedSeekers ]
+                        jobArray = [...doc.data().appliedSeekers]
 
-                    } )
+                    })
 
-                    uploadJobArray = [ ...jobArray , userDetails ]
+                    uploadJobArray = [...jobArray, userDetails]
                     const jobRef = jobDocument.docs[0].ref
-                    await updateDoc( jobRef , { appliedSeekers : uploadJobArray } )
+                    await updateDoc(jobRef, { appliedSeekers: uploadJobArray })
 
-                } ).then(() => {
-                    toast.remove( loadingToast )
+                }).then(() => {
+                    toast.remove(loadingToast)
                     toast.success('You have successfully applied for this job', { style: { fontSize: '14px' } })
                 })
-                .catch((error) => console.log(error.message) )
+                    .catch((error) => console.log(error.message))
 
 
             } catch (error) { console.log(error.message) }
@@ -246,6 +246,89 @@ function View() {
 
         localStorage.setItem('companyProfile', JSON.stringify(job.userEmail))
         navigate('/company-profile')
+
+    }
+
+    const deleteToast = () => {
+
+        toast((t) => (
+
+            <div id='toast-delete-div' >
+
+                <p>Confirm deletion</p>
+                <button onClick={ () => {
+                    
+                    deleteJob()
+                    toast.dismiss(t.id)
+                    
+                }} id='toast-delete-btn' ><i className='bx bx-check'></i>Delete</button>
+                <button onClick={() => toast.dismiss(t.id)} id='toast-cancel-btn'><i className='bx bx-x'></i>Cancel</button>
+
+            </div>
+
+        ))
+
+    }
+
+    const deleteJob = async () => {
+
+        try {
+
+            const loadingId = toast.loading('Deleting')
+            const reference = collection(FirebaseFirestore, 'Users')
+            const condition = where('user_type', '==', 'Seeker')
+            const selectedUsers = query(reference, condition)
+
+            const usersDetails = await getDocs(selectedUsers)
+            usersDetails.forEach(async doc => {
+
+                const applied = [...doc.data().appliedJobs]
+                const saved = [...doc.data().savedJobs]
+
+                const updateApplied = applied.filter(selected => {
+
+                    if (selected.id === job.jobID) selected = null
+                    return selected
+
+                })
+
+                const updateSaved = saved.filter(selected => {
+
+                    if (selected.jobID === job.jobID) selected = null
+                    return selected
+
+                })
+
+                await updateDoc(doc.ref, {
+
+                    appliedJobs: updateApplied,
+                    savedJobs: updateSaved
+
+                })
+
+            })
+
+            toast.remove(loadingId)
+            const successToast = toast.success('Job deleted successfully', { style: { fontSize: '14px' } })
+
+            let documentId
+            const jobReference = collection(FirebaseFirestore, 'Jobs')
+            const jobCondition = where('jobID', '==', job.jobID)
+            const selectedJob = query(jobReference, jobCondition)
+            const jobDetails = await getDocs(selectedJob)
+            jobDetails.forEach(doc => documentId = doc.id)
+
+            await deleteDoc(doc(FirebaseFirestore, 'Jobs', documentId))
+
+            toast.remove( successToast )
+            navigate('/posted')
+
+        } catch (error) {
+
+            toast.error("Could'nt delete job", { style: { fontSize: '14px' } })
+            console.log(error.message)
+
+        }
 
     }
 
@@ -278,17 +361,17 @@ function View() {
                 </div>
 
                 <div className="job-btns">
-                    { userType === 'Seeker' && <button className="afj" onClick={ viewProfile }>Profile</button> }
-                    { userType === 'Seeker' ? 
-                        <button className="afj" style={ apply ? {} : {width: '125px',padding: 'unset',height: '64px'} } onClick={applyJob}>
+                    {userType === 'Seeker' && <button className="afj" onClick={viewProfile}>Profile</button>}
+                    {userType === 'Seeker' ?
+                        <button className="afj" style={apply ? {} : { width: '125px', padding: 'unset', height: '64px' }} onClick={applyJob}>
                             {apply ? 'Applied' : 'Apply for job'}</button> :
-                        <button className="afj" onClick={ () => navigate('/applicants') }>View applicants</button>
+                        <button className="afj" onClick={() => navigate('/applicants')}>View applicants</button>
                     }
                     {
 
                         userType === 'Seeker' ? (saved ? <i className='bx bxs-bookmark view-save' onClick={saveJob}></i> :
                             <i className='bx bx-bookmark view-save' onClick={saveJob}></i>) :
-                            <button className="afj">Delete</button>
+                            <button className="afj" onClick={deleteToast}>Delete</button>
 
                     }
                 </div>

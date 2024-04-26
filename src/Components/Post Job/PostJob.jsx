@@ -291,7 +291,7 @@ function PostJob() {
 
                                 skillArray.map((objects, index) => (
 
-                                    <div key={index} className='postObjects'>
+                                    <div key={index} className='postObjects' style={{ marginBottom: '0px' }}>
 
                                         <p>{objects.text}</p>
                                         <i class='bx bx-x x' style={{ cursor: 'pointer' }}

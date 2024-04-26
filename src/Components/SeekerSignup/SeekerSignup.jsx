@@ -32,6 +32,7 @@ function SeekerSignup() {
       if (email === '' || password === '' || full_name === '' || phone_number === '') return toast.error('Please complete the form')
       else {
 
+        let toastSuccess
         const toastID = toast.loading('Creating account')
         const resumeRef = ref(FirebaseStorage, `Resumes/${resume.name}`)
         uploadBytes(resumeRef, resume).then((response) => {
@@ -67,7 +68,7 @@ function SeekerSignup() {
         const result = await createUserWithEmailAndPassword(FirebaseAuth, email, password)
         await updateProfile(result.user, { displayName: full_name })
         // alert ( 'You are signed in successfully' )
-        const toastSuccess = toast.success('Account created successfully', { style: { fontSize: '14px' } })
+        toastSuccess = toast.success('Account created successfully', { style: { fontSize: '14px' } })
         toast.remove(toastID)
 
         setFullName('')
@@ -122,7 +123,7 @@ function SeekerSignup() {
         <div id="right-content">
 
           <p id='grow'>Let's grow your career</p>
-          <form id="frm" onSubmit={createUser}>
+          <div id="frm" >
 
             <p className='labels' >Full Name</p>
             <input type="text" name="" className='inputs' placeholder="What's your name ?" value={full_name} onChange={
@@ -158,7 +159,12 @@ function SeekerSignup() {
 
                 <p className='labels' >Resume</p>
                 <div id='resume-div'>
-                  <button onClick={() => document.querySelector('.inputs-half').click()} id='choose-resume'>
+                  <button onClick={(event) => {
+                    
+                    document.querySelector('.inputs-half').click()
+                    event.stopPropagation()
+                    
+                  }} id='choose-resume'>
 
                     <input type="file" name="" className='inputs-half' onChange={
 
@@ -189,9 +195,9 @@ function SeekerSignup() {
 
             <p id='accepting'>By clicking Sign Up you agree to the <span className='color'>Terms and Conditions</span> & <span className='color'>Privacy Policies</span> of getJOB</p>
 
-            <button className='sign-btn'>Sign Up</button>
+            <button className='sign-btn' onClick={createUser}>Sign Up</button>
 
-          </form>
+          </div>
 
         </div>
 

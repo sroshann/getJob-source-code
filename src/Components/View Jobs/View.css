@@ -160,6 +160,60 @@
 
 }
 
+#toast-delete-div {  
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    column-gap: 5px;
+    font-size: 14px;
+
+}
+
+#toast-delete-div i { 
+    
+    padding: 0; 
+    color: white;
+
+}
+
+#toast-delete-btn , #toast-cancel-btn {
+
+    padding: 5px 10px;
+    background-color: limegreen;
+    color: white;
+    border: solid 2px limegreen;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
+    font-size: 13px;
+    transition: 0.2s;
+    cursor: pointer;
+
+}
+#toast-delete-btn:hover {
+
+    background-color: #98FB98;
+    color: limegreen;
+
+}
+#toast-delete-btn:hover i { color: limegreen; }
+
+#toast-cancel-btn {
+
+    background-color: red;
+    border: solid 2px red;
+
+}
+#toast-cancel-btn:hover {
+
+    color: red;
+    background-color: #ffe0e0;
+
+}
+#toast-cancel-btn:hover i { color: red; }
+
 /* Tablet */
 
 @media (min-width: 768px) and (max-width: 1023px) {
