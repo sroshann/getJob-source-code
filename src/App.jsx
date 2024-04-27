@@ -19,42 +19,44 @@ import ApplicantsList from "./Pages/ApplicantsList";
 import ApplicantProfilePage from "./Pages/ApplicantProfilePage";
 import CompanyProfilePage from "./Pages/CompanyProfilePage";
 import AboutUsPage from "./Pages/AboutUsPage";
+import FAQPage from "./Pages/FAQPage";
 
 function App() {
 
-  const { setUser } = useContext( AuthContext )
+  const { setUser } = useContext(AuthContext)
 
-  useEffect( () => {
+  useEffect(() => {
 
-    onAuthStateChanged( FirebaseAuth , ( user ) => {
+    onAuthStateChanged(FirebaseAuth, (user) => {
 
-      setUser( user )
+      setUser(user)
 
-    } )
+    })
 
-  } )
+  })
 
   return (
 
     <div classNameName="App">
-      
+
       <Routes>
 
-        <Route element={ <Home /> } path="/" />
-        <Route element={ <LoginPage /> } path="login" />
-        <Route element={ <SignupPage/> } path="signup" />
-        <Route element={ <SeekerHome/> } path="seekerhome" />
-        <Route element={ <EmployerHome/> } path="employerhome" />
-        <Route element={ <Profile /> } path="profile" />
-        <Route element={ <PostJobPage /> } path="postjob" />
-        <Route element={ <SavedJobsPage/> } path="/saved" />
-        <Route element={ <ViewPage /> } path='/view' />
-        <Route element={ <AppliedJobsPage/> } path="/applied" />
-        <Route element={ <PostedJobsPage /> } path="/posted" />
-        <Route element={ <ApplicantsList /> } path="/applicants" />
-        <Route element={ <ApplicantProfilePage /> } path="/applicant-profile" />
-        <Route element={ <CompanyProfilePage /> } path="/company-profile" />
-        <Route element={ <AboutUsPage/> } path="/about" />
+        <Route element={<Home />} path="/" />
+        <Route element={<LoginPage />} path="login" />
+        <Route element={<SignupPage />} path="signup" />
+        <Route element={<SeekerHome />} path="seekerhome" />
+        <Route element={<EmployerHome />} path="employerhome" />
+        <Route element={<Profile />} path="profile" />
+        <Route element={<PostJobPage />} path="postjob" />
+        <Route element={<SavedJobsPage />} path="/saved" />
+        <Route element={<ViewPage />} path='/view' />
+        <Route element={<AppliedJobsPage />} path="/applied" />
+        <Route element={<PostedJobsPage />} path="/posted" />
+        <Route element={<ApplicantsList />} path="/applicants" />
+        <Route element={<ApplicantProfilePage />} path="/applicant-profile" />
+        <Route element={<CompanyProfilePage />} path="/company-profile" />
+        <Route element={<AboutUsPage />} path="/about" />
+        <Route element={ <FAQPage /> } path="/faq" />
 
       </Routes>
 

@@ -35,6 +35,7 @@ function NavBar() {
         else if ( destination === 'applied' ) navigate('/applied')
         else if ( destination === 'posted' ) navigate('/posted')
         else if ( destination === 'about' ) navigate('/about')
+        else if ( destination === 'faq' ) navigate('/faq')
 
     }
 
@@ -89,7 +90,7 @@ function NavBar() {
                     </div>
                     <div className="menu-divs">
 
-                        <button><i class='bx bx-conversation'></i>FAQ</button>
+                        <button onClick={ () => {navigateTo('faq')} }><i class='bx bx-conversation'></i>FAQ</button>
                         <button onClick={() => { user ? navigateTo('notification') : navigateTo('login') }} >
                             {user ? <><i class='bx bx-bell'></i>Notifications</> : <><i class='bx bx-log-in' ></i>Login</>} </button>
                         <button onClick={() => { user ? handleLogout() : navigateTo('signup') }} >
