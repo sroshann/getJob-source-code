@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './CompanyProfile.css'
-import toast, { Toaster } from 'react-hot-toast'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 
@@ -147,8 +146,6 @@ function CompanyProfile() {
                 </section>
 
             </div>
-
-            <Toaster />
 
         </div>
 

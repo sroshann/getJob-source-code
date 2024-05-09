@@ -66,7 +66,7 @@ function EmployerProfile() {
       setJobPosted(allJobs.length)
 
       let sum = 0
-      allJobs.map((objects) => { sum = sum + objects.appliedSeekers.length })
+      allJobs.forEach((objects) => { sum = sum + objects.appliedSeekers.length })
       setApplicants( sum )
 
     }

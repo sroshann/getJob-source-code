@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './Posted.css'
-import toast, { Toaster } from 'react-hot-toast'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import { useNavigate } from 'react-router-dom'
@@ -138,8 +137,6 @@ function Posted() {
                 </div>
 
             </section>
-
-            <Toaster />
 
         </div>
 

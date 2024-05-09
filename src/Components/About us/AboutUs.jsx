@@ -70,50 +70,50 @@ function AboutUs() {
                         <img src={roshan} alt="" />
                         <p className="mName">Shamil Roshan N</p>
                         <div className="media">
-                            <a href="#grp-members" className="bx bxl-whatsapp"></a>
-                            <a href="#grp-members" className="bx bxl-instagram"></a>
-                            <a href="#grp-members" className="bx bxl-linkedin"></a>
-                            <a href="#grp-members" className='bx bx-globe'></a>
+                            <i className='bx bxl-whatsapp'></i>
+                            <i className='bx bxl-instagram'></i>
+                            <i className='bx bxl-linkedin'></i>
+                            <i className='bx bx-globe' ></i>
                         </div>
                     </div>
                     <div className="member">
                         <img src={jenna} alt="" />
                         <p className="mName">Jennath Shirin KT</p>
                         <div className="media">
-                            <a href="#grp-members" className="bx bxl-whatsapp"></a>
-                            <a href="#grp-members" className="bx bxl-instagram"></a>
-                            <a href="#grp-members" className="bx bxl-linkedin"></a>
-                            <a href="#grp-members" className='bx bx-globe'></a>
+                            <i className='bx bxl-whatsapp'></i>
+                            <i className='bx bxl-instagram'></i>
+                            <i className='bx bxl-linkedin'></i>
+                            <i className='bx bx-globe' ></i>
                         </div>
                     </div>
                     <div className="member">
                         <img src={nizam} alt="" />
                         <p className="mName">Mohammed Nizam</p>
                         <div className="media">
-                            <a href="#grp-members" className="bx bxl-whatsapp"></a>
-                            <a href="#grp-members" className="bx bxl-instagram"></a>
-                            <a href="#grp-members" className="bx bxl-linkedin"></a>
-                            <a href="#grp-members" className='bx bx-globe'></a>
+                            <i className='bx bxl-whatsapp'></i>
+                            <i className='bx bxl-instagram'></i>
+                            <i className='bx bxl-linkedin'></i>
+                            <i className='bx bx-globe' ></i>
                         </div>
                     </div>
                     <div className="member">
                         <img src={shibin} alt="" />
                         <p className="mName">Shibin MP</p>
                         <div className="media">
-                            <a href="#grp-members" className="bx bxl-whatsapp"></a>
-                            <a href="#grp-members" className="bx bxl-instagram"></a>
-                            <a href="#grp-members" className="bx bxl-linkedin"></a>
-                            <a href="#grp-members" className='bx bx-globe'></a>
+                            <i className='bx bxl-whatsapp'></i>
+                            <i className='bx bxl-instagram'></i>
+                            <i className='bx bxl-linkedin'></i>
+                            <i className='bx bx-globe' ></i>
                         </div>
                     </div>
                     <div className="member">
                         <img src={shifadh} alt="" />
                         <p className="mName">Mohamed Shifadh</p>
                         <div className="media">
-                            <a href="#grp-members" className="bx bxl-whatsapp"></a>
-                            <a href="#grp-members" className="bx bxl-instagram"></a>
-                            <a href="#grp-members" className="bx bxl-linkedin"></a>
-                            <a href="#grp-members" className='bx bx-globe'></a>
+                            <i className='bx bxl-whatsapp'></i>
+                            <i className='bx bxl-instagram'></i>
+                            <i className='bx bxl-linkedin'></i>
+                            <i className='bx bx-globe' ></i>
                         </div>
                     </div>
                 </div>

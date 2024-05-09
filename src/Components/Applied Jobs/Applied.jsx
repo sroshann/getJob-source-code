@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './Applied.css'
-import toast, { Toaster } from 'react-hot-toast'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import { useNavigate } from 'react-router-dom'
@@ -135,8 +134,6 @@ function Applied() {
                 </div>
 
             </section>
-
-            <Toaster />
 
         </div>
 

@@ -124,7 +124,7 @@
     justify-content: center;
     gap: 10px;
 }
-.member .media a{
+.member .media i{
     text-decoration: none;
     font-size: 24px;
     color: #003181;
@@ -132,8 +132,9 @@
     border-radius: 5px;
     background-color: #1fb0dc73;
     transition: 0.2s;
+    cursor: pointer;
 }
-.member .media a:hover{
+.member .media i:hover{
     transform: scale(1.2);
 }
 

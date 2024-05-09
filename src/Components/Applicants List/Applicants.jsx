@@ -56,7 +56,7 @@ function Applicants() {
 
                             <div id="applicant-image">
 
-                                <img src={objects.dp} alt="Profile picture" />
+                                <img src={objects.dp} alt="Profile" />
 
                             </div>
                             <div id="applicant-texts">
