@@ -1,4 +1,4 @@
-#about-root { margin-top: -59px; }
+#about-root { margin-top: -60px; }
 
 .about-head{
     padding: 60px 0;
@@ -230,6 +230,9 @@ footer .links a{
         margin: 0 100%;
     }
 
+    #contactH { margin: 25px 0; }
+    #contact { margin: 25px auto; }
+
 
     footer{
         width: 80%;
@@ -290,9 +293,9 @@ footer .links a{
     margin-top: -50px;
     width: 90%;
     margin: auto;
-    border-radius: 10px;
+    border-radius: 15px;
     padding-top: 1px; 
-    margin-bottom: 85px;
+    margin-bottom: 80px;
     padding-bottom: 55px;
     position: relative;
     top: 15px;
@@ -315,7 +318,7 @@ h1.conatctHead{
     justify-content: space-around;
     text-align: center;
     margin: 50px auto;
-    border-radius: 6px;
+    border-radius: 10px;
     padding: 35px 0px 35px 0px;
 }
 
@@ -345,7 +348,7 @@ h1.conatctHead{
     font-weight: 500;
     text-align: center;
     color: #003181;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-align: left;
 }
 .contact-form form{
@@ -415,19 +418,40 @@ h1.conatctHead{
     .contact-form{
         width: 90%;
     }
-    .contact-form button{ width: 100%; justify-content: center; }
+    .contact-form button{ 
+        
+        width: 77%; 
+        justify-content: center; 
+        margin: 10px 0px 0px 45px;
+    
+    }
+
+    #contact-us {
+
+        padding-bottom: 40px;
+        margin-bottom: 65px;
+
+    } 
+
 }
 
 /* Small Mobiles */
 
 @media (min-width: 410px) and (max-width: 480px){
     .contact{
-        width: 96%;
+        width: 85%;
         display: grid;
         height: fit-content;
         padding-bottom: 20px;
     }
     .contact-form{
-        width: 96%;
+        width: 85%;
     }
+}
+
+.address , .conatctNum , .email {
+
+    display: grid;
+    place-items: center;
+
 }

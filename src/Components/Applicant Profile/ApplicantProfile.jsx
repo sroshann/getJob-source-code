@@ -117,7 +117,7 @@ function ApplicantProfile() {
                 <div id="profile-summary">
 
                     <p className="heading">Profile summary</p>
-                    <div className="summary">
+                    <div className="applicant-summary">
 
                         <p className='sub-heading'> {user.summary} </p>
 
@@ -150,7 +150,7 @@ function ApplicantProfile() {
 
                     </div>
 
-                    <hr className="yellow" />
+                    <hr className="applicant-yellow" />
 
                     <div id="skills">
 
@@ -171,7 +171,7 @@ function ApplicantProfile() {
 
                     </div>
 
-                    <hr className="yellow" />
+                    <hr className="applicant-yellow" />
 
                     <div id="certificates">
 
@@ -200,7 +200,7 @@ function ApplicantProfile() {
 
                     </div>
 
-                    <hr className="yellow" />
+                    <hr className="applicant-yellow" />
 
                     <div id="projects">
 
@@ -226,7 +226,7 @@ function ApplicantProfile() {
 
                     </div>
 
-                    <hr className="yellow" />
+                    <hr className="applicant-yellow" />
 
                     <div id="languages">
 
@@ -247,7 +247,7 @@ function ApplicantProfile() {
 
                     </div>
 
-                    <hr className="yellow" />
+                    <hr className="applicant-yellow" />
 
                     <div id="attatchments">
 

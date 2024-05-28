@@ -7,9 +7,7 @@
 .form-div{
     background-color: rgb(255, 255, 255);
     width: 70%;
-    /* height: 300px; */
     margin: 45px auto 65px auto;
-    /* box-shadow: 0px 0px 18px -10px; */
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 15px;
     padding: 8px;
@@ -23,7 +21,7 @@
 }
 
 .form-div .jobForm , #upper-section{
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
     display: grid;
     column-gap: 25px;
 }
@@ -175,6 +173,8 @@
 
 }
 
+label { margin: 0px 0px 0px 13px; }
+
 /* Tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
 
@@ -188,20 +188,26 @@
 @media (max-width: 767px) {
     
     .form-div{
-        width: 100%;
+        width: 85%;
         padding: 0;
-        box-shadow: 0px 0px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     }
 
-    .form-div .jobForm {
-        flex-direction: column;
-        gap: 0;
-    }
-
-    .jobForm button {
-        width: 100%;
+    #post-a-job-done-btn {
+        margin-top: 5px;
+        width: 35%;
         padding: 8px;
     }
+    
+    #upper-section {
+
+        display: grid;
+        padding: 0px;
+
+    }
+
+    #done { margin: 0px 10px 0px 0px; }
+
 }
 /* ======================= */
 

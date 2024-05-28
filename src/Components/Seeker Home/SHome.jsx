@@ -218,7 +218,7 @@ function SHome() {
                 </div>
 
             </section>
-            <section id='main-contents' >
+            <section id='SHome-main-contents' >
 
                 <section id="category">
 

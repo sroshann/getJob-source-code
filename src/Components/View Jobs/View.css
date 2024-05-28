@@ -54,7 +54,7 @@
     gap: 15px;
 }
 
-.job-btns button.afj , .company-profile{
+.afj , .company-profile{
     border: solid 2px #003181;
     background-color: #003181;
     color: #fff;
@@ -64,6 +64,14 @@
     cursor: pointer;
     
 }
+
+#apply-for-job {
+
+    height: 64px;
+    width: 139px;
+
+}
+
 .job-btns button.afj:hover , .company-profile:hover{
     background-color: #0090ff69;
     border: solid 2px #003181;
@@ -134,6 +142,7 @@
 
 .job-overview span.view i{
     color: #003181;
+    font-size: x-large;
 } 
 
 .job-overview span.view span .head{
@@ -218,29 +227,20 @@
 
 @media (min-width: 768px) and (max-width: 1023px) {
 
-    .job-title{
-        display: grid;
-    }
+    .job-title{ display: grid; }
+
     .job-title .job-prim {
+
         width: unset;
         margin: 50px 0 0 0;
+
     }
 
-    .job-btns {
-        
-        margin: 25px 0;
-    }
+    .job-btns { margin: 25px 0; }
+    .job-descriptions{ display: block; }
+    .job-descriptions .descriptions { width: unset; }
+    .job-overview{ width: unset; }
 
-    .job-descriptions{
-        display: block;
-    }
-    .job-descriptions .descriptions {
-        width: unset;
-    }
-
-    .job-overview{
-        width: unset;
-    }
 }
 
 /* Mobile */
@@ -248,33 +248,87 @@
 @media (max-width: 767px) {
 
     .job-title{
+
         display: grid;
         padding: 0 6%;
+
     }
     .job-title .job-prim {
+
         width: unset;
-        margin: 25px 0 0 0;
+        margin: 70px 0 0 0;
+
     }
+
+    #company-dp { width: 75px; }
+    .job-prim .job-prim-dtl p.job-name { font-size: 18.5px; }
 
     .job-prim .job-prim-dtl .jdtls {
+
+        font-size: 14px;
         flex-wrap: wrap;
-        gap: 6px 20px;
+        gap: 6px 15px;
+
     }
 
-    .job-btns {
-        margin: 25px 0;
-    }
+    .job-btns { 
+        
+        margin: 15px 5px 20px 0px;
+        justify-content: center;
+        gap: 10px;
 
+    }
     .job-descriptions{
+
         display: block;
         width: 86%;
+
     }
-    .job-descriptions .descriptions {
-        width: unset;
+    .job-descriptions .descriptions { width: unset; }
+
+    .job-overview{ width: unset; }
+
+    .jdtls span { font-size: medium; }
+    .jCat , .jType { font-size: 12px }
+
+    #apply-for-job { 
+        
+        height: 47.33px;
+        width: 110px;
+        padding: unset;
+    
     }
 
-    .job-overview{
-        width: unset;
+    .afj {
+
+        padding: 12px 25px;
+        border-radius: 5px;
+        font-size: 12.5px;
+
     }
+
+    .view-save {
+        
+        padding: 12px;
+        border-radius: 5px;
+        font-size: 22.5px;
+
+    }
+
+    .job-descriptions .jhead { font-size: 16.5px; }
+    .job-descriptions p { font-size: 13px; }
+
+    .job-overview .head { font-size: 16.5px; }
+    .job-overview span.view span .head { font-size: 14px; }
+
+    .job-overview span.view i { font-size: 22.5px; }
+
+    #two-button { margin: 15px 0px 20px 7px; }
+
+}
+
+@media (min-width : 992px) and (max-width : 1199px) {
+
+    .job-descriptions { width: 91%; }
 
 }

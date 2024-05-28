@@ -68,36 +68,36 @@ function Posted() {
                             :
                             postedJobs.map((objects, index) => (
 
-                                <div className="job-objects" key={index} onClick={() => pageView(objects.jobID)} >
+                                <div className="posted-job-objects" key={index} onClick={() => pageView(objects.jobID)} >
 
                                     <section>
 
                                         <div id='job-company-detail'>
 
-                                            <p id='job-title'>{objects.jobTitle}</p>
-                                            <p id='company-name'>{objects.companyName}</p>
+                                            <p id='posted-job-title'>{objects.jobTitle}</p>
+                                            <p id='posted-company-name'>{objects.companyName}</p>
 
                                         </div>
                                         <div id="other-details">
 
                                             <div id="experience">
 
-                                                <i className='bx bx-briefcase-alt grey'></i>
-                                                <p className='grey'>{objects.experience}</p>
+                                                <i className='bx bx-briefcase-alt posted-grey'></i>
+                                                <p className='posted-grey'>{objects.experience}</p>
 
                                             </div>
-                                            <p className="grey">|</p>
+                                            <p className="posted-grey">|</p>
                                             <div id="salary">
 
-                                                <i className='bx bx-rupee grey' ></i>
-                                                <p className='grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
+                                                <i className='bx bx-rupee posted-grey' ></i>
+                                                <p className='posted-grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
 
                                             </div>
-                                            <p className="grey">|</p>
+                                            <p className="posted-grey">|</p>
                                             <div id="location">
 
-                                                <i className='bx bx-map grey'></i>
-                                                <p className='grey'>{objects.location}</p>
+                                                <i className='bx bx-map posted-grey'></i>
+                                                <p className='posted-grey'>{objects.location}</p>
 
                                             </div>
 
@@ -111,7 +111,7 @@ function Posted() {
                                                     <div key={index}>
 
                                                         {index === 0 ? <></> : <i className='bx bx-wifi-0 grey'></i>}
-                                                        <p className='grey'>{skillObj.text}</p>
+                                                        <p className='posted-grey'>{skillObj.text}</p>
 
                                                     </div>
 
@@ -122,7 +122,7 @@ function Posted() {
                                         </div>
                                         <div id="date-save">
 
-                                            <p className='grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
+                                            <p className='posted-grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
 
                                         </div>
 

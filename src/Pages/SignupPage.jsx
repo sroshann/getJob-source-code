@@ -13,25 +13,37 @@ function SignupPage() {
 
       <div id="button-div">
 
-        <div id="seeker">
+        <div className="container-radio">
 
-          <button onClick={() => {
+          <div className="switches-container">
 
-            setSeeker(true)
-            setEmployer(false)
+            <input type="radio" id="switchMonthly" name="switchPlan" value="Monthly" checked={ seeker ? 'checked' : '' } />
+            <input type="radio" id="switchYearly" name="switchPlan" value="Yearly" />
+            <label className='radio-switch' htmlFor="switchMonthly" onClick={() => {
 
-          }} >Register as job seeker</button>
+              setSeeker(true)
+              setEmployer(false)
 
-        </div>
+            }}>Register as job seeker</label>
+            <label className='radio-switch' htmlFor="switchYearly" onClick={() => {
 
-        <div id="employer">
+              setEmployer(true)
+              setSeeker(false)
 
-          <button onClick={() => {
+            }}>Register as employer</label>
 
-            setEmployer(true)
-            setSeeker(false)
+            <div className="switch-wrapper">
 
-          }} >Register as employer</button>
+              <div className="switch">
+
+                <div>Register as job seeker</div>
+                <div>Register as employer</div>
+
+              </div>
+
+            </div>
+
+          </div>
 
         </div>
 

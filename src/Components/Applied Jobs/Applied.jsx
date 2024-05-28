@@ -63,36 +63,36 @@ function Applied() {
                             :
                             applied.map((objects, index) => (
 
-                                <div className="job-objects" key={index} onClick={ () => pageView( objects.id ) } >
+                                <div className="applied-job-objects" key={index} onClick={ () => pageView( objects.id ) } >
 
                                     <section>
 
                                         <div id='job-company-detail'>
 
-                                            <p id='job-title'>{objects.title}</p>
-                                            <p id='company-name'>{objects.company}</p>
+                                            <p id='applied-job-title'>{objects.title}</p>
+                                            <p id='applied-company-name'>{objects.company}</p>
 
                                         </div>
                                         <div id="other-details">
 
                                             <div id="experience">
 
-                                                <i className='bx bx-briefcase-alt grey'></i>
-                                                <p className='grey'>{objects.experience}</p>
+                                                <i className='bx bx-briefcase-alt applied-grey'></i>
+                                                <p className='applied-grey'>{objects.experience}</p>
 
                                             </div>
-                                            <p className="grey">|</p>
+                                            <p className="applied-grey">|</p>
                                             <div id="salary">
 
-                                                <i className='bx bx-rupee grey' ></i>
-                                                <p className='grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
+                                                <i className='bx bx-rupee applied-grey' ></i>
+                                                <p className='applied-grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
 
                                             </div>
-                                            <p className="grey">|</p>
+                                            <p className="applied-grey">|</p>
                                             <div id="location">
 
-                                                <i className='bx bx-map grey'></i>
-                                                <p className='grey'>{objects.location}</p>
+                                                <i className='bx bx-map applied-grey'></i>
+                                                <p className='applied-grey'>{objects.location}</p>
 
                                             </div>
 
@@ -105,8 +105,8 @@ function Applied() {
 
                                                     <div key={index}>
 
-                                                        {index === 0 ? <></> : <i className='bx bx-wifi-0 grey'></i>}
-                                                        <p className='grey'>{skillObj.text}</p>
+                                                        {index === 0 ? <></> : <i className='bx bx-wifi-0 applied-grey'></i>}
+                                                        <p className='applied-grey'>{skillObj.text}</p>
 
                                                     </div>
 
@@ -119,7 +119,7 @@ function Applied() {
                                         </div>
                                         <div id="date-save">
 
-                                            <p className='grey' style={{ fontSize: '12px' }}>{objects.date}</p>
+                                            <p className='applied-grey' style={{ fontSize: '12px' }}>{objects.date}</p>
 
                                         </div>
 

@@ -66,7 +66,7 @@
 
 /* Main contents */
 
-#main-contents {
+#SHome-main-contents {
 
     display: flex;
 
@@ -76,18 +76,14 @@
 
     width: 30%;
     height: fit-content;
-    display: flex;
-    align-items: center;
-    overflow-y: auto;
     position: sticky;
-    left: 0; /* Adjust this value based on your layout */
-    top: 20px; /* Adjust this value based on your layout */
+    left: 0; 
+    top: 20px; 
 
 }
 
 #catgory-listing {
 
-    height: fit-content;
     width: 56%;
     background-color: white;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -162,7 +158,7 @@
 
 }
 
-.job-objects {
+.SHome-job-objects {
 
     height: fit-content;
     width: 100%;
@@ -176,7 +172,7 @@
 
 }
 
-.job-objects section {
+.SHome-job-objects section {
 
     width: 95%;
     height: fit-content;
@@ -236,9 +232,9 @@
 
 
 
-#job-title { font-size: 15px; }
-#company-name { font-size: 13.5px; }
-.grey { 
+#SHome-job-title { font-size: 15px; }
+#SHome-company-name { font-size: 13.5px; }
+.SHome-grey { 
     
     color: grey; 
     font-size: 13px;
@@ -254,3 +250,140 @@
 }
 
 /* Main contents */
+
+@media (max-width : 767px) {
+
+    #SHome-main-contents { display: grid; }
+
+    #category { 
+        
+        width: 100%; 
+        display: grid;
+        place-items: center;
+        position: unset;
+    
+    }
+
+    #catgory-listing {
+
+        width: 85%;
+        left: unset;
+        top: unset;
+        display: unset;
+        margin-bottom: 0px;
+
+    } 
+
+    #catgory-listing section { display: ruby; }
+    .category-object { 
+        
+        width: 130px; 
+        font-size: 12px;
+    
+    }
+
+    #searching-area div {
+
+        width: 290px;
+        height: 36px;
+
+    }
+
+    .search-icon { 
+        
+        padding: 5px 12px; 
+        font-size: 12.5px;
+    
+    }
+    #input-search { font-size: 11.5px; }
+
+    #jobs { 
+        
+        width: 100%; 
+        display: grid;
+        place-items: center;
+    
+    }
+
+    .SHome-job-objects section { row-gap: 11px; }
+    #job-listing { width: 88%; }
+
+    #SHome-job-title { font-size: 13.5px; }
+    #SHome-company-name , .SHome-grey { font-size: 12px; }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    #SHome-main-contents { display: grid; }
+
+    #category { 
+        
+        width: 100%; 
+        display: grid;
+        place-items: center;
+        position: unset;
+    
+    }
+
+    #catgory-listing {
+
+        width: 85%;
+        left: unset;
+        top: unset;
+        display: unset;
+        margin-bottom: 0px;
+
+    } 
+
+    #catgory-listing section { display: ruby; }
+    .category-object { 
+        
+        width: 130px; 
+        font-size: 12.5px;
+    
+    }
+
+    #searching-area div {
+
+        width: 290px;
+        height: 36px;
+
+    }
+
+    .search-icon { 
+        
+        padding: 5px 12px; 
+        font-size: 13px;
+    
+    }
+    #input-search { font-size: 12px; }
+
+    #jobs { 
+        
+        width: 100%; 
+        display: grid;
+        place-items: center;
+    
+    }
+
+    .SHome-job-objects section { row-gap: 13px; }
+    #job-listing { width: 88%; }
+
+    #SHome-job-title { font-size: 14px; }
+    #SHome-company-name , .SHome-grey { font-size: 12.5px; }
+
+}
+
+@media (min-width : 992px) and (max-width : 1199px) {
+
+    #catgory-listing {
+
+        width: 60%;
+        left: 115px;
+
+    }
+
+    #job-listing { width: 85%; }
+
+}

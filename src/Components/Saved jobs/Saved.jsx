@@ -98,36 +98,36 @@ function Saved() {
               :
               savedJobs.map((objects, index) => (
 
-                <div className="job-objects" key={index} onClick={ () => pageView( objects.jobID ) }>
+                <div className="saved-job-objects" key={index} onClick={ () => pageView( objects.jobID ) }>
 
                   <section>
 
                     <div id='job-company-detail'>
 
-                      <p id='job-title'>{objects.jobTitle}</p>
-                      <p id='company-name'>{objects.companyName}</p>
+                      <p id='saved-job-title'>{objects.jobTitle}</p>
+                      <p id='saved-company-name'>{objects.companyName}</p>
 
                     </div>
                     <div id="other-details">
 
                       <div id="experience">
 
-                        <i className='bx bx-briefcase-alt grey'></i>
-                        <p className='grey'>{objects.experience}</p>
+                        <i className='bx bx-briefcase-alt saved-grey'></i>
+                        <p className='saved-grey'>{objects.experience}</p>
 
                       </div>
-                      <p className="grey">|</p>
+                      <p className="saved-grey">|</p>
                       <div id="salary">
 
-                        <i className='bx bx-rupee grey' ></i>
-                        <p className='grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
+                        <i className='bx bx-rupee saved-grey' ></i>
+                        <p className='saved-grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
 
                       </div>
-                      <p className="grey">|</p>
+                      <p className="saved-grey">|</p>
                       <div id="location">
 
-                        <i className='bx bx-map grey'></i>
-                        <p className='grey'>{objects.location}</p>
+                        <i className='bx bx-map saved-grey'></i>
+                        <p className='saved-grey'>{objects.location}</p>
 
                       </div>
 
@@ -140,8 +140,8 @@ function Saved() {
 
                           <div key={index}>
 
-                            {index === 0 ? <></> : <i className='bx bx-wifi-0 grey'></i>}
-                            <p className='grey'>{skillObj.text}</p>
+                            {index === 0 ? <></> : <i className='bx bx-wifi-0 saved-grey'></i>}
+                            <p className='saved-grey'>{skillObj.text}</p>
 
                           </div>
 
@@ -152,7 +152,7 @@ function Saved() {
                     </div>
                     <div id="date-save">
 
-                      <p className='grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
+                      <p className='saved-grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
                       <div onClick={( event ) => {
                         
                         event.stopPropagation()
@@ -160,8 +160,8 @@ function Saved() {
                         
                       }}>
 
-                        <i className='bx bxs-bookmark grey' ></i>
-                        <p className='grey'>Saved</p>
+                        <i className='bx bxs-bookmark saved-grey' ></i>
+                        <p className='saved-grey'>Saved</p>
                         {/* .some check the provided condition is exist atleast one time in that array */}
 
                       </div>

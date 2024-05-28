@@ -232,7 +232,7 @@ p { margin: 0; }
 
     .carousel-body {
 
-        width: 155px;
+        width: 135px;
         height: 185px;
 
     }
@@ -253,7 +253,7 @@ p { margin: 0; }
         margin-top: 10px;
     
     }
-    #texts-section h1 { font-size: 30px; }
+    #texts-section h1 { font-size: 28px; }
     #start-career-image { width: 260px; }
     #texts-section button , #hire-talents button {
 
@@ -271,7 +271,7 @@ p { margin: 0; }
         height: fit-content;
     
     }
-    #hire-image { width: 320px; }
+    #hire-image { width: 310px; }
     #hire-image-section {
 
         width: unset;
@@ -279,10 +279,14 @@ p { margin: 0; }
 
     }
 
-    #hire-talents{ width: 75%; }
+    #hire-talents{ width: 78%; }
     #hire-text-section { width: 100%; }
-    #hire-text-section h1 { font-size: 30px; }
+    #hire-text-section h1 { font-size: 28px; }
     #hire-text-section div { margin-bottom: 32px; }
+
+    .carousel-body img { width: 75px; }
+    .company-name { font-size: 15px; }
+    .profile { font-size: 12px; }
 
 }
 

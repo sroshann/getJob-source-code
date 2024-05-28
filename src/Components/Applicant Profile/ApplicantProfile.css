@@ -177,17 +177,6 @@ a { text-decoration: none; color: black; }
 }
 .margin-left { text-align: center; }
 
-.edit {
-
-    position: relative;
-    bottom: 178px;
-    left: 96%;
-    font-size: large;
-    color: #0149AB;
-    cursor: pointer;
-
-}
-
 #profile-summary {
 
     height: fit-content;
@@ -244,7 +233,7 @@ a { text-decoration: none; color: black; }
 
 #educational-qualifications input { width: auto; }
 
-.summary {
+.applicant-summary {
 
     width: 96%;
     height: fit-content;
@@ -252,7 +241,7 @@ a { text-decoration: none; color: black; }
     margin-top: 5px;
 
 }
-.summary p { word-break: break-all; } /* Inorder to avoid breking style when rendering dynamic values */
+.applicant-summary p { word-break: break-all; } /* Inorder to avoid breking style when rendering dynamic values */
 
 #attatchment-btns , .certificate-listing-btn {
 
@@ -280,7 +269,7 @@ a { text-decoration: none; color: black; }
 #attatchment-btns:hover a , .certificate-listing-btn:hover a { color: white; }
 
 
-.yellow {
+.applicant-yellow {
 
     border-color: #ffcb05;  
     border-width: 1.5px;
@@ -311,17 +300,6 @@ a { text-decoration: none; color: black; }
     border: none;
     font-family: Poppins;
     font-style: normal;
-
-}
-
-.plus-btn {
-
-    position: relative;
-    left: 98.6%;
-    bottom: 5px;
-    font-size: larger;
-    color: #0149AB;
-    cursor: pointer;
 
 }
 

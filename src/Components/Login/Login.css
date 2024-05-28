@@ -36,6 +36,7 @@ h2{
     color: black;
     font-size: 12px;
     cursor: default;
+    width: fit-content;
 }
 .container input{
     border-radius: 20px;
@@ -81,6 +82,7 @@ hr{
     margin-top: 20px;
     margin-bottom: 2px;
     cursor: default;
+    width: fit-content;
 }
 #reg{
     background-color: #0149AB;

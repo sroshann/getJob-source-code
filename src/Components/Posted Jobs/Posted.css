@@ -41,7 +41,7 @@
 
 }
 
-.job-objects {
+.posted-job-objects {
 
     height: fit-content;
     width: 100%;
@@ -55,7 +55,7 @@
 
 }
 
-.job-objects section {
+.posted-job-objects section {
 
     width: 95%;
     height: fit-content;
@@ -117,7 +117,7 @@
 
 #job-title { font-size: 15px; }
 #company-name { font-size: 13.5px; }
-.grey { 
+.posted-grey { 
     
     color: grey; 
     font-size: 13px;
@@ -133,3 +133,27 @@
 }
 
 /* Main contents */
+
+@media (max-width : 767px) {
+
+    #job-posted-listing { width: 88%; }
+    .posted-job-objects section { row-gap: 11px; }
+    #posted-job-title { font-size: 13.5px; }
+    #posted-company-name , .posted-grey { font-size: 12px; }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    #job-posted-listing { width: 75%; }
+    .posted-job-objects section { row-gap: 13px; }
+    #posted-job-title { font-size: 14px; }
+    #posted-company-name , .posted-grey { font-size: 12.5px; }
+
+}
+
+@media (min-width : 992px) and (max-width : 1199px) {
+
+    #job-posted-listing { width: 70%; }
+
+}

@@ -10,12 +10,6 @@
 
 /* Main contents */
 
-#main-contents {
-
-    display: flex;
-
-}
-
 #jobs-applied {
 
     width: 100%;
@@ -41,7 +35,7 @@
 
 }
 
-.job-objects {
+.applied-job-objects {
 
     height: fit-content;
     width: 100%;
@@ -55,7 +49,7 @@
 
 }
 
-.job-objects section {
+.applied-job-objects section {
 
     width: 95%;
     height: fit-content;
@@ -117,7 +111,7 @@
 
 #job-title { font-size: 15px; }
 #company-name { font-size: 13.5px; }
-.grey { 
+.applied-grey { 
     
     color: grey; 
     font-size: 13px;
@@ -133,3 +127,27 @@
 }
 
 /* Main contents */
+
+@media (max-width : 767px) {
+
+    #job-applied-listing { width: 88%; }
+    .applied-job-objects section { row-gap: 11px; }
+    #applied-job-title { font-size: 13.5px; }
+    #applied-company-name , .applied-grey { font-size: 12px; }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    #job-applied-listing { width: 75%; }
+    .applied-job-objects section { row-gap: 13px; }
+    #applied-job-title { font-size: 14px; }
+    #applied-company-name , .applied-grey { font-size: 12.5px; }
+
+}
+
+@media (min-width : 992px) and (max-width : 1199px) {
+
+    #job-applied-listing { width: 70%; }
+
+}

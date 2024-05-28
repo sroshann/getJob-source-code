@@ -345,7 +345,7 @@ function View() {
 
             <div className="job-title">
                 <div className="job-prim">
-                    <img src={job.dp} alt="" />
+                    <img src={job.dp} alt="" id='company-dp' />
                     <div className="job-prim-dtl">
                         <p className="job-name">{job.jobTitle}</p>
                         <span className="jdtls mob">
@@ -360,10 +360,10 @@ function View() {
                     </div>
                 </div>
 
-                <div className="job-btns">
+                <div className="job-btns" id={ userType === 'Employer' ? 'two-button' : '' }>
                     {userType === 'Seeker' && <button className="afj" onClick={viewProfile}>Profile</button>}
                     {userType === 'Seeker' ?
-                        <button className="afj" style={apply ? {} : { width: '125px', padding: 'unset', height: '64px' }} onClick={applyJob}>
+                        <button className='afj' id='apply-for-job' onClick={applyJob}>
                             {apply ? 'Applied' : 'Apply for job'}</button> :
                         <button className="afj" onClick={() => navigate('/applicants')}>View applicants</button>
                     }
@@ -391,7 +391,7 @@ function View() {
 
                             <div key={index} style={{ display: 'flex', columnGap: '3px' }}>
 
-                                <i className='bx bx-wifi-0' style={{ fontSize: 'x-large', marginTop: '-3.5px' }}></i>
+                                <i className='bx bx-wifi-0' style={{ marginTop: '-3.5px' }}></i>
                                 <p>{objects.text}</p>
 
                             </div>
@@ -404,7 +404,7 @@ function View() {
 
                             <div key={index} style={{ display: 'flex', columnGap: '3px' }}>
 
-                                <i className='bx bx-wifi-0' style={{ fontSize: 'x-large', marginTop: '-3.5px' }}></i>
+                                <i className='bx bx-wifi-0' style={{ marginTop: '-3.5px' }}></i>
                                 <p>{objects.text}</p>
 
                             </div>
@@ -417,7 +417,7 @@ function View() {
 
                             <div key={index} style={{ display: 'flex', columnGap: '3px' }}>
 
-                                <i className='bx bx-wifi-0' style={{ fontSize: 'x-large', marginTop: '-3.5px' }}></i>
+                                <i className='bx bx-wifi-0' style={{ marginTop: '-3.5px' }}></i>
                                 <p>{objects.text}</p>
 
                             </div>
@@ -430,7 +430,7 @@ function View() {
                     <p className="head">Job Overview</p>
 
                     <span className="view">
-                        <i className='bx bx-calendar-event' style={{ fontSize: 'x-large' }} ></i>
+                        <i className='bx bx-calendar-event' ></i>
                         <span>
                             <p className="head">Date Posted:</p>
                             <p>{job.postedOn}</p>
@@ -438,7 +438,7 @@ function View() {
                     </span>
 
                     <span className="view">
-                        <i className='bx bx-category' style={{ fontSize: 'x-large' }}></i>
+                        <i className='bx bx-category'></i>
                         <span>
                             <p className="head">Job Type:</p>
                             <p>{job.jobType}</p>
@@ -446,7 +446,7 @@ function View() {
                     </span>
 
                     <span className="view">
-                        <i className='bx bx-spreadsheet' style={{ fontSize: 'x-large' }}></i>
+                        <i className='bx bx-spreadsheet'></i>
                         <span>
                             <p className="head">Qualification:</p>
                             <p>{job.qualification}</p>
@@ -454,7 +454,7 @@ function View() {
                     </span>
 
                     <span className="view">
-                        <i className='bx bx-briefcase' style={{ fontSize: 'x-large' }}></i>
+                        <i className='bx bx-briefcase'></i>
                         <span>
                             <p className="head">Experience:</p>
                             <p>{job.experience}</p>

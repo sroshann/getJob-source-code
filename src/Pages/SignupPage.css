@@ -1,13 +1,15 @@
+
 #button-div {
 
-    width: 50%;
     height: 50px;
-    margin-left: 25%;
     margin-top: 30px;
+    display: grid;
+    place-items: center;
 
 }
 
-#seeker , #employer {
+#seeker,
+#employer {
 
     width: 50%;
     height: 100%;
@@ -17,7 +19,8 @@
 
 }
 
-#seeker button , #employer button {
+#seeker button,
+#employer button {
 
     width: 175px;
     height: 2.5rem;
@@ -29,11 +32,122 @@
 
 }
 
-#seeker button:hover , #employer button:hover { 
+#seeker button:hover,
+#employer button:hover {
 
     transition: 0.3s;
     box-shadow: 0px 0px 12px -7px;
 
 }
 
-#seeker button:not(:hover) , #employer button:not(:hover) { transition: 0.2s; }
+#seeker button:not(:hover),
+#employer button:not(:hover) {
+    transition: 0.2s;
+}
+
+.switches-container {
+
+    width: 25rem;
+    position: relative;
+    display: flex;
+    padding: 0;
+    position: relative;
+    background-color: #0149AB;
+    line-height: 2.6rem;
+    border-radius: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.switches-container input {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+}
+
+.radio-switch {
+
+    width: 50%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+
+}
+
+.switch-wrapper {
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 48.7%;
+    padding: 0.15rem;
+    z-index: 3;
+    transition: transform .5s cubic-bezier(.77, 0, .175, 1);
+    
+}
+
+.switch {
+
+    border-radius: 3rem;
+    background: white;
+    height: 100%;
+    font-size: 14px;
+
+}
+
+.switch div {
+
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    display: block;
+    color: #0149AB;
+    transition: opacity .2s cubic-bezier(.77, 0, .175, 1) .125s;
+    will-change: opacity;
+    position: absolute;
+    top: 0;
+    left: 0;
+
+}
+
+.switches-container input:nth-of-type(1):checked~.switch-wrapper {
+    transform: translateX(0%);
+}
+
+.switches-container input:nth-of-type(2):checked~.switch-wrapper {
+    transform: translateX(100%);
+}
+
+.switches-container input:nth-of-type(1):checked~.switch-wrapper .switch div:nth-of-type(1) {
+    opacity: 1;
+}
+
+.switches-container input:nth-of-type(2):checked~.switch-wrapper .switch div:nth-of-type(2) {
+    opacity: 1;
+}  
+
+
+@media screen and (max-width: 767px) {
+
+    .switch , .radio-switch { font-size: 12px; }
+
+    .switches-container {
+
+        width: 19rem;
+        line-height: 2.89;
+
+    }
+    .switch-wrapper { width: 48.4%; }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    .switch , .radio-switch { font-size: 13.7px; }
+    .switches-container { width: 23rem; }
+
+}

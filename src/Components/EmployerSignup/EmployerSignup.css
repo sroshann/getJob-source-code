@@ -7,7 +7,7 @@
 
 #seeker-div {
 
-    width: 48%;
+    width: 55%;
     height: fit-content;
     margin-top: 40px;
     background-color: white;
@@ -40,6 +40,7 @@
     margin-left: 2%;
     margin-top: 12px;
     cursor: default;
+    width: fit-content;
 
 }
 
@@ -62,7 +63,7 @@
 
 .seeker-inputs-half {
 
-    width: 77%;
+    width: 85%;
     border: solid 1.5px;
     border-color: #0149AB;
     outline: none;
@@ -106,8 +107,7 @@
 #seeker-accepting {
 
     font-size: 9px;
-    margin-top: 30px;
-    margin-left: 7.5%;
+    margin: 30px 60px 0px 0px;
     cursor: default;
 
 }
@@ -143,14 +143,7 @@
 @media (max-width : 767px) {
 
     /* EXTRA SMALL DEVICES */
-
-
-
-    #seeker-div {
-
-        width: 95%;
-
-    }
+    #seeker-div { width: 85%; }
 
     .inputs {
         width: 84.5%;
@@ -168,20 +161,13 @@
         width: 95%;
         font-size: 8px;
         margin-left: -0.5%;
+
     }
 
-    #seeker-frm-subdiv div:nth-child(2) {
-        margin-left: 25%;
-    }
+    #seeker-frm-subdiv div:nth-child(2) { margin-left: 25%; }
+    #seeker-frm-subdiv div:nth-child(2) p { margin-left: 8%; }
 
-    #seeker-frm-subdiv div:nth-child(2) p {
-        margin-left: 8%;
-    }
-
-    .seeker-inputs-half {
-
-        width: 110%;
-    }
+    .seeker-inputs-half { width: 110%; }
 
 }
 
@@ -189,7 +175,23 @@
 
     /* SMALL DEVICES */
 
+    #seeker-div { width: 75%; }
 
+    .inputs {
+        width: 84.5%;
+        border: solid 1.5px;
+        border-color: #0149AB;
+        outline: none;
+        border-radius: 17px;
+        padding-left: 15px;
+        padding-top: 8px;
+        padding-bottom: 8px
+    }
+
+    #seeker-frm-subdiv div:nth-child(2) { margin-left: 25%; }
+    #seeker-frm-subdiv div:nth-child(2) p { margin-left: 8%; }
+
+    .seeker-inputs-half { width: 110%; }
 
 
 }
@@ -197,6 +199,23 @@
 @media (min-width : 992px) and (max-width : 1199px) {
 
     /* MIDDLE DEVICES */
+    #seeker-div { width: 65%; }
+
+    .inputs {
+        width: 84.5%;
+        border: solid 1.5px;
+        border-color: #0149AB;
+        outline: none;
+        border-radius: 17px;
+        padding-left: 15px;
+        padding-top: 8px;
+        padding-bottom: 8px
+    }
+
+    #seeker-frm-subdiv div:nth-child(2) { margin-left: 25%; }
+    #seeker-frm-subdiv div:nth-child(2) p { margin-left: 8%; }
+
+    .seeker-inputs-half { width: 110%; }
 
 
 }

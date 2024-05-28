@@ -122,9 +122,9 @@ function AboutUs() {
 
             <div id='contact-us'>
 
-                <h1 className="conatctHead">Contact Us</h1>
+                <h1 className="conatctHead" id='contactH'>Contact Us</h1>
 
-                <div className="contact">
+                <div className="contact" id='contact'>
                     <div className="address">
                         <img src={earth} alt="" />
                         <p className="name">Address</p>

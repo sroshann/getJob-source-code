@@ -166,6 +166,15 @@ a { text-decoration: none; color: black; }
     justify-content: space-around;
 
 }
+
+#details-lower section {
+
+    height: fit-content;
+    display: grid;
+    place-items: center;
+
+}
+
 .heading { color: #0149AB; }
 .sub-heading { font-size: smaller; }
 #details-upper div:nth-child(2) { width: 81.5%; }
@@ -422,3 +431,17 @@ a { text-decoration: none; color: black; }
 .bx-x { color: red; }
 .bx-x:hover { background-color: #ffe0e0; }
 
+@media (max-width: 767px) {
+
+    .summary { width: 87%; }
+    .yellow { width: 85%; }
+    .plus-btn { left: 95%; }
+    #save-changes {  
+
+        margin: 30px 0px 0px 0px;
+        left: 12.7%;
+
+    }
+    .edit { left: 89%; }
+
+}

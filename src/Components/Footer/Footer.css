@@ -2,10 +2,6 @@
 
     height: 125px;
     background-color: #ffcb05;
-    /* background-color: #0090ff69; */
-    /* background-color:  #19195f; */
-    /* background-color: red; */
-    /* background-color: dimgray; */
     border-radius: 20px 20px 0px 0px; 
     display: flex;
     align-items: center;
@@ -64,3 +60,25 @@
 }
 
 .links i:hover { transform: scale(1.2); }
+
+@media (max-width : 767px) {
+
+    #footer , .name-copy {
+
+        display: grid;
+        place-items: center;
+
+    }
+
+    .name-copy h1 { font-size: x-large; }
+    .name-copy p { font-size: 11px; }
+
+    .links { 
+        
+        column-gap: 5px; 
+        margin-top: -30px;
+    
+    }
+    .links i { font-size: larger; }
+
+}

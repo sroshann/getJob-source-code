@@ -5,6 +5,8 @@
   
 }
 
+p { width: fit-content; }
+
 body{
 
   font-family: Poppins;

@@ -9,14 +9,14 @@ function Listing( props ) {
 
         <div>
 
-            <div className="job-objects" key={index} onClick={() => pageView(objects.jobID)} >
+            <div className="SHome-job-objects" key={index} onClick={() => pageView(objects.jobID)} >
 
                 <section>
 
                     <div id='job-company-detail'>
 
-                        <p id='job-title'>{objects.jobTitle}</p>
-                        <p id='company-name'>{objects.companyName}</p>
+                        <p id='SHome-job-title'>{objects.jobTitle}</p>
+                        <p id='SHome-company-name'>{objects.companyName}</p>
 
                     </div>
                     <div id="other-details">
@@ -24,21 +24,21 @@ function Listing( props ) {
                         <div id="experience">
 
                             <i className='bx bx-briefcase-alt grey'></i>
-                            <p className='grey'>{objects.experience}</p>
+                            <p className='SHome-grey'>{objects.experience}</p>
 
                         </div>
                         <p className="grey">|</p>
                         <div id="salary">
 
                             <i className='bx bx-rupee grey' ></i>
-                            <p className='grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
+                            <p className='SHome-grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
 
                         </div>
                         <p className="grey">|</p>
                         <div id="location">
 
                             <i className='bx bx-map grey'></i>
-                            <p className='grey'>{objects.location}</p>
+                            <p className='SHome-grey'>{objects.location}</p>
 
                         </div>
 
@@ -52,7 +52,7 @@ function Listing( props ) {
                                 <div key={index}>
 
                                     {index === 0 ? <></> : <i className='bx bx-wifi-0 grey'></i>}
-                                    <p className='grey'>{skillObj.text}</p>
+                                    <p className='SHome-grey'>{skillObj.text}</p>
 
                                 </div>
 
@@ -63,7 +63,7 @@ function Listing( props ) {
                     </div>
                     <div id="date-save">
 
-                        <p className='grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
+                        <p className='SHome-grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
                         <div onClick={(event) => {
 
                             saveJob(objects)
@@ -72,9 +72,9 @@ function Listing( props ) {
                         }}>
 
                             {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ?
-                                <i className='bx bxs-bookmark grey' ></i> :
-                                <i className='bx bx-bookmark grey'></i>}
-                            <p className='grey'>
+                                <i className='bx bxs-bookmark SHome-grey' ></i> :
+                                <i className='bx bx-bookmark SHome-grey'></i>}
+                            <p className='SHome-grey'>
                                 {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
                             </p>
 
