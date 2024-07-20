@@ -4,7 +4,6 @@ import toast, { Toaster } from 'react-hot-toast'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import { useNavigate } from 'react-router-dom'
-import Listing from './Listing'
 
 function SHome() {
 
@@ -12,10 +11,11 @@ function SHome() {
     const [jobs, setJobs] = useState([])
 
     const [search, setSearch] = useState('')
-    const [searchedJobs, setSearchedJobs] = useState([])
 
-    const [category, setCategory] = useState([])
+    const [category, setCategory] = useState(false)
     const [addingId, setAddingId] = useState('')
+
+    const [filteredJobs, setFilteredJobs] = useState([])
 
     const navigate = useNavigate()
 
@@ -74,6 +74,7 @@ function SHome() {
 
         }))
         setJobs(allJobs)
+        setFilteredJobs(allJobs)
 
     }
 
@@ -108,83 +109,35 @@ function SHome() {
 
     }
 
-    const searchJob = async () => {
+    const searchJob = async (allJobs) => {
 
-        try {
+        console.log( allJobs )
 
-            const loadingId = toast.loading('Searching')
-            const reference = collection(FirebaseFirestore, 'Jobs')
+        const searchedJobs = allJobs.filter(objects => {
 
-            const queries = [ //Inorder to handle multiple queries
+            return objects.category.toLowerCase().includes(search.toLowerCase()) ||
+                objects.jobTitle.toLowerCase().includes(search.toLowerCase()) ||
+                objects.location.toLowerCase().includes(search.toLowerCase()) ||
+                objects.qualification.toLowerCase().includes(search.toLowerCase())
 
-                where('category', '==', search),
-                where('jobTitle', '==', search),
-                where('location', '==', search),
-                where('qualification', '==', search)
+        })
 
-            ]
-
-            let array = []
-            const promises = queries.map(async (objects) => { // Firebase provides AND operation as default 
-                // to avoid that we can use this method creating promise and iterationg among them
-
-                const selectedJob = query(reference, objects)
-                const jobDetails = await getDocs(selectedJob)
-                jobDetails.forEach((doc) => {
-
-                    array.push({
-
-                        jobTitle: doc.data().jobTitle,
-                        jobID: doc.data().jobID,
-                        companyName: doc.data().companyName,
-                        experience: doc.data().experience,
-                        salary: doc.data().salary,
-                        location: doc.data().location,
-                        skillsRequired: doc.data().skillsRequired,
-                        postedOn: doc.data().postedOn
-
-                    })
-
-                })
-
-            })
-
-            await Promise.all(promises) // Wait for all queries to complete
-
-            if (array.length === 0) toast.error('No jobs were found', { style: { fontSize: '14px' } })
-            else setSearchedJobs(array)
-
-            toast.remove(loadingId)
-
-        } catch (error) { console.log(error.message) }
+        if (searchedJobs.length === 0) toast.error('No jobs were found', { style: { fontSize: '14px' } })
+        else setFilteredJobs(searchedJobs)
 
     }
 
-    const categoriesListing = async (category) => {
+    const categoriesListing = async (category, allJobs) => {
 
-        try {
+        const categorisedJobs = allJobs.filter(objects => objects.category.includes(category))
+        if (categorisedJobs.length === 0) toast.error('No jobs were found', { style: { fontSize: '14px' } })
+        else {
 
-            setCategory([]) // Palcing it emply whenever it calls
+            setCategory(true)
+            setFilteredJobs(categorisedJobs)
 
-            const loadingId = toast.loading('Loading')
-            const reference = collection(FirebaseFirestore, 'Jobs')
-            const condition = where('category', '==', category)
-            const selectedJob = query(reference, condition)
-
-            const jobData = await getDocs(selectedJob)
-            const allJobs = jobData.docs.map(values => ({
-
-                ...values.data()
-
-            }))
-
-            if (allJobs.length === 0) toast.error('No jobs were found', { style: { fontSize: '14px' } })
-            else setCategory(allJobs)
-
-            setAddingId(category)
-            toast.remove(loadingId)
-
-        } catch (error) { toast.error(error.message, { style: { fontSize: '14px' } }) }
+        }
+        setAddingId(category)
 
     }
 
@@ -210,10 +163,10 @@ function SHome() {
                     {search && <i className='bx bx-x' style={{ cursor: 'pointer' }} onClick={() => {
 
                         setSearch('')
-                        setSearchedJobs([])
+                        setFilteredJobs(jobs)
 
                     }}></i>}
-                    <i className='bx bx-search search-icon' onClick={searchJob} ></i>
+                    <i className='bx bx-search search-icon' onClick={() => searchJob(jobs)} ></i>
 
                 </div>
 
@@ -226,193 +179,203 @@ function SHome() {
 
                         <section>
 
-                            <div onClick={() => categoriesListing('Medical')}
+                            <div onClick={() => categoriesListing('Medical', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Medical' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Medical' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-clinic'></i>
                                 <p>Medical</p>
                                 {
-                                    (addingId === 'Medical' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Medical' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Education')}
+                            <div onClick={() => categoriesListing('Education', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Education' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Education' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bxs-graduation'></i>
                                 <p>Education</p>
                                 {
-                                    (addingId === 'Education' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Education' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Engineering')}
+                            <div onClick={() => categoriesListing('Engineering', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Engineering' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Engineering' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-cog'></i>
                                 <p>Engineering</p>
                                 {
-                                    (addingId === 'Engineering' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Engineering' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Hospitality')}
+                            <div onClick={() => categoriesListing('Hospitality', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Hospitality' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Hospitality' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-restaurant'></i>
                                 <p>Hospitality</p>
                                 {
-                                    (addingId === 'Hospitality' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Hospitality' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Finance')}
+                            <div onClick={() => categoriesListing('Finance', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Finance' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Finance' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-wallet'></i>
                                 <p>Finance</p>
                                 {
-                                    (addingId === 'Finance' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Finance' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Designing')}
+                            <div onClick={() => categoriesListing('Designing', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Designing' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Designing' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-palette'></i>
                                 <p>Designing</p>
                                 {
-                                    (addingId === 'Designing' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Designing' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Sales')}
+                            <div onClick={() => categoriesListing('Sales', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Sales' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Sales' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-shopping-bag'></i>
                                 <p>Sales</p>
                                 {
-                                    (addingId === 'Sales' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Sales' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Automotive')}
+                            <div onClick={() => categoriesListing('Automotive', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Automotive' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Automotive' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bxs-car-mechanic' ></i>
                                 <p>Automotive</p>
                                 {
-                                    (addingId === 'Automotive' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Automotive' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Fashion')}
+                            <div onClick={() => categoriesListing('Fashion', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Fashion' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Fashion' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-closet'></i>
                                 <p>Fashion</p>
                                 {
-                                    (addingId === 'Fashion' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Fashion' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
-                            <div onClick={() => categoriesListing('Other')}
+                            <div onClick={() => categoriesListing('Other', jobs)}
                                 className='category-object'
-                                id={(addingId === 'Other' && category.length > 0) ? 'selected-category' : ''}>
+                                id={(addingId === 'Other' && category) ? 'selected-category' : ''}>
 
                                 <i class='bx bx-dots-horizontal-rounded'></i>
                                 <p>Other</p>
                                 {
-                                    (addingId === 'Other' && category.length > 0) && <i className='bx bx-x' id='x-hover'
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={(event) => {
+                                    (addingId === 'Other' && category) && <i className='bx bx-x' id='x-hover'
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={(event) => {
 
-                                        event.stopPropagation()
-                                        setAddingId('')
-                                        setCategory([])
+                                            event.stopPropagation()
+                                            setAddingId('')
+                                            setCategory(false)
+                                            setFilteredJobs(jobs)
 
-                                    }}></i>
+                                        }}></i>
                                 }
 
                             </div>
@@ -429,21 +392,93 @@ function SHome() {
                         {
 
                             jobs.length === 0 ? <div id="no-jobs"> <p>No jobs were found</p> </div> :
-                                searchedJobs.length > 0 ? searchedJobs.map((objects, index) => (
 
-                                    <Listing objects={objects} key={index} saveJob={saveJob} saveArray={saveArray} pageView={pageView} />
+                                filteredJobs.length > 0 ? filteredJobs.map((objects, index) => (
 
-                                )) :
-                                    category.length > 0 ? category.map((objects, index) => (
+                                    <div>
 
-                                        <Listing objects={objects} key={index} saveJob={saveJob} saveArray={saveArray} pageView={pageView} />
+                                        <div className="SHome-job-objects" key={index} onClick={() => pageView(objects.jobID)} >
 
-                                    )) :
-                                        jobs.map((objects, index) => (
+                                            <section>
 
-                                            <Listing objects={objects} key={index} saveJob={saveJob} saveArray={saveArray} pageView={pageView} />
+                                                <div id='job-company-detail'>
 
-                                        ))
+                                                    <p id='SHome-job-title'>{objects.jobTitle}</p>
+                                                    <p id='SHome-company-name'>{objects.companyName}</p>
+
+                                                </div>
+                                                <div id="other-details">
+
+                                                    <div id="experience">
+
+                                                        <i className='bx bx-briefcase-alt grey'></i>
+                                                        <p className='SHome-grey'>{objects.experience}</p>
+
+                                                    </div>
+                                                    <p className="grey">|</p>
+                                                    <div id="salary">
+
+                                                        <i className='bx bx-rupee grey' ></i>
+                                                        <p className='SHome-grey'>{objects.salary ? objects.salary : 'Not desclosed'}</p>
+
+                                                    </div>
+                                                    <p className="grey">|</p>
+                                                    <div id="location">
+
+                                                        <i className='bx bx-map grey'></i>
+                                                        <p className='SHome-grey'>{objects.location}</p>
+
+                                                    </div>
+
+                                                </div>
+                                                <div id="job-skills">
+
+                                                    {
+
+                                                        objects.skillsRequired.map((skillObj, index) => (
+
+                                                            <div key={index}>
+
+                                                                {index === 0 ? <></> : <i className='bx bx-wifi-0 grey'></i>}
+                                                                <p className='SHome-grey'>{skillObj.text}</p>
+
+                                                            </div>
+
+                                                        ))
+
+                                                    }
+
+                                                </div>
+                                                <div id="date-save">
+
+                                                    <p className='SHome-grey' style={{ fontSize: '12px' }}>{objects.postedOn}</p>
+                                                    <div onClick={(event) => {
+
+                                                        saveJob(objects)
+                                                        event.stopPropagation()
+
+                                                    }}>
+
+                                                        {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ?
+                                                            <i className='bx bxs-bookmark SHome-grey' ></i> :
+                                                            <i className='bx bx-bookmark SHome-grey'></i>}
+                                                        <p className='SHome-grey'>
+                                                            {saveArray && saveArray.some(saved => saved.jobID === objects.jobID) ? 'Saved' : 'Save'}
+                                                        </p>
+
+                                                        {/* .some check the provided condition is exist atleast one time in that array */}
+
+                                                    </div>
+
+                                                </div>
+
+                                            </section>
+
+                                        </div>
+
+                                    </div>
+
+                                )) : ''
 
                         }
 
