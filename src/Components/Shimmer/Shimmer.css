@@ -5,7 +5,7 @@
 
 }
 
-#shimmer-container {
+.shimmer-container {
 
     height: 161px;
     /* width: 100%; */
@@ -19,7 +19,7 @@
 
 }
 
-#shimmer-container section {
+.shimmer-container section {
 
     width: 95%;
     display: grid;
@@ -83,5 +83,50 @@
 
     0% { transform: translateX(-300%); }
     100% { transform: translateX(300%); }
+
+}
+
+@media (max-width : 767px) {
+
+    .shimmer-container { height: 142px; }
+    .shimmer-container section { row-gap: 10px; }
+    .shimmer-others { 
+        
+        width: 280px; 
+        height: 16px;
+    
+    }
+    .job-name, .company-name {
+
+        height: 18px;
+        width: 125px;
+
+    }
+    .company-name { 
+        
+        height: 16px; 
+        margin: 0px;
+    
+    }
+    .job-skill {
+
+        height: 14px;
+        width: 185px;
+
+    }
+    .date { width: 125px; }
+    .shimmer-save {
+
+        height: 16px;
+        width: 50px;
+
+    }
+
+}
+
+@media (min-width : 768px) and (max-width : 991px) {
+
+    .shimmer-container { height: 150px; }
+    .shimmer-container section { row-gap: 10px; }
 
 }

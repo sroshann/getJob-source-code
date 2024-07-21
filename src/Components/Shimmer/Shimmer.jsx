@@ -9,7 +9,7 @@ function Shimmer( props ) {
 
         <div id='shimmer'>
 
-            <div id="shimmer-container" >
+            <div className="shimmer-container" >
 
                 <section>
 
@@ -40,7 +40,7 @@ function Shimmer( props ) {
 
             </div>
 
-            <div id="shimmer-container" >
+            <div className="shimmer-container" >
 
                 <section>
 
@@ -71,7 +71,7 @@ function Shimmer( props ) {
 
             </div>
 
-            <div id="shimmer-container" >
+            <div className="shimmer-container" >
 
                 <section>
 
