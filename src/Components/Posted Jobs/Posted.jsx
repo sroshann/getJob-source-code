@@ -3,10 +3,12 @@ import './Posted.css'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import { useNavigate } from 'react-router-dom'
+import Shimmer from '../Shimmer/Shimmer'
 
 function Posted() {
 
     const [postedJobs, setPostedJobs] = useState([])
+    const [  shimmerStatus , setShimmerStatus ] = useState( false )
 
     const navigate = useNavigate()
 
@@ -24,6 +26,8 @@ function Posted() {
 
     const getPostedJobs = async () => {
 
+        setShimmerStatus( true )
+
         const email = getLocalEmail()
         const ref = collection(FirebaseFirestore, 'Jobs')
         const condition = where('userEmail', '==', email)
@@ -35,8 +39,9 @@ function Posted() {
             ...values.data()
 
         }) )
-        console.log( allJobs )
         setPostedJobs( allJobs )
+
+        setShimmerStatus( false )
 
     }
 
@@ -64,6 +69,7 @@ function Posted() {
 
                     {
 
+                        shimmerStatus ? <Shimmer saved={ false } /> :
                         postedJobs.length === 0 ? <div id="no-jobs"> <p>No jobs were found</p> </div>
                             :
                             postedJobs.map((objects, index) => (

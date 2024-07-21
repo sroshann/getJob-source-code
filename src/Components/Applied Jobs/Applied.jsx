@@ -3,10 +3,12 @@ import './Applied.css'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import { useNavigate } from 'react-router-dom'
+import Shimmer from '../Shimmer/Shimmer'
 
 function Applied() {
 
     const [applied, setApplied] = useState([])
+    const [ shimmerStatus , setShimmerStatus ] = useState( false )
 
     const navigate = useNavigate()
 
@@ -24,6 +26,8 @@ function Applied() {
 
     const getAppliedJobs = async () => {
 
+        setShimmerStatus( true )
+
         const email = getLocalEmail()
         const ref = collection(FirebaseFirestore, 'Users')
         const condition = where('email', '==', email)
@@ -32,13 +36,14 @@ function Applied() {
         const userData = await getDocs(selectedUser)
         userData.forEach(doc => { setApplied(doc.data().appliedJobs) })
 
+        setShimmerStatus( false )
+
     }
 
     const pageView = (ID) => {
 
         localStorage.setItem('jobID', JSON.stringify(ID))
         navigate('/view')
-        // console.log( ID )
     
     }
 
@@ -59,7 +64,8 @@ function Applied() {
 
                     {
 
-                        applied.length === 0 ? <div id="no-jobs"> <p>No jobs were found</p> </div>
+                        shimmerStatus ? <Shimmer saved={ false } /> :
+                        applied.length === 0 ? <div> <p>No jobs were found</p> </div>
                             :
                             applied.map((objects, index) => (
 

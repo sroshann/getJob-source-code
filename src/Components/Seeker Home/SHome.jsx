@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import { useNavigate } from 'react-router-dom'
+import Shimmer from '../Shimmer/Shimmer'
 
 function SHome() {
 
@@ -16,6 +17,7 @@ function SHome() {
     const [addingId, setAddingId] = useState('')
 
     const [filteredJobs, setFilteredJobs] = useState([])
+    const [ jobsEmpty , setJobsEmpty ] = useState( false )
 
     const navigate = useNavigate()
 
@@ -75,6 +77,9 @@ function SHome() {
         }))
         setJobs(allJobs)
         setFilteredJobs(allJobs)
+
+        if( allJobs.length === 0 ) setJobsEmpty( true )
+        else setJobsEmpty( false )
 
     }
 
@@ -387,11 +392,13 @@ function SHome() {
                 </section>
                 <section id='jobs'>
 
+
                     <div id="job-listing">
 
                         {
 
-                            jobs.length === 0 ? <div id="no-jobs"> <p>No jobs were found</p> </div> :
+                            jobsEmpty ? <div id="no-jobs"><p>No jobs were found</p></div> :
+                            filteredJobs.length === 0 ? <div > <Shimmer saved={ true }/> </div> :
 
                                 filteredJobs.length > 0 ? filteredJobs.map((objects, index) => (
 

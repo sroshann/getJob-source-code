@@ -2,62 +2,69 @@ import React, { useState } from 'react'
 import SeekerSignup from '../Components/SeekerSignup/SeekerSignup'
 import EmployerSignup from '../Components/EmployerSignup/EmployerSignup'
 import './SignupPage.css'
+import NavBar from '../Components/NavBar/NavBar'
+import Footer from '../Components/Footer/Footer'
 
 function SignupPage() {
 
-  const [seeker, setSeeker] = useState(true)
-  const [employer, setEmployer] = useState(false)
+    const [seeker, setSeeker] = useState(true)
+    const [employer, setEmployer] = useState(false)
 
-  return (
-    <div id='bdy'>
+    return (
 
-      <div id="button-div">
+        <div id='bdy'>
 
-        <div className="container-radio">
+            <NavBar/>
 
-          <div className="switches-container">
+            <div id="button-div">
 
-            <input type="radio" id="switchMonthly" name="switchPlan" value="Monthly" checked={ seeker ? 'checked' : '' } />
-            <input type="radio" id="switchYearly" name="switchPlan" value="Yearly" />
-            <label className='radio-switch' htmlFor="switchMonthly" onClick={() => {
+                <div className="container-radio">
 
-              setSeeker(true)
-              setEmployer(false)
+                    <div className="switches-container">
 
-            }}>Register as job seeker</label>
-            <label className='radio-switch' htmlFor="switchYearly" onClick={() => {
+                        <input type="radio" id="switchMonthly" name="switchPlan" value="Monthly" checked={seeker ? 'checked' : ''} />
+                        <input type="radio" id="switchYearly" name="switchPlan" value="Yearly" />
+                        <label className='radio-switch' htmlFor="switchMonthly" onClick={() => {
 
-              setEmployer(true)
-              setSeeker(false)
+                            setSeeker(true)
+                            setEmployer(false)
 
-            }}>Register as employer</label>
+                        }}>Register as job seeker</label>
+                        <label className='radio-switch' htmlFor="switchYearly" onClick={() => {
 
-            <div className="switch-wrapper">
+                            setEmployer(true)
+                            setSeeker(false)
 
-              <div className="switch">
+                        }}>Register as employer</label>
 
-                <div>Register as job seeker</div>
-                <div>Register as employer</div>
+                        <div className="switch-wrapper">
 
-              </div>
+                            <div className="switch">
+
+                                <div>Register as job seeker</div>
+                                <div>Register as employer</div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
-          </div>
+            <div>
+
+                {seeker && <SeekerSignup />}
+                {employer && <EmployerSignup />}
+
+            </div>
+
+            <Footer/>
 
         </div>
-
-      </div>
-
-      <div>
-
-        {seeker && <SeekerSignup />}
-        {employer && <EmployerSignup />}
-
-      </div>
-
-    </div>
-  )
+    )
 }
 
 export default SignupPage

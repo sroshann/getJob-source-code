@@ -1,0 +1,87 @@
+#shimmer {
+
+    display: grid;
+    row-gap: 13px;
+
+}
+
+#shimmer-container {
+
+    height: 161px;
+    /* width: 100%; */
+    background-color: #f5f5f5;
+    /* box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; */
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    /* padding: 13px 0px 13px 0px; */
+    position: relative;
+
+}
+
+#shimmer-container section {
+
+    width: 95%;
+    display: grid;
+    row-gap: 13px;
+
+}
+
+.shimmer-objects {
+
+    height: 10px;
+    width: 175px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+
+}
+
+.shimmer-others {
+
+    display: flex;
+    column-gap: 10px;
+
+}
+
+.shimmer-date-save {
+
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.shimmer-company-detail {
+
+    display: grid;
+    row-gap: 5px;
+
+}
+
+.job-name { height: 20px; }
+.company-name , .others{ height: 18px; }
+.job-skill { height: 16px; width: 360px;}
+.date { height: 16px; }
+.shimmer-save { width: 70px; height: 18px; }
+
+.shimmer-animation {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(100deg,
+        rgba( 255,255,255,0 ) 20%,
+        rgba( 255,255,255,0.5 ) 50%,
+        rgba( 255,255,255,0 ) 80%);
+
+    animation: shimmer 0.9s infinite linear;
+
+}
+
+@keyframes shimmer {
+
+    0% { transform: translateX(-300%); }
+    100% { transform: translateX(300%); }
+
+}
