@@ -3,14 +3,18 @@ import './Applicants.css'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 import { FirebaseFirestore } from '../../FIrebase/Configueration'
 import { useNavigate } from 'react-router-dom'
+import ApplicantShimmer from '../Applicant Shimmer/ApplicantShimmer'
 
 function Applicants() {
 
     const [applicants, setApplicants] = useState([])
+    const [shimmer, setShimmer] = useState(false)
 
     const navigate = useNavigate()
 
     const getApplicants = async () => {
+
+        setShimmer(true)
 
         const jobID = localStorage.getItem('jobID')
         if (jobID) {
@@ -26,14 +30,16 @@ function Applicants() {
 
         }
 
+        setShimmer(false)
+
     }
 
-    const viewProfile = ( email ) => {
+    const viewProfile = (email) => {
 
-        localStorage.setItem('applicantMail', JSON.stringify( email ))
+        localStorage.setItem('applicantMail', JSON.stringify(email))
         navigate('/applicant-profile')
 
-    } 
+    }
 
     useEffect(() => {
 
@@ -46,41 +52,45 @@ function Applicants() {
 
         <div id='applicants-main'>
 
+
             <section id="applicants-listing">
 
-                {applicants.length === 0 ? <p>Currently no one applied</p> :
+                {
 
-                    applicants.map((objects, index) => (
+                    shimmer ? <ApplicantShimmer /> :
+                    applicants.length === 0 ? <p>Currently no one applied</p> :
 
-                        <div id="objects" key={ index } onClick={ () => viewProfile( objects.email ) }>
+                        applicants.map((objects, index) => (
 
-                            <div id="applicant-image">
+                            <div id="objects" key={index} onClick={() => viewProfile(objects.email)}>
 
-                                <img src={objects.dp} alt="Profile" />
+                                <div id="applicant-image">
 
-                            </div>
-                            <div id="applicant-texts">
+                                    <img src={objects.dp} alt="Profile" />
 
-                                <p id='applicant-name'>{objects.name}</p>
-                                <p className='txt'>{objects.phoneNumber}</p>
-                                <p className='txt txt-email'>{objects.email}</p>
-                                <div id="resume">
+                                </div>
+                                <div id="applicant-texts">
 
-                                    <button><a rel='noreferrer' target='_blank' href={objects.resume} onClick={
+                                    <p id='applicant-name'>{objects.name}</p>
+                                    <p className='txt'>{objects.phoneNumber}</p>
+                                    <p className='txt txt-email'>{objects.email}</p>
+                                    <div id="resume">
 
-                                        ( event ) => event.stopPropagation() 
+                                        <button><a rel='noreferrer' target='_blank' href={objects.resume} onClick={
 
-                                    }>Resume</a></button>
+                                            (event) => event.stopPropagation()
+
+                                        }>Resume</a></button>
+
+                                    </div>
+
+                                    <p className='go-to-profile'>Click to view complete profile</p>
 
                                 </div>
 
-                                <p className='go-to-profile'>Click to view complete profile</p>
-
                             </div>
 
-                        </div>
-
-                    ))
+                        ))
 
                 }
 

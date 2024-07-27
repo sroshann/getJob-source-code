@@ -1,7 +1,7 @@
 #applicants-main {
 
-    margin-top: 45px;
-    margin-bottom: 40px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     display: grid;
     place-items: center;
     min-height: 62.5vh;
@@ -21,7 +21,8 @@ p {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px;
+    column-gap: 12px;
+    row-gap: 10px;
 
 }
 
@@ -68,14 +69,14 @@ p {
 
 }
 
-.txt { font-size: small; }
-
-.txt-email { 
+.txt , .txt-email { 
     
-    font-size: 11.5px; 
+    font-size: small; 
     margin-top: -3px;
 
 }
+
+.txt-email { font-size: 11.5px; }
 
 #resume button {
 
